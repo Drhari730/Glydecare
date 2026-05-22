@@ -1,0 +1,3 @@
+-keep class com.diabeticcare.app.data.model.** { *; }
+-keep class com.itextpdf.** { *; }
+-dontwarn com.itextpdf.**

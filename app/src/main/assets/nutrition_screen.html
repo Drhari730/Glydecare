@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Nutrition Care - Glydecare</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal:#0D9B7A; --teal2:#E0F5EF; --teal3:#5DCAA5;
+  --blue:#3B9EFF; --blue2:#EAF4FF; --blue3:#90C8FF;
+  --amber:#F0A500; --amber2:#FFF4DC; --amber3:#FBBF24;
+  --red:#E85D5D; --red2:#FDEAEA;
+  --purple:#7C6FF7; --purple2:#EEEDFE;
+  --green:#3B9E5A; --green2:#E8F7EE;
+  --orange:#F07850; --orange2:#FEF0EB;
+  --bg:#F4F6FA; --surface:#FFFFFF;
+  --text:#1A1D23; --text2:#6B7280; --text3:#9CA3AF;
+  --border:rgba(0,0,0,0.07);
+  --r:20px; --rs:14px; --rxs:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);max-width:420px;margin:0 auto;overflow-x:hidden}
+
+/* TOP BAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:50px 18px 12px;background:var(--surface);border-bottom:1px solid var(--border)}
+.topbar-back{width:36px;height:36px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none}
+.topbar-back svg{width:18px;height:18px}
+.topbar-title{font-size:17px;font-weight:600}
+.topbar-action{width:36px;height:36px;border-radius:50%;background:var(--teal2);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none}
+.topbar-action svg{width:17px;height:17px;stroke:var(--teal)}
+
+/* SCROLL */
+.scroll{padding:14px 14px 24px;display:flex;flex-direction:column;gap:14px}
+
+/* LABELS */
+.sec-lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+
+/* GLUCOSE STATUS BANNER */
+.gluc-banner{background:var(--surface);border-radius:var(--r);padding:14px 16px;border:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.gluc-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.gluc-info{flex:1}
+.gluc-row{display:flex;align-items:baseline;gap:8px;margin-bottom:2px}
+.gluc-num{font-size:22px;font-weight:600}
+.gluc-unit{font-size:12px;color:var(--text2)}
+.gluc-label{font-size:12px;color:var(--text2)}
+.gluc-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;align-self:flex-start;margin-top:2px;flex-shrink:0}
+.hba1c-chip{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;background:var(--purple2);color:#3C3489;margin-left:6px}
+
+/* RECOMMENDATION BANNER */
+.rec-banner{border-radius:var(--r);padding:14px 16px;border:1px solid}
+.rec-title{font-size:13px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.rec-title svg{width:15px;height:15px;flex-shrink:0}
+.rec-text{font-size:12px;line-height:1.55}
+
+/* SECTION HEADER ROW */
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.sec-header-title{font-size:15px;font-weight:600}
+.sec-see-all{font-size:12px;color:var(--teal);font-weight:500;cursor:pointer;border:none;background:none;padding:0}
+
+/* FILTER CHIPS */
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin-bottom:10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text2);transition:all .15s;white-space:nowrap}
+.chip.on{border-color:var(--teal3);background:var(--teal2);color:var(--teal)}
+
+/* FOOD CARDS GRID */
+.food-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.food-card{background:var(--surface);border-radius:var(--rs);padding:13px 12px;border:1px solid var(--border);cursor:pointer;transition:transform .12s,border-color .12s;position:relative;overflow:hidden}
+.food-card:active{transform:scale(0.96)}
+.food-card.rec-glow{border-color:var(--teal3)}
+.food-card.rec-glow::after{content:attr(data-rec-label);position:absolute;top:0;right:0;font-size:9px;font-weight:600;background:var(--teal);color:#fff;padding:2px 7px;border-radius:0 var(--rs) 0 8px}
+.food-emoji{font-size:32px;margin-bottom:8px;display:block;text-align:center}
+.food-name{font-size:12px;font-weight:600;text-align:center;margin-bottom:3px;line-height:1.3}
+.food-cal{font-size:10px;color:var(--text3);text-align:center;margin-bottom:6px}
+.food-badges{display:flex;flex-wrap:wrap;gap:3px;justify-content:center}
+.fbadge{font-size:9px;font-weight:600;padding:2px 6px;border-radius:6px}
+.gi-low{background:var(--teal2);color:var(--teal)}
+.gi-med{background:var(--amber2);color:#854F0B}
+.gi-high{background:var(--red2);color:#A32D2D}
+
+/* FOOD DETAIL MODAL (slide up) */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:flex-end;max-width:420px;margin:0 auto}
+.modal-bg.open{display:flex}
+.modal{background:var(--surface);border-radius:24px 24px 0 0;padding:20px 18px 40px;width:100%;max-height:88vh;overflow-y:auto}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px}
+.modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.modal-close svg{width:16px;height:16px}
+.modal-emoji{font-size:48px;text-align:center;display:block;margin-bottom:8px}
+.modal-name{font-size:20px;font-weight:600;text-align:center;margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--text2);text-align:center;margin-bottom:14px}
+.nutr-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.nutr-cell{background:var(--bg);border-radius:var(--rxs);padding:10px;text-align:center}
+.nutr-val{font-size:16px;font-weight:600}
+.nutr-lbl{font-size:10px;color:var(--text3);margin-top:2px}
+.nutr-bar-row{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px;border-bottom:1px solid var(--border)}
+.nutr-bar-row:last-child{border-bottom:none}
+.nutr-bar-name{min-width:60px;color:var(--text2)}
+.nutr-bar-wrap{flex:1;height:5px;background:var(--bg);border-radius:3px}
+.nutr-bar-fill{height:5px;border-radius:3px}
+.nutr-bar-num{min-width:36px;text-align:right;font-weight:500}
+.modal-section{font-size:13px;font-weight:600;margin:14px 0 6px}
+.modal-text{font-size:12px;color:var(--text2);line-height:1.6}
+.prep-step{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);line-height:1.5}
+.prep-step:last-child{border-bottom:none}
+.prep-num{width:20px;height:20px;border-radius:50%;background:var(--teal2);color:var(--teal);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.gi-explain{background:var(--teal2);border-radius:10px;padding:10px 12px;margin-top:10px}
+.gi-explain p{font-size:11px;color:#085041;line-height:1.5}
+.modal-btn{width:100%;padding:13px;border-radius:var(--rs);background:var(--teal);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;margin-top:16px;transition:opacity .15s}
+.modal-btn:active{opacity:.85}
+
+/* AI NUTRITION CARD */
+.ai-card{background:var(--surface);border-radius:var(--r);padding:16px;border:1px solid var(--border);position:relative;overflow:hidden}
+.ai-card::before{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:var(--teal2);opacity:.6}
+.ai-badge{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#0D9B7A,#3B9EFF);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;margin-bottom:10px}
+.ai-badge svg{width:13px;height:13px}
+.ai-title{font-size:16px;font-weight:600;margin-bottom:4px}
+.ai-sub{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:12px}
+.ai-input-row{display:flex;gap:8px}
+.ai-input{flex:1;padding:10px 12px;border-radius:var(--rxs);border:1px solid var(--border);font-size:13px;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.ai-input:focus{outline:none;border-color:var(--teal3)}
+.ai-go{padding:10px 14px;border-radius:var(--rxs);background:var(--teal);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s;white-space:nowrap}
+.ai-go:active{opacity:.8}
+.ai-quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.ai-qbtn{padding:5px 11px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid var(--border);background:var(--bg);color:var(--text2);cursor:pointer;transition:all .15s}
+.ai-qbtn:hover{background:var(--teal2);color:var(--teal);border-color:var(--teal3)}
+.ai-response{display:none;margin-top:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:12px;font-size:12px;line-height:1.55;color:var(--text);white-space:pre-wrap}
+.ai-response.open{display:block}
+.ai-response-title{font-weight:600;color:var(--teal);margin-bottom:6px}
+.qa-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.qa-card{border:1px solid var(--border);background:var(--surface);border-radius:var(--rs);padding:12px;cursor:pointer}
+.qa-icon{font-size:18px;font-weight:700;color:var(--teal);margin-bottom:7px;display:block}
+.qa-title{font-size:12px;font-weight:600;margin-bottom:4px}
+.qa-sub{font-size:10px;color:var(--text2);line-height:1.45}
+.iec-list{display:flex;flex-direction:column;gap:8px}
+.iec-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:12px;display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.iec-icon{width:40px;height:34px;border-radius:11px;background:var(--teal2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--teal);flex-shrink:0}
+.iec-title{font-size:13px;font-weight:600;margin-bottom:3px}
+.iec-text{font-size:11px;color:var(--text2);line-height:1.5}
+
+/* MEAL PLANNER STRIP */
+.day-strip{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px;margin-bottom:10px;scrollbar-width:none}
+.day-strip::-webkit-scrollbar{display:none}
+.day-btn{min-width:44px;padding:5px 6px;border-radius:9px;font-size:11px;text-align:center;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;white-space:nowrap;font-weight:500}
+.day-btn.on{background:var(--teal2);color:var(--teal);border-color:var(--teal3);font-weight:600}
+
+.meal-block{background:var(--surface);border-radius:var(--rs);padding:11px 13px;margin-bottom:8px;border:1px solid var(--border)}
+.mb-time{font-size:10px;color:var(--text3);display:flex;align-items:center;gap:4px;margin-bottom:2px}
+.mb-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.mb-items{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:6px}
+.mb-macros{display:flex;gap:5px;flex-wrap:wrap}
+.mb-macro{font-size:10px;font-weight:600;padding:2px 7px;border-radius:6px}
+.mb-gi-row{display:flex;align-items:center;gap:6px;margin-top:5px;padding-top:6px;border-top:1px solid var(--border)}
+.mb-gi-label{font-size:10px;color:var(--text3)}
+.mb-gi-bar{flex:1;height:4px;background:var(--bg);border-radius:2px}
+.mb-gi-fill{height:4px;border-radius:2px}
+.mb-gi-val{font-size:10px;font-weight:600}
+
+/* BOTTOM NAV */
+.bottom-nav{display:none!important}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--text3);cursor:pointer;border:none;background:none;padding:4px 0;transition:color .15s}
+.nav-item.active{color:var(--teal)}
+.nav-item svg{width:22px;height:22px}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:var(--teal);margin-top:-1px}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sw{animation:fadeUp .35s ease both}
+.sw:nth-child(1){animation-delay:.04s}
+.sw:nth-child(2){animation-delay:.09s}
+.sw:nth-child(3){animation-delay:.14s}
+.sw:nth-child(4){animation-delay:.19s}
+.sw:nth-child(5){animation-delay:.24s}
+.sw:nth-child(6){animation-delay:.29s}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <button class="topbar-back" aria-label="Back" onclick="Android.goBack()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+  </button>
+  <span class="topbar-title">Nutrition Care</span>
+  <button class="topbar-action" aria-label="Search">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+  </button>
+</div>
+
+<div class="scroll">
+
+  <!-- 1. GLUCOSE STATUS -->
+  <div class="sw">
+    <div class="sec-lbl">Your current status</div>
+    <div class="gluc-banner">
+      <div class="gluc-icon" style="background:var(--teal2)">🩸</div>
+      <div class="gluc-info">
+        <div class="gluc-row">
+          <span class="gluc-num" style="color:var(--teal)" id="glucDisplay">118</span>
+          <span class="gluc-unit">mg/dL</span>
+      <span class="hba1c-chip" id="hba1cChip">HbA1c 6.8%</span>
+        </div>
+        <span class="gluc-label">Post-breakfast · 9:15 AM today</span>
+      </div>
+      <span class="gluc-badge" style="background:var(--teal2);color:var(--teal)">Normal</span>
+    </div>
+  </div>
+
+  <!-- 2. RECOMMENDATION BANNER (changes with glucose) -->
+  <div class="sw" id="recBanner">
+    <div class="rec-banner" style="background:var(--teal2);border-color:var(--teal3)">
+      <div class="rec-title" style="color:#085041">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Good glucose control — keep these foods in your diet
+      </div>
+      <p class="rec-text" style="color:#0F6E56">Your reading is within target range. Focus on low-GI Indian foods, high-fibre options, and regular meal timing to maintain this. Avoid skipping meals.</p>
+    </div>
+  </div>
+
+  <!-- 3. WEEKLY MEAL PLAN -->
+  <div class="sw">
+    <div class="sec-header">
+      <span class="sec-header-title">7-day meal plan</span>
+      <button class="sec-see-all" onclick="fireAI()">Customise</button>
+    </div>
+    <div class="day-strip" id="dayStrip"></div>
+    <div id="mealsOut"></div>
+  </div>
+
+  <!-- 4. NUTRITION CARE CHAT -->
+  <div class="sw">
+    <div class="ai-card">
+      <div class="ai-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Nutrition Care
+      </div>
+      <div class="ai-title">Diabetes nutrition chat</div>
+      <div class="ai-sub">This uses built-in diabetes Q&amp;A and meal-planning guidance now. Later we can connect DeepSeek API here.</div>
+      <div class="ai-input-row">
+        <input class="ai-input" id="aiInput" placeholder="e.g. south Indian, vegetarian, high sugar" />
+        <button class="ai-go" onclick="fireAI()">Ask ↗</button>
+      </div>
+      <div class="ai-quick">
+        <button class="ai-qbtn" onclick="quickAsk('7-day low-GI diabetic meal plan, south Indian vegetarian')">7-day plan</button>
+        <button class="ai-qbtn" onclick="quickAsk('Foods to avoid with HbA1c 6.8% and post-meal glucose 118 mg/dL')">Foods to avoid</button>
+        <button class="ai-qbtn" onclick="quickAsk('Best pre-workout snacks for T2DM patients')">Pre-workout</button>
+        <button class="ai-qbtn" onclick="quickAsk('Indian breakfast options under GI 50 for diabetics')">Low GI breakfast</button>
+        <button class="ai-qbtn" onclick="quickAsk('Diabetes lunch ideas for Indian patients')">Lunch ideas</button>
+        <button class="ai-qbtn" onclick="quickAsk('Healthy snacks for diabetes')">Healthy snacks</button>
+        <button class="ai-qbtn" onclick="quickAsk('What should I do for diabetic foot care?')">Foot care</button>
+        <button class="ai-qbtn" onclick="quickAsk('What are symptoms and treatment of low sugar?')">Low sugar</button>
+      </div>
+      <div class="ai-response" id="aiResponse">
+        <div class="ai-response-title">Glydecare Nutrition Care</div>
+        <div id="aiResponseText"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. QUICK DIABETES Q&A -->
+  <div class="sw">
+    <div class="sec-header">
+      <span class="sec-header-title">Quick diabetes Q&amp;A</span>
+      <button class="sec-see-all" onclick="quickAsk('Give patient education for diabetes self-care')">Ask all</button>
+    </div>
+    <div class="qa-grid">
+      <div class="qa-card" onclick="quickAsk('What is HbA1c and why is it important?')">
+        <span class="qa-icon">A1c</span>
+        <div class="qa-title">HbA1c basics</div>
+        <div class="qa-sub">Three-month glucose average and targets.</div>
+      </div>
+      <div class="qa-card" onclick="quickAsk('What should I do for diabetic foot care?')">
+        <span class="qa-icon">FOOT</span>
+        <div class="qa-title">Foot care</div>
+        <div class="qa-sub">Daily checks, footwear, warning signs.</div>
+      </div>
+      <div class="qa-card" onclick="quickAsk('What are symptoms and treatment of low sugar?')">
+        <span class="qa-icon">70</span>
+        <div class="qa-title">Low sugar</div>
+        <div class="qa-sub">15-15 rule and emergency action.</div>
+      </div>
+      <div class="qa-card" onclick="quickAsk('How should I take diabetes medicines safely?')">
+        <span class="qa-icon">RX</span>
+        <div class="qa-title">Medicine safety</div>
+        <div class="qa-sub">Timing, missed doses, side effects.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. FOOD DATABASE -->
+  <div class="sw">
+    <div class="sec-header">
+      <span class="sec-header-title">Diabetes food database</span>
+      <button class="sec-see-all">See all 60+</button>
+    </div>
+    <div class="chips" id="foodChips">
+      <span class="chip on" data-tag="all" onclick="filterFood('all',this)">All</span>
+      <span class="chip" data-tag="low-gi" onclick="filterFood('low-gi',this)">Low GI</span>
+      <span class="chip" data-tag="high-fibre" onclick="filterFood('high-fibre',this)">High fibre</span>
+      <span class="chip" data-tag="protein" onclick="filterFood('protein',this)">Protein</span>
+      <span class="chip" data-tag="grain" onclick="filterFood('grain',this)">Grains</span>
+      <span class="chip" data-tag="veg" onclick="filterFood('veg',this)">Vegetables</span>
+      <span class="chip" data-tag="fruit" onclick="filterFood('fruit',this)">Fruits</span>
+      <span class="chip" data-tag="spice" onclick="filterFood('spice',this)">Spices</span>
+    </div>
+    <div class="food-grid" id="foodGrid"></div>
+  </div>
+
+</div><!-- end scroll -->
+
+<!-- FOOD DETAIL MODAL -->
+<div class="modal-bg" id="modalBg" onclick="closeModal(event)">
+  <div class="modal" id="modalContent" style="position:relative">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModalBtn()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div id="modalInner"></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item" aria-label="Home" onclick="Android.navigate('dashboard')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </button>
+  <button class="nav-item" aria-label="Glucose" onclick="Android.navigate('glucose')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
+    Glucose
+  </button>
+  <button class="nav-item active" aria-label="Nutrition" onclick="Android.navigate('nutrition')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 2l1.5 18.5a2 2 0 002 1.5h11a2 2 0 002-1.5L21 2"/><path d="M8 2v6a4 4 0 008 0V2"/></svg>
+    Nutrition Care
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" aria-label="Lifestyle" onclick="Android.navigate('lifestyle')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    Lifestyle
+  </button>
+  <button class="nav-item" aria-label="Learn" onclick="Android.navigate('about')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    Learn
+  </button>
+</nav>
+
+<script>
+let APP_LANG = 'en';
+
+const KN_UI = {
+  'Nutrition Care': 'ಪೋಷಣಾ ಆರೈಕೆ',
+  'Your current status': 'ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಸ್ಥಿತಿ',
+  'Post-breakfast · 9:15 AM today': 'ಉಪಹಾರದ ನಂತರ · ಇಂದು 9:15 AM',
+  '7-day meal plan': '7 ದಿನಗಳ ಆಹಾರ ಯೋಜನೆ',
+  'Customise': 'ಬದಲಾಯಿಸಿ',
+  'Diabetes nutrition chat': 'ಮಧುಮೇಹ ಪೋಷಣಾ ಚಾಟ್',
+  'This uses built-in diabetes Q&A and meal-planning guidance now. Later we can connect DeepSeek API here.': 'ಈಗ ಇದು built-in ಮಧುಮೇಹ ಪ್ರಶ್ನೋತ್ತರ ಮತ್ತು ಆಹಾರ ಯೋಜನೆ ಮಾರ್ಗದರ್ಶನ ಬಳಸುತ್ತದೆ. ಮುಂದೆ ಇಲ್ಲಿ DeepSeek API ಕನೆಕ್ಟ್ ಮಾಡಬಹುದು.',
+  'Ask ↗': 'ಕೇಳಿ',
+  'Glydecare Nutrition Care': 'Glydecare ಪೋಷಣಾ ಆರೈಕೆ',
+  'Quick diabetes Q&A': 'ತ್ವರಿತ ಮಧುಮೇಹ ಪ್ರಶ್ನೋತ್ತರ',
+  'Ask all': 'ಎಲ್ಲ ಕೇಳಿ',
+  'HbA1c basics': 'HbA1c ಮೂಲಭೂತ',
+  'Three-month glucose average and targets.': 'ಮೂರು ತಿಂಗಳ ಗ್ಲೂಕೋಸ್ ಸರಾಸರಿ ಮತ್ತು ಗುರಿಗಳು.',
+  'Foot care': 'ಪಾದ ಆರೈಕೆ',
+  'Daily checks, footwear, warning signs.': 'ದೈನಂದಿನ ಪರಿಶೀಲನೆ, ಪಾದರಕ್ಷೆ, ಎಚ್ಚರಿಕೆ ಚಿಹ್ನೆಗಳು.',
+  'Low sugar': 'ಕಡಿಮೆ ಸಕ್ಕರೆ',
+  '15-15 rule and emergency action.': '15-15 ನಿಯಮ ಮತ್ತು ತುರ್ತು ಕ್ರಮ.',
+  'Medicine safety': 'ಔಷಧಿ ಸುರಕ್ಷತೆ',
+  'Timing, missed doses, side effects.': 'ಸಮಯ, ಮಿಸ್ ಆದ dose, side effects.',
+  'Diabetes food database': 'ಮಧುಮೇಹ ಆಹಾರ ಡೇಟಾಬೇಸ್',
+  'See all 60+': 'ಎಲ್ಲ 60+ ನೋಡಿ',
+  'All': 'ಎಲ್ಲ',
+  'Low GI': 'ಕಡಿಮೆ GI',
+  'High fibre': 'ಹೆಚ್ಚು fibre',
+  'Protein': 'ಪ್ರೋಟೀನ್',
+  'Grains': 'ಧಾನ್ಯಗಳು',
+  'Vegetables': 'ತರಕಾರಿಗಳು',
+  'Fruits': 'ಹಣ್ಣುಗಳು',
+  'Spices': 'ಮಸಾಲೆ',
+  'Daily total': 'ದಿನದ ಒಟ್ಟು',
+  'Meal GI': 'Meal GI',
+  'Carbs': 'ಕಾರ್ಬ್ಸ್',
+  'Fat': 'ಕೊಬ್ಬು',
+  'Fibre': 'ಫೈಬರ್',
+  'Glycaemic index': 'ಗ್ಲೈಸೆಮಿಕ್ ಸೂಚ್ಯಂಕ',
+  'How it helps diabetes': 'ಮಧುಮೇಹಕ್ಕೆ ಹೇಗೆ ಸಹಾಯ',
+  'HbA1c impact': 'HbA1c ಮೇಲೆ ಪರಿಣಾಮ',
+  'How to prepare': 'ತಯಾರಿಸುವ ವಿಧಾನ',
+  'Got it — back to foods': 'ಸರಿ — ಆಹಾರಗಳಿಗೆ ಹಿಂದಿರುಗಿ',
+  'Based on your glucose': 'ನಿಮ್ಮ ಗ್ಲೂಕೋಸ್ ಆಧಾರವಾಗಿ'
+};
+
+const KN_ANSWERS = {
+  mealPlan: '7 ದಿನಗಳ low-GI ಭಾರತೀಯ ಮಧುಮೇಹ ಆಹಾರ ಯೋಜನೆ:\n\nದಿನ 1\nಉಪಹಾರ: ರಾಗಿ ದೋಸೆ + ಸಾಂಬಾರ್. ಮಧ್ಯಾಹ್ನ: ಬಜ್ರಾ ರೊಟ್ಟಿ + ಮೂಂಗ್ ದಾಲ್ + ಲೌಕಿ. ಸಂಜೆ: roasted chana. ರಾತ್ರಿ: ತರಕಾರಿ ದಲಿಯಾ + ಮೊಸರು.\n\nದಿನ 2\nಉಪಹಾರ: ಓಟ್ಸ್ ತರಕಾರಿ ಉಪ್ಮಾ + ಮೊಸರು. ಮಧ್ಯಾಹ್ನ: ಸಣ್ಣ brown rice + rajma/chana + salad. ಸಂಜೆ: sprouts chaat. ರಾತ್ರಿ: paneer/tofu stir-fry + 1 phulka.\n\nದಿನ 3\nಉಪಹಾರ: besan chilla + mint chutney. ಮಧ್ಯಾಹ್ನ: jowar roti + chana dal + bhindi. ಸಂಜೆ: buttermilk + peanuts. ರಾತ್ರಿ: moong khichdi + karela.\n\nದಿನ 4\nಉಪಹಾರ: idli + sambar, sweet chutney ಬೇಡ. ಮಧ್ಯಾಹ್ನ: millet pulao + dahi. ಸಂಜೆ: guava/apple + nuts. ರಾತ್ರಿ: dal soup + vegetable sabzi.\n\nದಿನ 5\nಉಪಹಾರ: pesarattu + sambar. ಮಧ್ಯಾಹ್ನ: fish/egg/paneer curry + salad + millet roti. ಸಂಜೆ: makhana. ರಾತ್ರಿ: lauki soup + dal.\n\nದಿನ 6\nಉಪಹಾರ: unsweetened ragi porridge. ಮಧ್ಯಾಹ್ನ: chole + salad + 1-2 phulka. ಸಂಜೆ: glucose controlled ಇದ್ದರೆ coconut water. ರಾತ್ರಿ: mixed veg + curd + small khichdi.\n\nದಿನ 7\nಉಪಹಾರ: sprouts dosa. ಮಧ್ಯಾಹ್ನ: dal + saag + millet roti. ಸಂಜೆ: cucumber/carrot + curd dip. ರಾತ್ರಿ: clear soup + protein.\n\nನಿಯಮಗಳು:\n- ಅರ್ಧ ತಟ್ಟೆ ತರಕಾರಿ, ಒಂದು ಕಾಲು protein/dal, ಒಂದು ಕಾಲು grains.\n- ಸುರಕ್ಷಿತವಾಗಿದ್ದರೆ lunch/dinner ನಂತರ 10-15 ನಿಮಿಷ ನಡೆಯಿರಿ.\n- fruit juice, sweets, maida ಮತ್ತು ದೊಡ್ಡ rice portions ತಪ್ಪಿಸಿ.\n- glucose ಪದೇಪದೇ 200 mg/dL ಮೇಲಾಗಿದ್ದರೆ ವೈದ್ಯರನ್ನು ಸಂಪರ್ಕಿಸಿ.',
+  breakfast: 'Low-GI ಭಾರತೀಯ ಉಪಹಾರ:\n\n1. ರಾಗಿ ದೋಸೆ + ಸಾಂಬಾರ್: fibre ಹೆಚ್ಚು, glucose ನಿಧಾನವಾಗಿ ಏರಲು ಸಹಾಯ.\n2. Besan chilla + curd: protein ಹೆಚ್ಚು, carb load ಕಡಿಮೆ.\n3. Pesarattu: moong dal protein fullness ಕೊಡುತ್ತದೆ.\n4. Oats vegetable upma: rolled oats ಮತ್ತು ಹೆಚ್ಚು ತರಕಾರಿ ಬಳಸಿ.\n5. Idli + sambar: fried breakfast ಗಿಂತ ಉತ್ತಮ; chutney ಸಣ್ಣ ಪ್ರಮಾಣ.\n\nತಪ್ಪಿಸಿ: sweet tea, fruit juice, white bread, biscuits, sugary cereals, protein ಇಲ್ಲದ ದೊಡ್ಡ poha/upma.',
+  lunch: 'ಮಧುಮೇಹಕ್ಕೆ ಸೂಕ್ತ ಮಧ್ಯಾಹ್ನದ ಊಟ:\n\n- Bajra/jowar roti + dal + non-starchy vegetables + curd.\n- Small brown rice + rajma/chana + salad.\n- Millet khichdi with moong dal and vegetables.\n- Fish/egg/paneer bowl with salad and one small roti.\n- Sambar + vegetables + controlled rice/millet.\n\nಆಹಾರ ಕ್ರಮ: ಮೊದಲು salad/vegetables, ನಂತರ protein/dal, ಕೊನೆಯಲ್ಲಿ roti/rice. ಊಟದ ನಂತರ 10-15 ನಿಮಿಷ ನಡೆದರೆ post-meal spike ಕಡಿಮೆ ಆಗಬಹುದು.',
+  snack: 'ಮಧುಮೇಹಕ್ಕೆ ಆರೋಗ್ಯಕರ snacks:\n\n- Roasted chana\n- Sprouts chaat\n- Unsweetened curd\n- Buttermilk\n- Makhana roasted with little oil\n- Guava/apple slices with nuts\n- Cucumber/carrot sticks\n- Boiled egg or paneer cubes\n\nತಪ್ಪಿಸಿ: maida snacks, sugar, sweet drinks, fruit juice, fried chips, bakery foods, dry fruits ದೊಡ್ಡ ಪ್ರಮಾಣ.',
+  avoid: 'ಮಧುಮೇಹದಲ್ಲಿ ಕಡಿಮೆ ಮಾಡಬೇಕಾದ/ತಪ್ಪಿಸಬೇಕಾದ ಆಹಾರ:\n\n- Sugary drinks, fruit juice, sweets, jaggery-heavy foods.\n- Maida items: naan, parotta, biscuits, cakes, noodles.\n- Dal/protein ಇಲ್ಲದ ದೊಡ್ಡ white-rice portions.\n- Fried snacks ಮತ್ತು packaged chips.\n- Sweetened tea/coffee ಮತ್ತು flavoured curd.\n\nಬದಲಾವಣೆ:\n- Controlled portion millets.\n- Dal, curd, sprouts, eggs/fish/paneer/tofu.\n- Lauki, bhindi, greens, salad, karela, methi.\n- Juice ಬದಲು whole fruit.',
+  foot: 'ಮಧುಮೇಹ ಪಾದ ಆರೈಕೆ IEC:\n\n- ಪ್ರತಿದಿನ ಎರಡೂ ಪಾದಗಳನ್ನು ಪರಿಶೀಲಿಸಿ, soles ಮತ್ತು toes ನಡುವೆ ನೋಡಿ.\n- ಬೆಚ್ಚಗಿನ ನೀರಿನಲ್ಲಿ ತೊಳೆಯಿರಿ ಮತ್ತು ಚೆನ್ನಾಗಿ ಒಣಗಿಸಿ.\n- dry skin ಗೆ moisturiser ಬಳಸಿ; toes ನಡುವೆ ಬೇಡ.\n- ಮನೆಯಲ್ಲಿ ಸಹ barefoot ನಡೆಯಬೇಡಿ.\n- soft, well-fitting footwear ಮತ್ತು cotton socks ಬಳಸಿ.\n- corns/calluses ಸ್ವತಃ ಕತ್ತರಿಸಬೇಡಿ.\n- cuts, blisters, swelling, redness, pus, black skin, numbness, burning pain ಅಥವಾ non-healing wound ಇದ್ದರೆ ತಕ್ಷಣ ವೈದ್ಯರನ್ನು ಸಂಪರ್ಕಿಸಿ.',
+  low: 'ಕಡಿಮೆ ಸಕ್ಕರೆ IEC:\n\nಲಕ್ಷಣಗಳು: sweating, shaking, hunger, fast heartbeat, dizziness, confusion, headache, weakness, blurred vision.\n\n15-15 ನಿಯಮ:\n- glucose 70 mg/dL ಕ್ಕಿಂತ ಕಡಿಮೆ ಇದ್ದರೆ 15g fast carbohydrate ತೆಗೆದುಕೊಳ್ಳಿ: glucose tablets, 1/2 cup fruit juice, ಅಥವಾ 3 tsp sugar in water.\n- 15 ನಿಮಿಷದ ನಂತರ recheck.\n- ಇನ್ನೂ ಕಡಿಮೆ ಇದ್ದರೆ repeat.\n- ಸುಧಾರಿಸಿದ ನಂತರ ಮುಂದಿನ ಊಟ ದೂರ ಇದ್ದರೆ small snack/meal.\n\nತುರ್ತು: unconscious, seizure, severe confusion ಅಥವಾ swallow ಮಾಡಲಾಗದಿದ್ದರೆ ಬಾಯಿಯಿಂದ ಆಹಾರ ಕೊಡಬೇಡಿ. ತುರ್ತು ಚಿಕಿತ್ಸೆ ಪಡೆಯಿರಿ.',
+  hba1c: 'HbA1c IEC:\n\nHbA1c ಸುಮಾರು 3 ತಿಂಗಳ ಸರಾಸರಿ glucose ಅನ್ನು ತೋರಿಸುತ್ತದೆ. ಇದು one-day reading ಅಲ್ಲ, long-term control ತಿಳಿಸುತ್ತದೆ.\n\nಬಹುತೇಕ adults ಗೆ target around 7% ಇರಬಹುದು, ಆದರೆ doctor age, pregnancy, kidney disease, hypoglycaemia risk ಮತ್ತು other illnesses ಆಧಾರವಾಗಿ personalise ಮಾಡುತ್ತಾರೆ.\n\nಸುಧಾರಿಸಲು:\n- medicines prescribed time ಗೆ ತೆಗೆದುಕೊಳ್ಳಿ.\n- fasting ಮತ್ತು post-meal glucose track ಮಾಡಿ.\n- plate method ಮತ್ತು low-GI foods ಬಳಸಿ.\n- safe ಇದ್ದರೆ meals ನಂತರ 10-15 min walk.\n- 7-8 hours sleep, tobacco ತಪ್ಪಿಸಿ.\n- doctor visit ಗೆ logs ತೆಗೆದುಕೊಂಡು ಹೋಗಿ.',
+  medicine: 'ಔಷಧಿ ಸುರಕ್ಷತೆ IEC:\n\n- ವೈದ್ಯರು ಹೇಳಿದ ಸಮಯಕ್ಕೆ ಔಷಧಿ ತೆಗೆದುಕೊಳ್ಳಿ.\n- missed dose ಗೆ double dose ಮಾಡಬೇಡಿ, doctor ಹೇಳಿದ್ದರೆ ಮಾತ್ರ.\n- insulin ಗೆ dose, site, timing, expiry confirm ಮಾಡಿ.\n- insulin ಅಥವಾ sulfonylurea medicines ಇದ್ದರೆ fast sugar carry ಮಾಡಿ.\n- repeated low sugar, vomiting, rash, severe stomach upset, swelling, breathing difficulty report ಮಾಡಿ.\n- medicine list hospital visit ಗೆ ತೆಗೆದುಕೊಂಡು ಹೋಗಿ.',
+  default: 'ನಿಮ್ಮ glucose ' + ' mg/dL ಮತ್ತು HbA1c ಆಧಾರವಾಗಿ low-GI ಆಹಾರಗಳನ್ನು ಆರಿಸಿ: methi, karela, lauki, moong dal, curd, controlled ragi, high-fibre vegetables. Rice ಸಣ್ಣ cup ಮಾತ್ರ, ಅದನ್ನು dal/protein, curd ಮತ್ತು salad ಜೊತೆಗೆ ತಿನ್ನಿ.'
+};
+
+function kn(text) {
+  return APP_LANG === 'kn' ? (KN_UI[text.trim()] || text) : text;
+}
+
+function translateNutritionDom() {
+  if (APP_LANG !== 'kn') return;
+  document.querySelectorAll('.topbar-title,.sec-lbl,.sec-header-title,.sec-see-all,.ai-badge,.ai-title,.ai-sub,.ai-go,.ai-response-title,.qa-title,.qa-sub,.chip').forEach(el => {
+    const original = el.getAttribute('data-en') || el.textContent.trim();
+    el.setAttribute('data-en', original);
+    el.textContent = kn(original);
+  });
+  const input = document.getElementById('aiInput');
+  if (input) input.placeholder = 'ಉದಾ: ದಕ್ಷಿಣ ಭಾರತೀಯ, vegetarian, high sugar';
+  document.querySelectorAll('.ai-qbtn').forEach((btn, idx) => {
+    const labels = ['7 ದಿನ ಯೋಜನೆ','ತಪ್ಪಿಸಬೇಕಾದ ಆಹಾರ','ವ್ಯಾಯಾಮಕ್ಕೂ ಮೊದಲು','Low GI ಉಪಹಾರ','Lunch ideas','Healthy snacks','ಪಾದ ಆರೈಕೆ','ಕಡಿಮೆ ಸಕ್ಕರೆ'];
+    if (labels[idx]) btn.textContent = labels[idx];
+  });
+}
+
+function setAppLanguage(lang) {
+  APP_LANG = lang === 'kn' ? 'kn' : 'en';
+  translateNutritionDom();
+  try {
+    updateBanner();
+    renderFoods(document.querySelector('#foodChips .chip.on')?.getAttribute('data-tag') || 'all');
+    renderMeals(curDay);
+  } catch (_) {}
+}
+
+/* ═══════════════════════════
+   FOOD DATABASE
+═══════════════════════════ */
+const FOODS = [
+  {
+    id:'methi', name:'Methi seeds', kannada:'ಮೇಥಿ', emoji:'🌿',
+    tags:['all','low-gi','high-fibre','spice'],
+    gi:25, giClass:'low', cal:323, protein:'23g', carb:'58g', fat:'6g', fibre:'45g',
+    rec:true,
+    benefit:'Galactomannan fibre slows carb absorption, reducing post-meal glucose by 25–30%. Improves insulin sensitivity significantly.',
+    forGlucose:'Excellent for elevated post-meal readings. Use daily if glucose >140 mg/dL post-meal.',
+    prep:[
+      'Soak 1 tsp overnight in a glass of water',
+      'Drink the soaked water on empty stomach each morning',
+      'Alternatively grind into powder and mix with atta for rotis (up to 20% substitution)',
+      'Add whole seeds to dal tadka or sabzi for daily benefit'
+    ],
+    hba1c:'Reduces HbA1c by 0.5–1% in 8 weeks of consistent use (clinical evidence).'
+  },
+  {
+    id:'bajra', name:'Bajra roti', kannada:'ಸಜ್ಜೆ', emoji:'🌾',
+    tags:['all','low-gi','high-fibre','grain'],
+    gi:38, giClass:'low', cal:361, protein:'12g', carb:'67g', fat:'5g', fibre:'1.3g',
+    rec:true,
+    benefit:'Magnesium-rich, lowers BP. GI 38 vs wheat at 72. Reduces triglycerides in T2DM patients.',
+    forGlucose:'Replace wheat roti with bajra — reduces post-meal spike by ~30%.',
+    prep:[
+      'Mix bajra flour with warm water and knead into dough',
+      'Make thick rotis (thicker = lower GI)',
+      'Cook on tawa without oil or minimal ghee',
+      'Serve with dal or sabzi — combine with protein to lower GI further'
+    ],
+    hba1c:'Sustained low-GI grain intake reduces HbA1c by 0.4% over 12 weeks.'
+  },
+  {
+    id:'amla', name:'Amla', kannada:'ನೆಲ್ಲಿಕಾಯಿ', emoji:'🫐',
+    tags:['all','low-gi','fruit'],
+    gi:15, giClass:'low', cal:44, protein:'0.9g', carb:'10g', fat:'0.6g', fibre:'4.3g',
+    rec:true,
+    benefit:'Chromium potentiates insulin action. Vitamin C 228mg reduces oxidative stress. Anti-glycation properties.',
+    forGlucose:'30ml amla juice daily on empty stomach. Significantly reduces fasting glucose.',
+    prep:[
+      'Eat 1–2 raw amla daily for best benefit',
+      '30ml fresh juice diluted in water each morning',
+      'Amla murabba (low sugar) as a preserve',
+      'Dry amla powder: 1 tsp in warm water each morning'
+    ],
+    hba1c:'Reduces HbA1c by ~0.3% with daily intake.'
+  },
+  {
+    id:'dahi', name:'Homemade dahi', kannada:'ಮೊಸರು', emoji:'🥛',
+    tags:['all','low-gi','protein'],
+    gi:35, giClass:'low', cal:61, protein:'3.5g', carb:'4.7g', fat:'3.3g', fibre:'0g',
+    rec:true,
+    benefit:'Live lactobacillus cultures improve gut microbiome, reduce insulin resistance. Protein slows gastric emptying.',
+    forGlucose:'1 bowl with every meal — lowers post-prandial glucose by slowing absorption.',
+    prep:[
+      'Set homemade dahi from full-fat milk (avoid commercial flavoured)',
+      '1 bowl at lunch daily',
+      'Add as raita with cucumber and jeera',
+      'Avoid sugary or flavoured commercial yoghurt'
+    ],
+    hba1c:'Probiotic supplementation shows 0.5% HbA1c reduction in meta-analyses.'
+  },
+  {
+    id:'lauki', name:'Lauki (bottle gourd)', kannada:'ಸೋರೆಕಾಯಿ', emoji:'🥒',
+    tags:['all','low-gi','high-fibre','veg'],
+    gi:15, giClass:'low', cal:15, protein:'0.6g', carb:'3.4g', fat:'0.1g', fibre:'0.5g',
+    rec:false,
+    benefit:'Very low GI (15). High water content 96%. Diuretic. No glycaemic impact. High potassium for BP control.',
+    forGlucose:'Ideal vegetable for high glucose days — fills stomach without raising blood sugar.',
+    prep:[
+      'Sabzi with minimal oil — stir fry with jeera and mustard seeds',
+      '200ml fresh juice (NEVER if bitter taste — bitter lauki contains toxic cucurbitacin)',
+      'Add to dal for volume without calories',
+      'Lauki raita as a cooling side dish'
+    ],
+    hba1c:'Indirect benefit through caloric restriction and volume eating.'
+  },
+  {
+    id:'ragi', name:'Ragi (finger millet)', kannada:'ರಾಗಿ', emoji:'🟤',
+    tags:['all','low-gi','high-fibre','grain'],
+    gi:45, giClass:'low', cal:328, protein:'7.3g', carb:'72g', fat:'1.3g', fibre:'3.6g',
+    rec:true,
+    benefit:'Polyphenols inhibit alpha-amylase and glucosidase — same mechanism as acarbose. Lowers post-meal glucose.',
+    forGlucose:'Ragi porridge for breakfast is the single best morning choice for diabetics.',
+    prep:[
+      'Ragi porridge: mix 2 tbsp ragi flour in cold water, boil stirring continuously',
+      'Add cardamom, jaggery (pinch), low-fat milk',
+      'Ragi roti: mix with wheat flour 50:50 for pliability',
+      'Ragi ambli (traditional Karnataka drink): watery porridge, cooling'
+    ],
+    hba1c:'Ragi-based diet reduces HbA1c by 0.6% in 12 weeks (Indian RCT evidence).'
+  },
+  {
+    id:'turmeric', name:'Haldi (turmeric)', kannada:'ಅರಿಶಿನ', emoji:'🟡',
+    tags:['all','spice'],
+    gi:0, giClass:'low', cal:312, protein:'10g', carb:'68g', fat:'3g', fibre:'22g',
+    rec:true,
+    benefit:'Curcumin reduces chronic inflammation (CRP, IL-6). Anti-glycation. Improves insulin receptor sensitivity.',
+    forGlucose:'Add to all cooked foods. Golden milk at bedtime reduces fasting glucose.',
+    prep:[
+      'Golden milk: ¼ tsp haldi + warm milk + pinch black pepper (20x absorption)',
+      'Add to all dals, sabzis, rice dishes',
+      'Turmeric water: ½ tsp in warm water on empty stomach',
+      'Always combine with black pepper (piperine) for maximum curcumin absorption'
+    ],
+    hba1c:'Curcumin supplementation shows ~0.5% HbA1c reduction in multiple RCTs.'
+  },
+  {
+    id:'jamun', name:'Jamun (black plum)', kannada:'ನೇರಳೆ', emoji:'🍇',
+    tags:['all','low-gi','fruit'],
+    gi:25, giClass:'low', cal:62, protein:'0.7g', carb:'14g', fat:'0.2g', fibre:'0.6g',
+    rec:true,
+    benefit:'Jamboline inhibits conversion of starch to sugar. Seeds powder is a classical Ayurvedic anti-diabetic.',
+    forGlucose:'Seasonal fruit — eat 10–15 jamun when available. Seed powder 1 tsp daily in water.',
+    prep:[
+      'Eat 10–15 fresh jamun on empty stomach',
+      'Dry seeds, grind to powder',
+      '1 tsp seed powder in water twice daily',
+      'Do not eat on empty stomach if glucose is already low'
+    ],
+    hba1c:'Traditional evidence strong; modern studies show fasting glucose reduction ~18mg/dL.'
+  },
+  {
+    id:'karela', name:'Karela (bitter gourd)', kannada:'ಹಾಗಲಕಾಯಿ', emoji:'🟢',
+    tags:['all','low-gi','veg'],
+    gi:14, giClass:'low', cal:17, protein:'1g', carb:'3.7g', fat:'0.2g', fibre:'2.8g',
+    rec:true,
+    benefit:'Contains polypeptide-p (plant insulin), charantin, and vicine. Activates AMPK like metformin.',
+    forGlucose:'100ml karela juice 30 min before meals significantly reduces post-meal glucose.',
+    prep:[
+      '100ml fresh juice (blend, strain, drink before meals)',
+      'Karela sabzi: slice thin, salt, squeeze, stir-fry with jeera and tomato',
+      'Stuffed karela: fill with besan and spices, pan fry with minimal oil',
+      'Do not exceed 200ml juice/day — excessive amounts can cause hypoglycaemia'
+    ],
+    hba1c:'Multiple RCTs show 0.5–0.8% reduction with consistent bitter gourd intake.'
+  },
+  {
+    id:'flax', name:'Flaxseeds', kannada:'ಅಗಸೆ ಬೀಜ', emoji:'🌰',
+    tags:['all','low-gi','high-fibre','protein'],
+    gi:35, giClass:'low', cal:534, protein:'18g', carb:'29g', fat:'42g', fibre:'27g',
+    rec:false,
+    benefit:'Highest lignan source. ALA omega-3 57g/100g. Soluble fibre reduces post-meal glucose. Anti-inflammatory.',
+    forGlucose:'1 tbsp ground flaxseed in morning — reduces post-meal glucose curve.',
+    prep:[
+      'Always grind before use (whole seeds pass undigested)',
+      '1 tbsp ground + yoghurt or smoothie daily',
+      'Mix into roti dough (up to 10%)',
+      'Store ground flax in refrigerator — oxidises quickly'
+    ],
+    hba1c:'Ground flaxseed 10g/day: −0.4% HbA1c over 12 weeks.'
+  },
+  {
+    id:'moong', name:'Moong dal', kannada:'ಹೆಸರು ಬೇಳೆ', emoji:'🫘',
+    tags:['all','low-gi','high-fibre','protein'],
+    gi:25, giClass:'low', cal:347, protein:'24g', carb:'59g', fat:'1.2g', fibre:'16g',
+    rec:true,
+    benefit:'High protein (24g) + soluble fibre (16g). Lowest GI among all dals (25). Rich in folate and iron.',
+    forGlucose:'Best dal choice for diabetics. Protein + fibre combination blunts glucose spikes.',
+    prep:[
+      'Moong dal khichdi with rice 1:1 ratio — comfort food, balanced macros',
+      'Moong dal chilla (pancake) — protein-rich breakfast',
+      'Sprouted moong as snack or in salads (GI even lower when sprouted)',
+      'Dal with tadka of jeera, mustard, curry leaves, hing'
+    ],
+    hba1c:'Legume-rich diet reduces HbA1c by 0.5% vs low-legume diet.'
+  },
+];
+
+/* ═══════════════════════════
+   WEEKLY MEAL PLAN DATA
+═══════════════════════════ */
+const WEEK = {
+  Mon:[
+    {t:'7:00 AM',lbl:'Breakfast',n:'Ragi porridge + amla juice',i:'2 tbsp ragi · low-fat milk · cardamom · 30ml amla juice',c:{C:'45g',P:'8g',F:'4g'},kcal:260,gi:40,giMax:80},
+    {t:'10:00 AM',lbl:'Mid-morning',n:'Soaked methi water + dahi',i:'1 tsp soaked methi seeds · water + 1 bowl dahi',c:{C:'10g',P:'5g',F:'2g'},kcal:85,gi:20,giMax:80},
+    {t:'1:00 PM',lbl:'Lunch',n:'Bajra roti + moong dal + lauki',i:'2 bajra roti · moong dal · lauki sabzi · salad · 1 bowl dahi',c:{C:'62g',P:'18g',F:'7g'},kcal:410,gi:38,giMax:80},
+    {t:'4:00 PM',lbl:'Snack',n:'Sprouted moong chaat',i:'½ cup sprouts · lemon · jeera · pomegranate · coriander',c:{C:'18g',P:'9g',F:'1g'},kcal:115,gi:25,giMax:80},
+    {t:'7:30 PM',lbl:'Dinner',n:'Moong dal khichdi + karela sabzi',i:'Moong + rice khichdi · karela sabzi · haldi · ghee 1 tsp',c:{C:'55g',P:'14g',F:'6g'},kcal:345,gi:42,giMax:80},
+  ],
+  Tue:[
+    {t:'7:00 AM',lbl:'Breakfast',n:'Moong dal chilla',i:'Moong dal batter · onion · ginger · green chilli · coriander',c:{C:'38g',P:'14g',F:'4g'},kcal:280,gi:28,giMax:80},
+    {t:'10:00 AM',lbl:'Mid-morning',n:'Jamun (seasonal) / guava',i:'10–12 jamun OR 1 medium guava',c:{C:'14g',P:'1g',F:'0g'},kcal:60,gi:25,giMax:80},
+    {t:'1:00 PM',lbl:'Lunch',n:'Brown rice + rajma + salad',i:'¾ cup brown rice · rajma curry · cucumber-tomato salad · dahi',c:{C:'68g',P:'19g',F:'6g'},kcal:430,gi:52,giMax:80},
+    {t:'4:00 PM',lbl:'Snack',n:'Roasted makhana',i:'1 cup fox nuts · turmeric · black pepper · rock salt',c:{C:'18g',P:'4g',F:'1g'},kcal:95,gi:14,giMax:80},
+    {t:'7:30 PM',lbl:'Dinner',n:'Ragi roti + palak sabzi',i:'2 ragi roti · palak (low oil) · raita',c:{C:'48g',P:'15g',F:'8g'},kcal:365,gi:40,giMax:80},
+  ],
+  Wed:[
+    {t:'7:00 AM',lbl:'Breakfast',n:'Oats upma + amla',i:'Rolled oats · vegetables · mustard seeds · curry leaves · amla 1',c:{C:'44g',P:'8g',F:'5g'},kcal:265,gi:42,giMax:80},
+    {t:'10:00 AM',lbl:'Mid-morning',n:'Chia lemon water',i:'1 tbsp chia soaked · lemon · 1 tsp honey',c:{C:'12g',P:'2g',F:'4g'},kcal:90,gi:10,giMax:80},
+    {t:'1:00 PM',lbl:'Lunch',n:'Jowar roti + chana dal + bhindi',i:'2 jowar roti · chana dal · bhindi sabzi · dahi',c:{C:'60g',P:'17g',F:'7g'},kcal:400,gi:38,giMax:80},
+    {t:'4:00 PM',lbl:'Snack',n:'Karela juice',i:'100ml fresh bitter gourd juice · pinch of salt',c:{C:'4g',P:'0.5g',F:'0g'},kcal:20,gi:14,giMax:80},
+    {t:'7:30 PM',lbl:'Dinner',n:'Daliya + vegetables',i:'Broken wheat · mixed veg · ghee · jeera · turmeric',c:{C:'50g',P:'12g',F:'6g'},kcal:315,gi:41,giMax:80},
+  ],
+  Thu:[
+    {t:'7:00 AM',lbl:'Breakfast',n:'Idli + sambar (oats idli)',i:'3 oats idli · vegetable sambar · coconut chutney',c:{C:'46g',P:'10g',F:'4g'},kcal:260,gi:45,giMax:80},
+    {t:'10:00 AM',lbl:'Mid-morning',n:'Tender coconut water',i:'250ml tender coconut · no sugar',c:{C:'12g',P:'1g',F:'0g'},kcal:55,gi:3,giMax:80},
+    {t:'1:00 PM',lbl:'Lunch',n:'Quinoa pulao + dahi',i:'Quinoa · vegetables · low-sodium spices · 1 bowl dahi',c:{C:'58g',P:'15g',F:'7g'},kcal:385,gi:53,giMax:80},
+    {t:'4:00 PM',lbl:'Snack',n:'Mixed seeds',i:'Flax + sunflower + pumpkin seeds · small jaggery piece',c:{C:'15g',P:'6g',F:'10g'},kcal:170,gi:35,giMax:80},
+    {t:'7:30 PM',lbl:'Dinner',n:'Soup + multigrain roti',i:'Tomato-spinach soup · 2 multigrain roti · sabzi',c:{C:'46g',P:'13g',F:'6g'},kcal:325,gi:44,giMax:80},
+  ],
+  Fri:[
+    {t:'7:00 AM',lbl:'Breakfast',n:'Oats dosa + sambar',i:'Oats-rice dosa · vegetable sambar · mint chutney',c:{C:'42g',P:'9g',F:'4g'},kcal:255,gi:45,giMax:80},
+    {t:'10:00 AM',lbl:'Mid-morning',n:'Golden milk (haldi doodh)',i:'Warm milk · ¼ tsp turmeric · pinch black pepper · honey',c:{C:'13g',P:'4g',F:'4g'},kcal:100,gi:20,giMax:80},
+    {t:'1:00 PM',lbl:'Lunch',n:'Chole + bajra roti + salad',i:'Chickpea curry · 2 bajra roti · onion-tomato salad · dahi',c:{C:'66g',P:'19g',F:'9g'},kcal:440,gi:40,giMax:80},
+    {t:'4:00 PM',lbl:'Snack',n:'Boiled corn chaat',i:'1 cup sweet corn · lemon · chaat masala · coriander',c:{C:'24g',P:'4g',F:'1g'},kcal:118,gi:48,giMax:80},
+    {t:'7:30 PM',lbl:'Dinner',n:'Moong dal soup + 1 roti',i:'Moong dal shorba · 1 wheat roti · stir-fried vegetables',c:{C:'43g',P:'14g',F:'5g'},kcal:290,gi:35,giMax:80},
+  ],
+  Sat:[
+    {t:'7:00 AM',lbl:'Breakfast',n:'Ragi porridge',i:'Ragi · banana · cardamom · low-fat milk',c:{C:'50g',P:'8g',F:'4g'},kcal:270,gi:45,giMax:80},
+    {t:'10:00 AM',lbl:'Mid-morning',n:'Jamun / berries',i:'10–12 jamun OR 1 cup mixed berries (seasonal)',c:{C:'14g',P:'1g',F:'0g'},kcal:58,gi:25,giMax:80},
+    {t:'1:00 PM',lbl:'Lunch',n:'Sambar rice + dahi + papad',i:'Brown rice · mixed veg sambar · 1 bowl dahi · 1 papad',c:{C:'64g',P:'16g',F:'7g'},kcal:420,gi:50,giMax:80},
+    {t:'4:00 PM',lbl:'Snack',n:'Steamed dhokla',i:'2 pieces besan dhokla · green chutney',c:{C:'20g',P:'7g',F:'3g'},kcal:128,gi:38,giMax:80},
+    {t:'7:30 PM',lbl:'Dinner',n:'Lauki soup + khichdi',i:'Bottle gourd soup · moong-rice khichdi · ghee 1 tsp',c:{C:'48g',P:'13g',F:'7g'},kcal:335,gi:42,giMax:80},
+  ],
+  Sun:[
+    {t:'7:00 AM',lbl:'Breakfast',n:'Sprouts dosa',i:'Mixed sprouts dosa · coconut-coriander chutney',c:{C:'40g',P:'13g',F:'4g'},kcal:250,gi:28,giMax:80},
+    {t:'10:00 AM',lbl:'Mid-morning',n:'Amla + tulsi detox water',i:'30ml amla juice · tulsi leaves · warm water',c:{C:'6g',P:'0g',F:'0g'},kcal:25,gi:10,giMax:80},
+    {t:'1:00 PM',lbl:'Lunch',n:'Dal + roti + saag',i:'Punjabi dal (light) · 2 wheat roti · sarson saag',c:{C:'63g',P:'18g',F:'10g'},kcal:425,gi:45,giMax:80},
+    {t:'4:00 PM',lbl:'Snack',n:'Peanut chikki (small)',i:'1 small piece (25g) peanut-jaggery chikki',c:{C:'17g',P:'5g',F:'7g'},kcal:148,gi:40,giMax:80},
+    {t:'7:30 PM',lbl:'Dinner',n:'Veg soup + idli',i:'Mixed vegetable clear soup · 2 idli · sambar',c:{C:'46g',P:'11g',F:'4g'},kcal:290,gi:42,giMax:80},
+  ]
+};
+
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+let curDay = 'Mon';
+let activeModalId = null;
+
+/* ─── GLUCOSE BANNER ─── */
+let GLUC = 118, HBA1C = 6.8;
+function setPatientData(glucose, hba1c) {
+  const nextGlucose = Number(glucose);
+  const nextHba1c = Number(hba1c);
+  if (!Number.isNaN(nextGlucose) && nextGlucose > 0) GLUC = Math.round(nextGlucose);
+  if (!Number.isNaN(nextHba1c) && nextHba1c > 0) HBA1C = nextHba1c;
+  document.getElementById('glucDisplay').textContent = GLUC;
+  document.getElementById('hba1cChip').textContent = 'HbA1c ' + HBA1C.toFixed(1) + '%';
+  updateBanner();
+}
+function updateBanner() {
+  const b = document.getElementById('recBanner');
+  let bg, bc, titleColor, textColor, icon, title, text;
+  if (GLUC < 70) {
+    bg='#FDEAEA'; bc='#F7C1C1'; titleColor='#A32D2D'; textColor='#791F1F';
+    icon='⚠️'; title=APP_LANG === 'kn' ? 'ಕಡಿಮೆ ಗ್ಲೂಕೋಸ್ — ತಕ್ಷಣ fast carbs ತೆಗೆದುಕೊಳ್ಳಿ' : 'Low glucose — eat fast-acting carbs now';
+    text=APP_LANG === 'kn' ? 'ನಿಮ್ಮ glucose 70 mg/dL ಕ್ಕಿಂತ ಕಡಿಮೆ. ತಕ್ಷಣ 15g fast carbs ತೆಗೆದುಕೊಳ್ಳಿ (glucose tablets ಅಥವಾ 1/2 cup fruit juice). 15 ನಿಮಿಷದ ನಂತರ recheck ಮಾಡಿ.' : 'Your glucose is below 70 mg/dL. Eat 15g fast carbs immediately (3 glucose tablets, ½ cup fruit juice). Then have a balanced meal within 30 minutes.';
+  } else if (GLUC <= 140) {
+    bg='#E0F5EF'; bc='#5DCAA5'; titleColor='#085041'; textColor='#0F6E56';
+    icon='✅'; title=APP_LANG === 'kn' ? 'ಗ್ಲೂಕೋಸ್ ನಿಯಂತ್ರಣ ಚೆನ್ನಾಗಿದೆ — ಇದೇ ಆಹಾರ ಕ್ರಮ ಮುಂದುವರಿಸಿ' : 'Good glucose control — keep these foods in your diet';
+    text=APP_LANG === 'kn' ? 'ನಿಮ್ಮ reading target range ಒಳಗೆ ಇದೆ. Low-GI ಭಾರತೀಯ ಆಹಾರ, high-fibre options ಮತ್ತು regular meal timing ಮುಂದುವರಿಸಿ. ಊಟ skip ಮಾಡಬೇಡಿ.' : 'Your reading is within target range. Focus on low-GI Indian foods, high-fibre options, and regular meal timing to maintain this. Avoid skipping meals.';
+  } else if (GLUC <= 200) {
+    bg='#FFF4DC'; bc='#FBBF24'; titleColor='#854F0B'; textColor='#633806';
+    icon='📊'; title=APP_LANG === 'kn' ? 'ಗ್ಲೂಕೋಸ್ ಸ್ವಲ್ಪ ಹೆಚ್ಚು — ಈಗ low-GI ಆಹಾರ ಆರಿಸಿ' : 'Elevated glucose — choose low-GI foods now';
+    text=APP_LANG === 'kn' ? 'ನಿಮ್ಮ post-meal reading 140 mg/dL ಮೇಲಿದೆ. ಮುಂದಿನ ಊಟಕ್ಕೆ karela, methi, lauki ಅಥವಾ controlled ragi ಆರಿಸಿ. ಈಗ 15 ನಿಮಿಷ ನಡೆದರೆ reading ಕಡಿಮೆಯಾಗಲು ಸಹಾಯ.' : 'Your post-meal reading is above 140 mg/dL. Choose karela, methi, lauki, or ragi for the next meal. A 15-minute walk now will reduce this reading.';
+  } else {
+    bg='#FDEAEA'; bc='#F7C1C1'; titleColor='#A32D2D'; textColor='#791F1F';
+    icon='🔴'; title=APP_LANG === 'kn' ? 'ಗ್ಲೂಕೋಸ್ ಹೆಚ್ಚು — ಈ meal ನಲ್ಲಿ grains ತಪ್ಪಿಸಿ' : 'High glucose — avoid all carbohydrates this meal';
+    text=APP_LANG === 'kn' ? 'ಗ್ಲೂಕೋಸ್ ಹೆಚ್ಚು ಇದೆ. ಈ meal ನಲ್ಲಿ rice/roti/grains skip ಮಾಡಿ; salad, vegetables ಮತ್ತು protein (dahi/dal) ಮಾತ್ರ. 200 mg/dL ಮೇಲಾಗಿಯೇ ಇದ್ದರೆ ವೈದ್ಯರನ್ನು ಸಂಪರ್ಕಿಸಿ.' : 'Glucose is significantly elevated. Skip grains this meal — eat only salad, vegetables, and protein (dahi, dal). Contact your doctor if readings stay above 200 mg/dL.';
+  }
+  b.innerHTML = `<div class="rec-banner" style="background:${bg};border-color:${bc}">
+    <div class="rec-title" style="color:${titleColor}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:15px;height:15px"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      ${icon} ${title}
+    </div>
+    <p class="rec-text" style="color:${textColor}">${text}</p>
+  </div>`;
+}
+
+/* ─── FOOD GRID ─── */
+function renderFoods(tag) {
+  const grid = document.getElementById('foodGrid');
+  const filtered = FOODS.filter(f => f.tags.includes(tag));
+  grid.innerHTML = filtered.map(f => {
+    const giColor = f.giClass==='low' ? '#0F6E56' : f.giClass==='med' ? '#854F0B' : '#A32D2D';
+    const giBg = f.giClass==='low' ? '#E0F5EF' : f.giClass==='med' ? '#FFF4DC' : '#FDEAEA';
+    const giLabel = f.gi === 0 ? 'No GI' : 'GI ' + f.gi;
+    const displayName = APP_LANG === 'kn' ? f.kannada : f.name;
+    const subName = APP_LANG === 'kn' ? f.name : f.kannada;
+    return `<div class="food-card${f.rec?' rec-glow':''}" data-rec-label="${APP_LANG === 'kn' ? '★ ಶಿಫಾರಸು' : '★ Recommended'}" onclick="openFood('${f.id}')">
+      <span class="food-emoji">${f.emoji}</span>
+      <div class="food-name">${displayName}</div>
+      <div class="food-cal">${f.cal} kcal / 100g</div>
+      <div class="food-badges">
+        <span class="fbadge" style="background:${giBg};color:${giColor}">${giLabel}</span>
+        ${f.rec ? `<span class="fbadge" style="background:var(--teal2);color:var(--teal)">${APP_LANG === 'kn' ? '✓ ಮಧುಮೇಹಕ್ಕೆ' : '✓ Diabetic'}</span>` : ''}
+      </div>
+      <div style="font-size:10px;color:var(--text3);text-align:center;margin-top:5px;font-style:italic">${subName}</div>
+    </div>`;
+  }).join('');
+}
+
+function filterFood(tag, el) {
+  document.querySelectorAll('#foodChips .chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  renderFoods(tag);
+}
+
+/* ─── FOOD DETAIL MODAL ─── */
+function openFood(id) {
+  const f = FOODS.find(x => x.id === id);
+  if (!f) return;
+  activeModalId = id;
+  const nutrItems = [
+    {n:APP_LANG === 'kn' ? 'ಪ್ರೋಟೀನ್' : 'Protein', v:parseFloat(f.protein), max:30, c:'#0D9B7A'},
+    {n:APP_LANG === 'kn' ? 'ಕಾರ್ಬ್ಸ್' : 'Carbs',   v:parseFloat(f.carb),    max:100, c:'#3B9EFF'},
+    {n:APP_LANG === 'kn' ? 'ಕೊಬ್ಬು' : 'Fat',     v:parseFloat(f.fat),      max:40,  c:'#F0A500'},
+    {n:APP_LANG === 'kn' ? 'ಫೈಬರ್' : 'Fibre',   v:parseFloat(f.fibre),    max:50,  c:'#7C6FF7'},
+  ];
+  const bars = nutrItems.map(n =>
+    `<div class="nutr-bar-row">
+      <span class="nutr-bar-name">${n.n}</span>
+      <div class="nutr-bar-wrap"><div class="nutr-bar-fill" style="width:${Math.min(100,Math.round(n.v/n.max*100))}%;background:${n.c}"></div></div>
+      <span class="nutr-bar-num" style="color:${n.c}">${n.v}g</span>
+    </div>`
+  ).join('');
+
+  const steps = f.prep.map((s,i) =>
+    `<div class="prep-step"><div class="prep-num">${i+1}</div><div>${s}</div></div>`
+  ).join('');
+
+  const giColor = f.giClass==='low' ? '#0F6E56' : f.giClass==='med' ? '#854F0B' : '#A32D2D';
+  const giBg = f.giClass==='low' ? '#E0F5EF' : f.giClass==='med' ? '#FFF4DC' : '#FDEAEA';
+  const giText = f.gi === 0 ? 'Not applicable (spice)' : `GI ${f.gi} — ${f.giClass==='low'?'Low (best choice for diabetics)':f.giClass==='med'?'Medium (eat in moderation)':'High (limit intake)'}`;
+  const benefitText = APP_LANG === 'kn'
+    ? `${f.kannada} (${f.name}) fibre, protein ಅಥವಾ plant compounds ಮೂಲಕ ಊಟದ ನಂತರ glucose spike ಕಡಿಮೆ ಮಾಡಲು ಸಹಾಯ ಮಾಡಬಹುದು. ಪ್ರಮಾಣವನ್ನು ನಿಯಂತ್ರಿಸಿ ಮತ್ತು dal/curd/protein ಜೊತೆಗೆ ತಿನ್ನುವುದು ಉತ್ತಮ.`
+    : f.benefit;
+  const glucoseAdvice = APP_LANG === 'kn'
+    ? `ನಿಮ್ಮ glucose ${GLUC} mg/dL. ಈ ಆಹಾರವನ್ನು ಸಣ್ಣ portion ನಲ್ಲಿ ತೆಗೆದುಕೊಳ್ಳಿ; rice/roti ಜೊತೆ ಮಾತ್ರವಲ್ಲ, vegetables ಮತ್ತು protein ಜೊತೆ ಸೇರಿಸಿ. Reading 200 mg/dL ಮೇಲಾಗಿದ್ದರೆ grains ಕಡಿಮೆ ಮಾಡಿ ಮತ್ತು doctor plan ಅನುಸರಿಸಿ.`
+    : f.forGlucose;
+  const hba1cAdvice = APP_LANG === 'kn'
+    ? 'ಇದನ್ನು ನಿಯಮಿತ low-GI plate pattern ಭಾಗವಾಗಿ ಬಳಸಿದರೆ long-term HbA1c control ಗೆ ಸಹಾಯವಾಗಬಹುದು. ಔಷಧಿ ಸಮಯ ಮತ್ತು portion control ಮುಂದುವರಿಸಿ.'
+    : f.hba1c;
+  const prepBlock = APP_LANG === 'kn'
+    ? `<div class="prep-step"><div class="prep-num">1</div><div>ಆಹಾರವನ್ನು ಸ್ವಚ್ಛವಾಗಿ ತೊಳೆಯಿರಿ ಅಥವಾ ನೆನೆಸಿ.</div></div><div class="prep-step"><div class="prep-num">2</div><div>ಕಡಿಮೆ ಎಣ್ಣೆ, ಕಡಿಮೆ ಉಪ್ಪು ಮತ್ತು ಸಕ್ಕರೆ ಇಲ್ಲದೆ ತಯಾರಿಸಿ.</div></div><div class="prep-step"><div class="prep-num">3</div><div>ತರಕಾರಿ/protein ಜೊತೆ portion control ಮಾಡಿ ಸೇವಿಸಿ.</div></div>`
+    : steps;
+
+  document.getElementById('modalInner').innerHTML = `
+    <span class="modal-emoji">${f.emoji}</span>
+    <div class="modal-name">${APP_LANG === 'kn' ? f.kannada : f.name}</div>
+    <div class="modal-sub" style="font-style:italic;color:var(--text3)">${f.kannada} · ${f.cal} kcal / 100g</div>
+
+    <div class="nutr-grid">
+      <div class="nutr-cell"><div class="nutr-val" style="color:#3B9EFF">${f.carb}</div><div class="nutr-lbl">${kn('Carbs')}</div></div>
+      <div class="nutr-cell"><div class="nutr-val" style="color:#0D9B7A">${f.protein}</div><div class="nutr-lbl">${kn('Protein')}</div></div>
+      <div class="nutr-cell"><div class="nutr-val" style="color:#F0A500">${f.fat}</div><div class="nutr-lbl">${kn('Fat')}</div></div>
+      <div class="nutr-cell"><div class="nutr-val" style="color:#7C6FF7">${f.fibre}</div><div class="nutr-lbl">${kn('Fibre')}</div></div>
+    </div>
+    ${bars}
+
+    <div class="gi-explain" style="background:${giBg}">
+      <p style="font-size:12px;color:${giColor};font-weight:600;margin-bottom:3px">${kn('Glycaemic index')}</p>
+      <p style="font-size:11px;color:${giColor}">${giText}</p>
+    </div>
+
+    <div class="modal-section">${kn('How it helps diabetes')}</div>
+    <p class="modal-text">${benefitText}</p>
+
+    <div class="modal-section">${kn('Based on your glucose')} (${GLUC} mg/dL)</div>
+    <p class="modal-text">${glucoseAdvice}</p>
+
+    <div class="modal-section">${kn('HbA1c impact')}</div>
+    <p class="modal-text">${hba1cAdvice}</p>
+
+    <div class="modal-section">${kn('How to prepare')}</div>
+    ${prepBlock}
+
+    <button class="modal-btn" onclick="closeModalBtn()">${kn('Got it — back to foods')}</button>
+  `;
+  document.getElementById('modalBg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalBg')) closeModalBtn();
+}
+function closeModalBtn() {
+  document.getElementById('modalBg').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ─── MEAL PLAN ─── */
+function buildDayStrip() {
+  document.getElementById('dayStrip').innerHTML = DAYS.map(d =>
+    `<div class="day-btn${d===curDay?' on':''}" onclick="selDay('${d}',this)">${d}</div>`
+  ).join('');
+}
+
+function selDay(d, el) {
+  curDay = d;
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  renderMeals(d);
+}
+
+function translateMealLabel(label) {
+  const map = {Breakfast:'ಉಪಹಾರ', Lunch:'ಮಧ್ಯಾಹ್ನದ ಊಟ', Snack:'ಸಂಜೆ ತಿಂಡಿ', Dinner:'ರಾತ್ರಿ ಊಟ', 'Mid-morning':'ಮಧ್ಯಾಹ್ನಕ್ಕೂ ಮೊದಲು'};
+  return map[label] || label;
+}
+
+function translateMealName(text) {
+  const map = {
+    'Ragi porridge + amla juice':'ರಾಗಿ ಗಂಜಿ + ಆಮ್ಲಾ ಜ್ಯೂಸ್',
+    'Sprouts salad':'ಸ್ಪ್ರೌಟ್ಸ್ ಸಲಾಡ್',
+    'Bajra roti meal':'ಬಜ್ರಾ ರೊಟ್ಟಿ ಊಟ',
+    'Makhana + buttermilk':'ಮಖಾನಾ + ಮಜ್ಜಿಗೆ',
+    'Lauki dalia':'ಸೊರೆಕಾಯಿ ದಲಿಯಾ',
+    'Oats vegetable upma':'ಓಟ್ಸ್ ತರಕಾರಿ ಉಪ್ಮಾ',
+    'Guava + nuts':'ಸೀಬೆಹಣ್ಣು + nuts',
+    'Millet khichdi':'ಮಿಲ್ಲೆಟ್ ಖಿಚ್ಡಿ',
+    'Roasted chana':'ಹುರಿದ ಕಡಲೆ',
+    'Paneer bhurji':'ಪನೀರ್ ಭುರ್ಜಿ',
+    'Besan chilla':'ಬೇಸನ್ ಚಿಲ್ಲಾ',
+    'Buttermilk':'ಮಜ್ಜಿಗೆ',
+    'Brown rice rajma':'ಬ್ರೌನ್ ರೈಸ್ ರಾಜ್ಮಾ',
+    'Cucumber sticks':'ಸೌತೆಕಾಯಿ sticks',
+    'Moong soup':'ಮೂಂಗ್ ಸೂಪ್',
+    'Idli + sambar':'ಇಡ್ಲಿ + ಸಾಂಬಾರ್',
+    'Amla shot':'ಆಮ್ಲಾ ಶಾಟ್',
+    'Jowar roti thali':'ಜೋಳದ ರೊಟ್ಟಿ ತಾಳಿ',
+    'Peanut sundal':'ಕಡಲೆಕಾಯಿ ಸುಂಡಲ್',
+    'Karela stir-fry + dal':'ಹಾಗಲಕಾಯಿ stir-fry + ದಾಲ್',
+    'Pesarattu':'ಪೆಸರಟ್ಟು',
+    'Coconut water':'ತೆಂಗಿನಕಾಯಿ ನೀರು',
+    'Fish curry meal':'ಮೀನು curry ಊಟ',
+    'Dahi bowl':'ಮೊಸರು bowl',
+    'Vegetable dal soup':'ತರಕಾರಿ ದಾಲ್ ಸೂಪ್',
+    'Ragi dosa':'ರಾಗಿ ದೋಸೆ',
+    'Sprouts chaat':'ಸ್ಪ್ರೌಟ್ಸ್ ಚಾಟ್',
+    'Chicken / tofu bowl':'ಚಿಕನ್ / tofu bowl',
+    'Steamed dhokla':'ಸ್ಟೀಮ್ ಢೋಕ್ಲಾ',
+    'Lauki soup + khichdi':'ಸೊರೆಕಾಯಿ ಸೂಪ್ + ಖಿಚ್ಡಿ',
+    'Sprouts dosa':'ಸ್ಪ್ರೌಟ್ಸ್ ದೋಸೆ',
+    'Amla + tulsi detox water':'ಆಮ್ಲಾ + ತುಳಸಿ ನೀರು',
+    'Dal + roti + saag':'ದಾಲ್ + ರೊಟ್ಟಿ + ಸೊಪ್ಪು',
+    'Peanut chikki (small)':'ಕಡಲೆಕಾಯಿ ಚಿಕ್ಕಿ (ಸಣ್ಣ)',
+    'Veg soup + idli':'ತರಕಾರಿ ಸೂಪ್ + ಇಡ್ಲಿ'
+  };
+  return map[text] || text;
+}
+
+function translateMealItems(text) {
+  return text
+    .replaceAll('low-fat milk', 'ಕಡಿಮೆ ಕೊಬ್ಬಿನ ಹಾಲು')
+    .replaceAll('cardamom', 'ಏಲಕ್ಕಿ')
+    .replaceAll('Moong dal sprouts', 'ಮೂಂಗ್ ದಾಲ್ ಸ್ಪ್ರೌಟ್ಸ್')
+    .replaceAll('cucumber', 'ಸೌತೆಕಾಯಿ')
+    .replaceAll('tomato', 'ಟೊಮ್ಯಾಟೊ')
+    .replaceAll('onion', 'ಈರುಳ್ಳಿ')
+    .replaceAll('curd', 'ಮೊಸರು')
+    .replaceAll('salad', 'ಸಲಾಡ್')
+    .replaceAll('vegetables', 'ತರಕಾರಿಗಳು')
+    .replaceAll('sambar', 'ಸಾಂಬಾರ್')
+    .replaceAll('green chutney', 'ಹಸಿರು ಚಟ್ನಿ')
+    .replaceAll('buttermilk', 'ಮಜ್ಜಿಗೆ')
+    .replaceAll('roti', 'ರೊಟ್ಟಿ');
+}
+
+function renderMeals(d) {
+  const ms = WEEK[d];
+  const tot = ms.reduce((s,m) => s+m.kcal, 0);
+  const out = document.getElementById('mealsOut');
+  out.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <p style="font-size:12px;color:var(--text2)">${kn('Daily total')}</p>
+    <span style="font-size:12px;font-weight:600;background:var(--amber2);color:#854F0B;padding:3px 10px;border-radius:20px">${tot} kcal</span>
+  </div>` + ms.map(m => {
+    const macs = Object.entries(m.c).map(([k,v]) =>
+      `<span class="mb-macro" style="background:${k==='C'?'#EAF4FF':k==='P'?'#E0F5EF':'#FFF4DC'};color:${k==='C'?'#0C447C':k==='P'?'#0F6E56':'#854F0B'}">${k} ${v}</span>`
+    ).join('');
+    const giFillW = Math.round(m.gi / m.giMax * 100);
+    const giColor = m.gi < 40 ? '#0D9B7A' : m.gi < 60 ? '#F0A500' : '#E85D5D';
+    const mealName = APP_LANG === 'kn' ? translateMealName(m.n) : m.n;
+    const mealItems = APP_LANG === 'kn' ? translateMealItems(m.i) : m.i;
+    const mealLabel = APP_LANG === 'kn' ? translateMealLabel(m.lbl) : m.lbl;
+    return `<div class="meal-block">
+      <div class="mb-time">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        ${m.t} · ${mealLabel} · ${m.kcal} kcal
+      </div>
+      <div class="mb-name">${mealName}</div>
+      <div class="mb-items">${mealItems}</div>
+      <div class="mb-macros">${macs}</div>
+      <div class="mb-gi-row">
+        <span class="mb-gi-label">${kn('Meal GI')}</span>
+        <div class="mb-gi-bar"><div class="mb-gi-fill" style="width:${giFillW}%;background:${giColor}"></div></div>
+        <span class="mb-gi-val" style="color:${giColor}">${m.gi}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* --- BUILT-IN DIABETES Q&A --- */
+function predefinedAnswer(prompt) {
+  const q = prompt.toLowerCase();
+  if (APP_LANG === 'kn') {
+    if (q.includes('7-day') || q.includes('meal plan')) return KN_ANSWERS.mealPlan;
+    if (q.includes('breakfast')) return KN_ANSWERS.breakfast;
+    if (q.includes('lunch')) return KN_ANSWERS.lunch;
+    if (q.includes('snack')) return KN_ANSWERS.snack;
+    if (q.includes('avoid')) return KN_ANSWERS.avoid;
+    if (q.includes('foot')) return KN_ANSWERS.foot;
+    if (q.includes('low sugar') || q.includes('hypo') || q.includes('below 70')) return KN_ANSWERS.low;
+    if (q.includes('hba1c') || q.includes('a1c')) return KN_ANSWERS.hba1c;
+    if (q.includes('medicine') || q.includes('missed dose') || q.includes('safely')) return KN_ANSWERS.medicine;
+    if (q.includes('plate method') || q.includes('self-care') || q.includes('patient education')) {
+      return 'ಮಧುಮೇಹ ಸ್ವಯಂ-ಆರೈಕೆ IEC:\n\n- ಆಹಾರ: ಅರ್ಧ ತಟ್ಟೆ ತರಕಾರಿ, ಒಂದು ಕಾಲು protein/dal/egg/fish/paneer, ಒಂದು ಕಾಲು grains/millets. Sugary drinks ತಪ್ಪಿಸಿ.\n- ಚಟುವಟಿಕೆ: ಸುರಕ್ಷಿತವಾಗಿದ್ದರೆ ಊಟದ ನಂತರ 10-15 ನಿಮಿಷ ನಡೆ.\n- ಔಷಧಿ: ಸಮಯಕ್ಕೆ ತೆಗೆದುಕೊಳ್ಳಿ; ವೈದ್ಯರ ಸಲಹೆಯಿಲ್ಲದೆ ನಿಲ್ಲಿಸಬೇಡಿ.\n- Monitoring: date/time ಮತ್ತು symptoms ಜೊತೆಗೆ glucose log ಮಾಡಿ.\n- Foot care: daily inspection ಮತ್ತು barefoot ನಡೆಯಬೇಡಿ.\n- Sleep: 7-8 hours target; poor sleep insulin resistance ಹೆಚ್ಚಿಸಬಹುದು.\n- Visits: glucose logs, medicine list ಮತ್ತು questions ತೆಗೆದುಕೊಂಡು ಹೋಗಿ.';
+    }
+    return `ನಿಮ್ಮ glucose ${GLUC} mg/dL ಮತ್ತು HbA1c ${HBA1C.toFixed(1)}% ಆಧಾರವಾಗಿ low-GI ಆಹಾರಗಳನ್ನು ಆರಿಸಿ: methi, karela, lauki, moong dal, curd, controlled ragi ಮತ್ತು high-fibre vegetables. Rice ಸಣ್ಣ cup ಮಾತ್ರ, dal/protein, curd ಮತ್ತು salad ಜೊತೆ ತಿನ್ನಿ.`;
+  }
+  if (q.includes('7-day') || q.includes('meal plan')) {
+    return '7-day low-GI Indian diabetes meal plan:\n\nDay 1\nBreakfast: ragi dosa + sambar. Lunch: bajra roti + moong dal + lauki. Snack: roasted chana. Dinner: vegetable dalia + curd.\n\nDay 2\nBreakfast: oats vegetable upma + curd. Lunch: brown rice small cup + rajma + salad. Snack: sprouts chaat. Dinner: paneer/tofu stir-fry + 1 phulka.\n\nDay 3\nBreakfast: besan chilla + mint chutney. Lunch: jowar roti + chana dal + bhindi. Snack: buttermilk + peanuts. Dinner: moong khichdi + karela.\n\nDay 4\nBreakfast: idli + sambar, no sweet chutney. Lunch: quinoa/millet pulao + dahi. Snack: guava or apple slices with nuts. Dinner: dal soup + vegetable sabzi.\n\nDay 5\nBreakfast: pesarattu + sambar. Lunch: fish/egg/paneer curry + salad + 1 small millet roti. Snack: makhana. Dinner: lauki soup + dal.\n\nDay 6\nBreakfast: ragi porridge, unsweetened. Lunch: chole + salad + 1-2 phulka. Snack: coconut water if glucose is controlled. Dinner: mixed veg + curd + small khichdi.\n\nDay 7\nBreakfast: sprouts dosa. Lunch: dal + saag + millet roti. Snack: cucumber/carrot + hummus or curd dip. Dinner: clear soup + protein.\n\nRules:\n- Half plate vegetables, one quarter protein/dal, one quarter grains.\n- Walk 10-15 minutes after lunch and dinner if safe.\n- Avoid fruit juice, sweets, maida, and large rice portions.\n- If glucose is above 200 mg/dL repeatedly, contact your doctor.';
+  }
+  if (q.includes('breakfast')) {
+    return 'Low-GI Indian breakfast options:\n\n1. Ragi dosa + sambar: good fibre and slower glucose rise.\n2. Besan chilla + curd: higher protein, lower carb load.\n3. Pesarattu: moong dal protein supports satiety.\n4. Oats vegetable upma: use rolled oats and many vegetables.\n5. Idli + sambar: better than fried breakfast; keep chutney small.\n\nAvoid: sweet tea, fruit juice, white bread, biscuits, sugary cereals, and large poha/upma portions without protein.\n\nPlate tip: add dal/sambar/curd/egg/paneer so breakfast is not only carbohydrate.';
+  }
+  if (q.includes('lunch')) {
+    return 'Diabetes-friendly Indian lunch ideas:\n\n- Bajra/jowar roti + dal + non-starchy vegetables + curd.\n- Small brown rice portion + rajma/chana + salad.\n- Millet khichdi with moong dal and vegetables.\n- Fish/egg/paneer bowl with salad and one small roti.\n- Sambar + vegetables + controlled rice or millet.\n\nBest order: eat salad/vegetables first, then protein/dal, then roti/rice. A 10-15 minute walk after lunch can reduce post-meal spikes.';
+  }
+  if (q.includes('snack')) {
+    return 'Healthy diabetes snacks:\n\n- Roasted chana\n- Sprouts chaat\n- Unsweetened curd\n- Buttermilk\n- Makhana roasted with little oil\n- Guava/apple slices with a few nuts\n- Cucumber/carrot sticks\n- Boiled egg or paneer cubes\n\nAvoid snacks made from maida, sugar, sweet drinks, fruit juice, fried chips, bakery foods, and large portions of dry fruits.';
+  }
+  if (q.includes('avoid')) {
+    return 'Foods to limit or avoid in diabetes:\n\n- Sugary drinks, fruit juice, sweets, jaggery-heavy foods.\n- Maida items: naan, parotta, biscuits, cakes, noodles.\n- Large white-rice portions, especially without dal/protein.\n- Fried snacks and packaged chips.\n- Sweetened tea/coffee and flavoured curd.\n\nSafer swaps:\n- Millets in controlled portions.\n- Dal, curd, sprouts, eggs/fish/paneer/tofu.\n- Lauki, bhindi, greens, salad, karela, methi.\n- Whole fruit instead of juice.';
+  }
+  if (q.includes('foot')) {
+    return 'Diabetic foot care IEC:\n\n- Check both feet every day, including soles and between toes.\n- Wash with lukewarm water and dry well, especially between toes.\n- Apply moisturiser on dry skin, but not between toes.\n- Never walk barefoot, even at home.\n- Use soft, well-fitting footwear and cotton socks.\n- Do not cut corns/calluses yourself or use chemical corn plasters.\n- Seek care urgently for cuts, blisters, swelling, redness, pus, black skin, numbness, burning pain, or a wound that is not healing.\n\nGood glucose control, stopping tobacco, and regular foot exams reduce ulcer risk.';
+  }
+  if (q.includes('low sugar') || q.includes('hypo') || q.includes('below 70')) {
+    return 'Low sugar IEC (hypoglycaemia):\n\nSymptoms: sweating, shaking, hunger, fast heartbeat, dizziness, confusion, headache, weakness, or blurred vision.\n\n15-15 rule:\n- If glucose is below 70 mg/dL, take 15 g fast carbohydrate: 3 glucose tablets, 1/2 cup fruit juice, or 3 teaspoons sugar in water.\n- Recheck after 15 minutes.\n- Repeat if still below 70 mg/dL.\n- Once better, eat a small snack or meal if the next meal is not soon.\n\nEmergency: if unconscious, seizure, severe confusion, or unable to swallow, do not give food by mouth. Seek emergency care.';
+  }
+  if (q.includes('hba1c') || q.includes('a1c')) {
+    return 'HbA1c IEC:\n\nHbA1c estimates average glucose over about 3 months. It helps doctors see long-term control, not just one-day readings.\n\nCommon target for many adults is around 7%, but the doctor may individualise it depending on age, pregnancy, kidney disease, hypoglycaemia risk, and other illnesses.\n\nHow to improve HbA1c:\n- Take medicines as prescribed.\n- Track fasting and post-meal glucose.\n- Use the plate method and low-GI foods.\n- Walk 10-15 minutes after meals if safe.\n- Sleep 7-8 hours and avoid tobacco.\n- Review logs with the doctor.';
+  }
+  if (q.includes('medicine') || q.includes('missed dose') || q.includes('safely')) {
+    return 'Medicine safety IEC:\n\n- Take medicines at the same time daily as prescribed.\n- Do not double a missed dose unless your doctor told you to.\n- For insulin, confirm dose, site, timing, and expiry before injecting.\n- Carry fast sugar if using insulin or sulfonylurea medicines.\n- Report repeated low sugar, vomiting, rash, severe stomach upset, swelling, or breathing difficulty.\n- Keep a medicine list and bring it to every hospital visit.';
+  }
+  if (q.includes('monitor glucose') || q.includes('smbg') || q.includes('home glucose')) {
+    return 'Home glucose monitoring IEC:\n\nRecord date, time, reading, fasting/post-meal label, meal, medicines, exercise, symptoms, and illness/stress.\n\nSuggested labels:\n- Fasting: before breakfast.\n- Post-meal: 2 hours after starting food.\n- Bedtime: if advised.\n\nBring logs to doctor visits. Do not change medicines based on one reading unless your care team has given a correction plan.';
+  }
+  if (q.includes('sick day') || q.includes('sick-day') || q.includes('vomiting')) {
+    return 'Sick-day IEC:\n\n- Check glucose more often when fever, infection, vomiting, diarrhoea, or poor intake occurs.\n- Drink fluids regularly unless restricted by doctor.\n- Continue diabetes medicines unless your doctor advised a sick-day plan.\n- Seek care for persistent vomiting, dehydration, very high glucose, breathlessness, drowsiness, ketones, or inability to eat/drink.\n- Keep emergency contacts and current medicine list ready.';
+  }
+  if (q.includes('plate method') || q.includes('self-care') || q.includes('patient education')) {
+    return 'Diabetes self-care IEC:\n\n- Food: half plate vegetables, one quarter protein/dal/egg/fish/paneer, one quarter grains/millets. Avoid sugary drinks.\n- Activity: walk 10-15 minutes after meals if safe.\n- Medicines: take on time and do not stop without advice.\n- Monitoring: log glucose with date/time and symptoms.\n- Foot care: inspect daily and never walk barefoot.\n- Sleep: target 7-8 hours; poor sleep can increase insulin resistance.\n- Visits: carry glucose logs, medicine list, and questions for the doctor.';
+  }
+  return null;
+}
+
+/* ─── AI ─── */
+function fireAI() {
+  const v = document.getElementById('aiInput').value.trim();
+  if (v) {
+    sendPrompt('Generate a personalised diabetic Indian meal plan for: ' + v + '. Include GI values for each food, nutrition (carbs/protein/fat/fibre), and explain how each meal helps manage blood glucose and HbA1c. Current glucose: ' + GLUC + ' mg/dL, HbA1c: ' + HBA1C + '%.');
+  } else {
+    sendPrompt('Generate a personalised 7-day low-GI diabetic Indian meal plan. Current glucose: ' + GLUC + ' mg/dL, HbA1c: ' + HBA1C + '%. Include GI values, macros, and preparation tips for each meal.');
+  }
+}
+function quickAsk(q) {
+  document.getElementById('aiInput').value = q;
+  sendPrompt(q + '. Patient glucose: ' + GLUC + ' mg/dL, HbA1c: ' + HBA1C + '%.');
+}
+
+function sendPrompt(prompt) {
+  showAiAnswer(APP_LANG === 'kn' ? 'ನಿಮ್ಮ ಪೋಷಣಾ ಉತ್ತರವನ್ನು ತಯಾರಿಸಲಾಗುತ್ತಿದೆ...' : 'Planning your nutrition answer...');
+  const canned = predefinedAnswer(prompt);
+  if (canned) {
+    showAiAnswer(canned);
+    return;
+  }
+  if (window.AndroidNutrition && AndroidNutrition.askNutrition) {
+    AndroidNutrition.askNutrition(prompt);
+  } else {
+    showAiAnswer(prompt);
+  }
+}
+
+function showAiAnswer(text) {
+  const box = document.getElementById('aiResponse');
+  const out = document.getElementById('aiResponseText');
+  out.textContent = text;
+  box.classList.add('open');
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+/* ─── INIT ─── */
+updateBanner();
+renderFoods('all');
+buildDayStrip();
+renderMeals('Mon');
+</script>
+</body>
+</html>

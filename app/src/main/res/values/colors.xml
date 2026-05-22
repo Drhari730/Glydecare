@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary brand — rich medical blue -->
+    <color name="primary">#1565C0</color>
+    <color name="primary_dark">#0D47A1</color>
+    <color name="primary_light">#E3F2FD</color>
+    <color name="primary_medium">#1976D2</color>
+
+    <!-- Secondary — teal -->
+    <color name="secondary">#00897B</color>
+    <color name="secondary_light">#E0F2F1</color>
+
+    <!-- Accent colors for dashboard tiles -->
+    <color name="tile_glucose">#E53935</color>
+    <color name="tile_glucose_bg">#FFEBEE</color>
+    <color name="tile_hba1c">#F57C00</color>
+    <color name="tile_hba1c_bg">#FFF3E0</color>
+    <color name="tile_medication">#1565C0</color>
+    <color name="tile_medication_bg">#E3F2FD</color>
+    <color name="tile_nutrition">#2E7D32</color>
+    <color name="tile_nutrition_bg">#E8F5E9</color>
+    <color name="tile_vitals">#6A1B9A</color>
+    <color name="tile_vitals_bg">#F3E5F5</color>
+    <color name="tile_visits">#00695C</color>
+    <color name="tile_visits_bg">#E0F2F1</color>
+    <color name="tile_reports">#283593</color>
+    <color name="tile_reports_bg">#E8EAF6</color>
+    <color name="tile_about">#4E342E</color>
+    <color name="tile_about_bg">#EFEBE9</color>
+    <color name="tile_reminders">#AD1457</color>
+    <color name="tile_reminders_bg">#FCE4EC</color>
+
+    <!-- Background -->
+    <color name="background">#F4F4F2</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#ECEDEA</color>
+    <color name="health_teal">#005A60</color>
+    <color name="health_teal_dark">#003F43</color>
+    <color name="health_lime">#D7FF1F</color>
+    <color name="health_purple">#B800FF</color>
+    <color name="health_black">#151313</color>
+    <color name="header_gradient_start">#0D47A1</color>
+    <color name="header_gradient_end">#1565C0</color>
+
+    <!-- Text -->
+    <color name="text_primary">#0D1B2A</color>
+    <color name="text_secondary">#546E7A</color>
+    <color name="text_hint">#90A4AE</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    <color name="text_on_dark">#FFFFFF</color>
+
+    <!-- Glucose status -->
+    <color name="glucose_low">#D32F2F</color>
+    <color name="glucose_normal">#388E3C</color>
+    <color name="glucose_high">#F57C00</color>
+    <color name="glucose_very_high">#D32F2F</color>
+
+    <!-- Chart -->
+    <color name="chart_line">#1565C0</color>
+    <color name="chart_fill">#401565C0</color>
+    <color name="chart_grid">#ECEFF1</color>
+
+    <!-- Status -->
+    <color name="success">#388E3C</color>
+    <color name="warning">#F57C00</color>
+    <color name="error">#D32F2F</color>
+    <color name="info">#1565C0</color>
+
+    <!-- Card & UI -->
+    <color name="card_stroke">#E0E7EF</color>
+    <color name="divider">#ECEFF1</color>
+    <color name="nav_selected">#1565C0</color>
+    <color name="nav_unselected">#90A4AE</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

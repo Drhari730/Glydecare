@@ -1,0 +1,154 @@
+<resources>
+    <string name="app_name">Glydecare</string>
+    <string name="app_tagline">Smart Diabetes Management</string>
+
+    <!-- Auth -->
+    <string name="login_title">Welcome Back</string>
+    <string name="login_subtitle">Manage your diabetes, improve your life</string>
+    <string name="enter_phone">Enter your mobile number</string>
+    <string name="phone_hint">10-digit mobile number</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="otp_title">Verify OTP</string>
+    <string name="otp_subtitle">Enter the 6-digit code sent to</string>
+    <string name="verify_otp">Verify &amp; Continue</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="resend_in">Resend in %1$ds</string>
+    <string name="profile_setup_title">Set Up Your Profile</string>
+    <string name="profile_setup_subtitle">Help us personalize your care plan</string>
+    <string name="full_name">Full Name</string>
+    <string name="age">Age</string>
+    <string name="gender">Gender</string>
+    <string name="diabetes_type">Diabetes Type</string>
+    <string name="diagnosis_year">Year of Diagnosis</string>
+    <string name="doctor_name">Doctor\'s Name (optional)</string>
+    <string name="save_profile">Save &amp; Get Started</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard">Dashboard</string>
+    <string name="good_morning">Good Morning,</string>
+    <string name="good_afternoon">Good Afternoon,</string>
+    <string name="good_evening">Good Evening,</string>
+    <string name="todays_summary">Today\'s Summary</string>
+    <string name="latest_glucose">Latest Glucose</string>
+    <string name="mg_dl">mg/dL</string>
+    <string name="log_glucose">Log Glucose</string>
+    <string name="ai_suggestion">AI Suggestion</string>
+    <string name="no_suggestion">Log your glucose to get a personalized suggestion</string>
+    <string name="current_progress">Current Progress</string>
+    <string name="taken_today">taken today</string>
+    <string name="adherence">Adherence</string>
+    <string name="next_visit_dash">Next visit --</string>
+    <string name="next_visit_date">Next visit %1$s</string>
+    <string name="smart_care_prediction">Smart care prediction</string>
+    <string name="health_tools">Health tools</string>
+    <string name="profile">Profile</string>
+    <string name="status_low">Low</string>
+    <string name="status_normal">Normal</string>
+    <string name="status_high">High</string>
+    <string name="status_very_high">Very High</string>
+    <string name="lifestyle">Lifestyle</string>
+
+    <!-- Glucose -->
+    <string name="glucose">Glucose</string>
+    <string name="add_reading">Add Reading</string>
+    <string name="fasting">Fasting</string>
+    <string name="post_meal">Post Meal</string>
+    <string name="bedtime">Bedtime</string>
+    <string name="random">Random</string>
+    <string name="glucose_value">Glucose Value (mg/dL)</string>
+    <string name="notes">Notes (optional)</string>
+    <string name="save">Save</string>
+    <string name="seven_days">7 Days</string>
+    <string name="thirty_days">30 Days</string>
+    <string name="low_label">Low (&lt;70)</string>
+    <string name="normal_label">Normal (70–140)</string>
+    <string name="high_label">High (&gt;140)</string>
+
+    <!-- Medication -->
+    <string name="medication">Medication</string>
+    <string name="add_medication">Add Medication</string>
+    <string name="med_name">Medication Name</string>
+    <string name="dose">Dose</string>
+    <string name="frequency">Frequency</string>
+    <string name="reminder_time">Reminder Time</string>
+    <string name="mark_taken">Mark as Taken</string>
+    <string name="missed">Missed</string>
+    <string name="taken">Taken</string>
+
+    <!-- Nutrition -->
+    <string name="nutrition">Nutrition Care</string>
+    <string name="log_meal">Log Meal</string>
+    <string name="meal_type">Meal Type</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+    <string name="snack">Snack</string>
+    <string name="portion_size">Portion Size</string>
+    <string name="small">Small</string>
+    <string name="medium">Medium</string>
+    <string name="large">Large</string>
+    <string name="food_category">Food Category</string>
+    <string name="get_ai_suggestion">Get AI Suggestion</string>
+    <string name="generating">Generating suggestion…</string>
+
+    <!-- Vitals -->
+    <string name="vitals">Vitals</string>
+    <string name="scan_face">Scan Face</string>
+    <string name="manual_entry">Manual Entry</string>
+    <string name="blood_pressure">Blood Pressure</string>
+    <string name="systolic">Systolic (mmHg)</string>
+    <string name="diastolic">Diastolic (mmHg)</string>
+    <string name="heart_rate">Heart Rate (bpm)</string>
+    <string name="spo2">SpO₂ (%)</string>
+    <string name="respiratory_rate">Respiratory Rate (breaths/min)</string>
+    <string name="log_vitals">Log Vitals</string>
+
+    <!-- Reports -->
+    <string name="reports">Reports</string>
+    <string name="hospital_visits">Hospital Visits</string>
+    <string name="generate_pdf">Generate PDF Report</string>
+    <string name="export_csv">Export CSV</string>
+    <string name="last_7_days">Last 7 Days</string>
+    <string name="last_30_days">Last 30 Days</string>
+    <string name="adherence_score">Adherence Score</string>
+    <string name="share_report">Share with Doctor</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_reminders">Reminders</string>
+    <string name="notif_channel_alerts">Glucose Alerts</string>
+    <string name="notif_glucose_reminder">Time to check your blood glucose!</string>
+    <string name="notif_med_reminder">Time to take %1$s</string>
+    <string name="lifestyle_reminder">Lifestyle Reminder</string>
+
+    <!-- Common -->
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="loading">Loading…</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="no_data">No data yet</string>
+
+    <!-- New strings -->
+    <string name="before_meal">Before Meal</string>
+    <string name="after_meal">After Meal</string>
+    <string name="with_meal">With Meal</string>
+    <string name="frequency_od">OD (Once daily)</string>
+    <string name="frequency_bd">BD (Twice daily)</string>
+    <string name="frequency_tid">TID (Three times)</string>
+    <string name="frequency_qid">QID (Four times)</string>
+    <string name="meal_timing">Meal Timing</string>
+    <string name="reminder_times">Reminder Times</string>
+    <string name="developed_by">Developed by</string>
+    <string name="developer_name">Dr G Hari Prakash</string>
+    <string name="developer_designation">Assistant Professor\nDivision of Public Health, Department of Allied Health Sciences\nRamaiah University of Applied Sciences, Bengaluru, India</string>
+    <string name="app_version">Version 1.0</string>
+    <string name="ai_powered">AI-Powered Advice</string>
+    <string name="tap_ai">Tap to get personalized nutrition advice</string>
+    <string name="hba1c_subtitle">Glycated Haemoglobin · 3-month blood sugar average</string>
+    <string name="hba1c_trend_title">HbA1c Trend</string>
+    <string name="hba1c_prediction">3-Month Projection</string>
+    <string name="glucose_date_label">Test Date &amp; Time</string>
+    <string name="ai_chat_hint">Ask about your diet, glucose, medications…</string>
+    <string name="ai_chat_send">Send</string>
+    <string name="ai_chat_title">Glydecare AI</string>
+    <string name="ai_chat_subtitle">Your personal diabetes care assistant</string>
+</resources>

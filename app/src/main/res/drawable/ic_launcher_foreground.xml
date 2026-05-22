@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Blood drop shape -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,20 C54,20 30,45 30,62 C30,75 41,84 54,84 C67,84 78,75 78,62 C78,45 54,20 54,20 Z" />
+
+    <!-- Glucose waveform through drop -->
+    <path
+        android:strokeColor="#1565C0"
+        android:strokeWidth="3"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M34,62 L42,62 L46,52 L52,72 L56,55 L60,68 L64,62 L74,62" />
+</vector>

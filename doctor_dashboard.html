@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glydecare Doctor Dashboard</title>
+  <style>
+    :root {
+      --bg: #eef4f6;
+      --surface: #ffffff;
+      --surface-2: #f7fafb;
+      --ink: #11212b;
+      --muted: #627482;
+      --line: #dbe6ec;
+      --teal: #006c6b;
+      --teal-2: #10a594;
+      --teal-soft: #e1f5f2;
+      --blue: #2476c9;
+      --blue-soft: #e8f2ff;
+      --amber: #f38b19;
+      --amber-soft: #fff1df;
+      --red: #d93b3b;
+      --red-soft: #fdeaea;
+      --green: #109b6f;
+      --green-soft: #e5f7ef;
+      --purple: #7c4dff;
+      --purple-soft: #f0ecff;
+      --shadow: 0 16px 40px rgba(17, 33, 43, 0.08);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .shell {
+      width: min(1360px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 34px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--teal), var(--teal-2));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 900;
+      font-size: 22px;
+      box-shadow: 0 14px 28px rgba(0, 108, 107, 0.24);
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(25px, 3vw, 38px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .clinic-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--teal-soft);
+      color: var(--teal);
+      border: 1px solid rgba(0, 108, 107, 0.18);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .api-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .api-status {
+      align-self: center;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 10px 15px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1fr 180px 180px;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .field {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+      border-radius: 16px;
+      padding: 13px 14px;
+      outline: none;
+      box-shadow: 0 8px 24px rgba(17, 33, 43, 0.04);
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 15px;
+      box-shadow: var(--shadow);
+      min-height: 112px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .kpi-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .kpi-value {
+      font-size: 31px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      font-weight: 900;
+      margin-top: 12px;
+    }
+
+    .kpi-note {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 8px;
+      line-height: 1.35;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.5fr 0.95fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel.full {
+      margin-top: 18px;
+    }
+
+    .panel-head {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 17px;
+      letter-spacing: -0.02em;
+    }
+
+    .panel-sub {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .panel-body {
+      padding: 16px 18px 18px;
+    }
+
+    .chart {
+      height: 250px;
+      width: 100%;
+    }
+
+    .mini-chart {
+      height: 205px;
+    }
+
+    .risk-list,
+    .visit-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .risk-row,
+    .visit-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .name {
+      font-weight: 900;
+      margin-bottom: 3px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .badge.red { background: var(--red-soft); color: var(--red); }
+    .badge.amber { background: var(--amber-soft); color: #9b5200; }
+    .badge.green { background: var(--green-soft); color: var(--green); }
+    .badge.blue { background: var(--blue-soft); color: var(--blue); }
+    .badge.purple { background: var(--purple-soft); color: var(--purple); }
+
+    .patient-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 980px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    th,
+    td {
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      background: #f8fbfc;
+      position: sticky;
+      top: 0;
+    }
+
+    tr:hover td {
+      background: #f8fbfc;
+    }
+
+    .patient-cell {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      background: var(--teal-soft);
+      color: var(--teal);
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .patient-detail {
+      display: grid;
+      gap: 13px;
+    }
+
+    .detail-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      background: var(--surface-2);
+    }
+
+    .detail-title {
+      font-weight: 900;
+      margin-bottom: 7px;
+      font-size: 15px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .reading {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .reading span {
+      color: var(--muted);
+      display: block;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .reading strong {
+      font-size: 21px;
+      letter-spacing: -0.03em;
+    }
+
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      background: #e8eef2;
+      overflow: hidden;
+      margin-top: 7px;
+    }
+
+    .progress > i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--teal);
+      border-radius: inherit;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    @media (max-width: 1120px) {
+      .kpis {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .grid,
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        width: min(100% - 18px, 540px);
+        padding-top: 14px;
+      }
+
+      .topbar,
+      .api-row,
+      .filters {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .actions {
+        justify-content: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .chart {
+        height: 220px;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">G</div>
+        <div>
+          <h1>Doctor Dashboard</h1>
+          <div class="subtitle">Glydecare clinical registry for diabetes, vitals, adherence, and follow-up review.</div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="clinic-chip">Doctor/Clinic ID: MCH GM 001</div>
+        <input id="importFile" type="file" accept=".json,.csv,application/json,text/csv" hidden>
+        <button class="btn" id="importBtn">Import app export</button>
+        <button class="btn" id="exportBtn">Export registry</button>
+        <button class="btn primary" id="resetBtn">Refresh clinic data</button>
+      </div>
+    </header>
+
+    <section class="filters">
+      <input class="field" id="searchBox" placeholder="Search patient name, phone, diabetes type, medicine">
+      <select class="field" id="riskFilter">
+        <option value="all">All risk levels</option>
+        <option value="high">High risk only</option>
+        <option value="review">Needs review</option>
+        <option value="stable">Stable</option>
+      </select>
+      <select class="field" id="doctorFilter">
+        <option value="all">All clinic IDs</option>
+      </select>
+    </section>
+
+    <section class="api-row">
+      <input class="field" id="apiBaseUrl" placeholder="Railway API URL, e.g. https://glydecare-api.up.railway.app">
+      <button class="btn primary" id="connectApiBtn">Connect live backend</button>
+      <div class="api-status" id="apiStatus">Local dashboard data</div>
+    </section>
+
+    <section class="kpis">
+      <div class="kpi">
+        <div class="kpi-label">Registered patients</div>
+        <div class="kpi-value" id="kpiTotal">0</div>
+        <div class="kpi-note">Active records in dashboard</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">High glucose risk</div>
+        <div class="kpi-value" id="kpiHigh">0</div>
+        <div class="kpi-note">Glucose >= 200 or HbA1c >= 9</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Average HbA1c</div>
+        <div class="kpi-value" id="kpiA1c">0%</div>
+        <div class="kpi-note">Latest available value</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Medication adherence</div>
+        <div class="kpi-value" id="kpiAdherence">0%</div>
+        <div class="kpi-note">Mean last 7 days</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Visits due</div>
+        <div class="kpi-value" id="kpiVisits">0</div>
+        <div class="kpi-note">Today or next 7 days</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Avg glucose</div>
+        <div class="kpi-value" id="kpiGlucose">0</div>
+        <div class="kpi-note">mg/dL across latest readings</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="chart-grid">
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">7-day glucose trend</h2>
+              <div class="panel-sub">Clinic average from patient logs</div>
+            </div>
+            <div class="legend">
+              <span><i class="dot" style="background:var(--teal)"></i>Average</span>
+              <span><i class="dot" style="background:var(--red)"></i>High line</span>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="chart" id="glucoseChart"></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">HbA1c by patient</h2>
+              <div class="panel-sub">Latest long-term control status</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="chart" id="a1cChart"></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Risk distribution</h2>
+              <div class="panel-sub">High risk, needs review, stable</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="chart mini-chart" id="riskChart"></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Adherence view</h2>
+              <div class="panel-sub">Medicine adherence by patient</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="chart mini-chart" id="adherenceChart"></div>
+          </div>
+        </article>
+      </div>
+
+      <aside class="patient-detail">
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Priority queue</h2>
+              <div class="panel-sub">Patients needing doctor attention</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="risk-list" id="priorityList"></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Upcoming visits</h2>
+              <div class="panel-sub">Next 7 days</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="visit-list" id="visitList"></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Selected patient</h2>
+              <div class="panel-sub" id="selectedSub">Click any patient row</div>
+            </div>
+          </div>
+          <div class="panel-body" id="detailPanel"></div>
+        </article>
+      </aside>
+    </section>
+
+    <article class="panel full">
+      <div class="panel-head">
+        <div>
+          <h2 class="panel-title">Patient registry</h2>
+          <div class="panel-sub">Names, contact, latest readings, medicines, and follow-up status</div>
+        </div>
+        <span class="badge blue" id="tableCount">0 records</span>
+      </div>
+      <div class="table-wrap">
+        <table class="patient-table">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Phone</th>
+              <th>Type</th>
+              <th>Latest glucose</th>
+              <th>HbA1c</th>
+              <th>Adherence</th>
+              <th>Medicines</th>
+              <th>Next visit</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="patientRows"></tbody>
+        </table>
+      </div>
+    </article>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'glydecare_doctor_registry_v3';
+    const API_URL_KEY = 'glydecare_api_base_url';
+    const DOCTOR_ID = 'MCH GM 001';
+    const seedPatients = [
+      {
+        id: 'GLY-001',
+        name: 'Hari Prasad',
+        phone: '9876543210',
+        age: 52,
+        gender: 'Male',
+        diabetesType: 'Type 2 Diabetes',
+        diagnosisYear: 2020,
+        doctorName: 'Dr Hari',
+        doctorId: DOCTOR_ID,
+        glucose: 160,
+        glucoseDate: '22 May 2026, 07:35 AM',
+        hba1c: 8.2,
+        adherence: 100,
+        nextVisit: '25 May 2026',
+        medicines: ['Metformin 500 mg', 'Glipizide 5 mg'],
+        trend: [144, 152, 138, 166, 158, 160, 150],
+        vitals: { pulse: 82, bp: '132/84', bmi: 26.8 },
+        note: 'Review dinner portions and walking after meals.'
+      },
+      {
+        id: 'GLY-002',
+        name: 'Anitha Rao',
+        phone: '9988776655',
+        age: 45,
+        gender: 'Female',
+        diabetesType: 'Prediabetes',
+        diagnosisYear: 2024,
+        doctorName: 'Dr Hari',
+        doctorId: DOCTOR_ID,
+        glucose: 118,
+        glucoseDate: '22 May 2026, 08:10 AM',
+        hba1c: 6.4,
+        adherence: 92,
+        nextVisit: '29 May 2026',
+        medicines: ['Lifestyle plan'],
+        trend: [110, 119, 116, 121, 118, 114, 118],
+        vitals: { pulse: 76, bp: '122/78', bmi: 24.1 },
+        note: 'Stable. Continue weight maintenance and weekly exercise target.'
+      },
+      {
+        id: 'GLY-003',
+        name: 'Ramesh Kumar',
+        phone: '9123456780',
+        age: 61,
+        gender: 'Male',
+        diabetesType: 'Type 2 Diabetes',
+        diagnosisYear: 2014,
+        doctorName: 'Dr Hari',
+        doctorId: DOCTOR_ID,
+        glucose: 232,
+        glucoseDate: '22 May 2026, 07:41 AM',
+        hba1c: 9.4,
+        adherence: 58,
+        nextVisit: '23 May 2026',
+        medicines: ['Insulin 12 units', 'Metformin 1000 mg'],
+        trend: [188, 204, 216, 198, 230, 224, 232],
+        vitals: { pulse: 92, bp: '148/92', bmi: 29.5 },
+        note: 'Call today. Check missed insulin, infection symptoms, and diet recall.'
+      },
+      {
+        id: 'GLY-004',
+        name: 'Meena Lakshmi',
+        phone: '9008123456',
+        age: 38,
+        gender: 'Female',
+        diabetesType: 'Gestational Diabetes',
+        diagnosisYear: 2026,
+        doctorName: 'Dr Hari',
+        doctorId: DOCTOR_ID,
+        glucose: 142,
+        glucoseDate: '22 May 2026, 09:00 AM',
+        hba1c: 6.9,
+        adherence: 88,
+        nextVisit: '27 May 2026',
+        medicines: ['Medical nutrition therapy'],
+        trend: [132, 138, 140, 146, 142, 136, 142],
+        vitals: { pulse: 84, bp: '118/76', bmi: 25.4 },
+        note: 'Pregnancy pathway. Monitor fasting and post-meal readings closely.'
+      },
+      {
+        id: 'GLY-005',
+        name: 'Suresh Gowda',
+        phone: '9845012345',
+        age: 57,
+        gender: 'Male',
+        diabetesType: 'Type 2 Diabetes',
+        diagnosisYear: 2018,
+        doctorName: 'Dr Hari',
+        doctorId: DOCTOR_ID,
+        glucose: 198,
+        glucoseDate: '21 May 2026, 08:42 PM',
+        hba1c: 8.8,
+        adherence: 72,
+        nextVisit: '30 May 2026',
+        medicines: ['Metformin 1000 mg', 'Dapagliflozin 10 mg'],
+        trend: [176, 181, 190, 184, 202, 198, 192],
+        vitals: { pulse: 88, bp: '140/86', bmi: 31.2 },
+        note: 'Needs adherence review and foot-care education.'
+      },
+      {
+        id: 'GLY-006',
+        name: 'Farida Banu',
+        phone: '9742011122',
+        age: 49,
+        gender: 'Female',
+        diabetesType: 'Type 2 Diabetes',
+        diagnosisYear: 2019,
+        doctorName: 'Dr Hari',
+        doctorId: DOCTOR_ID,
+        glucose: 136,
+        glucoseDate: '22 May 2026, 06:55 AM',
+        hba1c: 7.1,
+        adherence: 96,
+        nextVisit: '05 Jun 2026',
+        medicines: ['Metformin 500 mg'],
+        trend: [142, 130, 128, 136, 132, 138, 136],
+        vitals: { pulse: 80, bp: '126/82', bmi: 27.0 },
+        note: 'Near target. Reinforce nutrition plan and exercise routine.'
+      },
+      {
+        id: 'GLY-007',
+        name: 'Nagaraj Hegde',
+        phone: '9448899001',
+        age: 66,
+        gender: 'Male',
+        diabetesType: 'Type 2 Diabetes',
+        diagnosisYear: 2011,
+        doctorName: 'Dr Hari',
+        doctorId: DOCTOR_ID,
+        glucose: 74,
+        glucoseDate: '22 May 2026, 06:15 AM',
+        hba1c: 7.8,
+        adherence: 91,
+        nextVisit: '24 May 2026',
+        medicines: ['Insulin 10 units', 'Sitagliptin 100 mg'],
+        trend: [96, 88, 82, 74, 90, 86, 74],
+        vitals: { pulse: 72, bp: '118/70', bmi: 23.8 },
+        note: 'Watch hypoglycemia risk. Review insulin timing and meal gaps.'
+      },
+      {
+        id: 'GLY-008',
+        name: 'Kavya Murthy',
+        phone: '9632587410',
+        age: 34,
+        gender: 'Female',
+        diabetesType: 'Prediabetes',
+        diagnosisYear: 2025,
+        doctorName: 'Dr Hari',
+        doctorId: DOCTOR_ID,
+        glucose: 104,
+        glucoseDate: '22 May 2026, 07:10 AM',
+        hba1c: 5.9,
+        adherence: 100,
+        nextVisit: '12 Jun 2026',
+        medicines: ['Lifestyle plan'],
+        trend: [108, 104, 112, 106, 102, 110, 104],
+        vitals: { pulse: 74, bp: '116/74', bmi: 22.6 },
+        note: 'Good control. Continue lifestyle management.'
+      }
+    ];
+
+    let patients = loadPatients();
+    let selectedId = patients[0]?.id || null;
+    let apiBaseUrl = localStorage.getItem(API_URL_KEY) || "";
+
+    function loadPatients() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        return Array.isArray(saved) && saved.length ? saved : seedPatients;
+      } catch {
+        return seedPatients;
+      }
+    }
+
+    function savePatients() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
+    }
+
+    function filteredPatients() {
+      const q = document.getElementById('searchBox').value.trim().toLowerCase();
+      const risk = document.getElementById('riskFilter').value;
+      const doctor = document.getElementById('doctorFilter').value;
+      return patients.filter(p => {
+        const hay = [p.name, p.phone, p.diabetesType, p.doctorName, p.doctorId, ...(p.medicines || [])].join(' ').toLowerCase();
+        const riskOk = risk === 'all' || riskLevel(p) === risk;
+        const doctorOk = doctor === 'all' || (p.doctorId || DOCTOR_ID) === doctor;
+        return hay.includes(q) && riskOk && doctorOk;
+      });
+    }
+
+    function riskLevel(p) {
+      if ((p.glucose || 0) >= 200 || (p.hba1c || 0) >= 9 || (p.adherence || 0) < 65) return 'high';
+      if ((p.glucose || 0) >= 140 || (p.hba1c || 0) >= 7 || (p.adherence || 0) < 85) return 'review';
+      return 'stable';
+    }
+
+    function riskBadge(p) {
+      const level = riskLevel(p);
+      if (level === 'high') return '<span class="badge red">High risk</span>';
+      if (level === 'review') return '<span class="badge amber">Needs review</span>';
+      return '<span class="badge green">Stable</span>';
+    }
+
+    function mean(values) {
+      const usable = values.filter(v => Number.isFinite(Number(v)));
+      if (!usable.length) return 0;
+      return usable.reduce((sum, value) => sum + Number(value), 0) / usable.length;
+    }
+
+    function render() {
+      hydrateDoctors();
+      const rows = filteredPatients();
+      if (!rows.some(p => p.id === selectedId)) selectedId = rows[0]?.id || patients[0]?.id || null;
+      renderKpis(rows);
+      renderCharts(rows);
+      renderPriority(rows);
+      renderVisits(rows);
+      renderTable(rows);
+      renderDetail(patients.find(p => p.id === selectedId) || rows[0]);
+      document.getElementById('tableCount').textContent = `${rows.length} records`;
+      document.getElementById('apiBaseUrl').value = apiBaseUrl;
+      savePatients();
+    }
+
+    async function connectLiveBackend() {
+      const input = document.getElementById('apiBaseUrl').value.trim().replace(/\/+$/, '');
+      if (!input) {
+        document.getElementById('apiStatus').textContent = 'Enter Railway API URL first';
+        return;
+      }
+      apiBaseUrl = input;
+      localStorage.setItem(API_URL_KEY, apiBaseUrl);
+      document.getElementById('apiStatus').textContent = 'Connecting...';
+      try {
+        const url = `${apiBaseUrl}/api/doctor/dashboard?doctorId=${encodeURIComponent(DOCTOR_ID)}`;
+        const response = await fetch(url, { headers: { Accept: 'application/json' } });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        patients = (data.patients || []).map(normalizePatient);
+        selectedId = patients[0]?.id || null;
+        document.getElementById('doctorFilter').dataset.loaded = 'false';
+        document.getElementById('apiStatus').textContent = `Live: ${patients.length} patients from Railway`;
+        render();
+      } catch (error) {
+        document.getElementById('apiStatus').textContent = `Backend not reachable: ${error.message}`;
+      }
+    }
+
+    function hydrateDoctors() {
+      const select = document.getElementById('doctorFilter');
+      if (select.dataset.loaded === 'true') return;
+      const doctors = [...new Set(patients.map(p => p.doctorId || DOCTOR_ID).filter(Boolean))];
+      select.innerHTML = '<option value="all">All clinic IDs</option>' + doctors.map(d => `<option value="${escapeHtml(d)}">${escapeHtml(d)}</option>`).join('');
+      select.dataset.loaded = 'true';
+    }
+
+    function renderKpis(rows) {
+      document.getElementById('kpiTotal').textContent = rows.length;
+      document.getElementById('kpiHigh').textContent = rows.filter(p => riskLevel(p) === 'high').length;
+      document.getElementById('kpiA1c').textContent = `${mean(rows.map(p => p.hba1c)).toFixed(1)}%`;
+      document.getElementById('kpiAdherence').textContent = `${Math.round(mean(rows.map(p => p.adherence)))}%`;
+      document.getElementById('kpiVisits').textContent = rows.filter(visitDueSoon).length;
+      document.getElementById('kpiGlucose').textContent = Math.round(mean(rows.map(p => p.glucose)));
+    }
+
+    function visitDueSoon(p) {
+      const text = String(p.nextVisit || '').toLowerCase();
+      if (text.includes('tomorrow') || text.includes('today')) return true;
+      const parsed = Date.parse(p.nextVisit);
+      if (!Number.isFinite(parsed)) return false;
+      const today = new Date('2026-05-22T00:00:00');
+      const diff = (parsed - today.getTime()) / 86400000;
+      return diff >= 0 && diff <= 7;
+    }
+
+    function renderCharts(rows) {
+      renderLineChart('glucoseChart', averageTrend(rows), { min: 60, max: 240, unit: 'mg/dL', target: 180 });
+      renderBarChart('a1cChart', rows.map(p => ({ label: shortName(p.name), value: p.hba1c, color: p.hba1c >= 9 ? 'var(--red)' : p.hba1c >= 7 ? 'var(--amber)' : 'var(--green)' })), { max: 11, unit: '%' });
+      renderDonutChart('riskChart', [
+        { label: 'High risk', value: rows.filter(p => riskLevel(p) === 'high').length, color: 'var(--red)' },
+        { label: 'Needs review', value: rows.filter(p => riskLevel(p) === 'review').length, color: 'var(--amber)' },
+        { label: 'Stable', value: rows.filter(p => riskLevel(p) === 'stable').length, color: 'var(--green)' }
+      ]);
+      renderBarChart('adherenceChart', rows.map(p => ({ label: shortName(p.name), value: p.adherence, color: p.adherence < 65 ? 'var(--red)' : p.adherence < 85 ? 'var(--amber)' : 'var(--teal)' })), { max: 100, unit: '%' });
+    }
+
+    function averageTrend(rows) {
+      const length = 7;
+      return Array.from({ length }, (_, i) => Math.round(mean(rows.map(p => (p.trend || [])[i]).filter(Boolean))));
+    }
+
+    function renderLineChart(id, values, options) {
+      const width = 620;
+      const height = 240;
+      const pad = 36;
+      const max = options.max;
+      const min = options.min;
+      const x = i => pad + i * ((width - pad * 2) / Math.max(values.length - 1, 1));
+      const y = v => height - pad - ((v - min) / (max - min)) * (height - pad * 2);
+      const points = values.map((v, i) => `${x(i)},${y(v)}`).join(' ');
+      const targetY = y(options.target);
+      const area = `${pad},${height - pad} ${points} ${width - pad},${height - pad}`;
+      document.getElementById(id).innerHTML = `
+        <svg viewBox="0 0 ${width} ${height}" width="100%" height="100%" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="glucoseFill" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#006c6b" stop-opacity="0.22"/>
+              <stop offset="1" stop-color="#006c6b" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          ${[0, 1, 2, 3].map(i => `<line x1="${pad}" y1="${pad + i * 50}" x2="${width - pad}" y2="${pad + i * 50}" stroke="#dfe8f1"/>`).join('')}
+          <line x1="${pad}" y1="${targetY}" x2="${width - pad}" y2="${targetY}" stroke="var(--red)" stroke-dasharray="8 8"/>
+          <polygon points="${area}" fill="url(#glucoseFill)"/>
+          <polyline points="${points}" fill="none" stroke="var(--teal)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          ${values.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="5" fill="white" stroke="var(--teal)" stroke-width="4"/>`).join('')}
+          ${values.map((v, i) => `<text x="${x(i)}" y="${height - 9}" text-anchor="middle" font-size="12" fill="#627482">D${i + 1}</text>`).join('')}
+          <text x="${width - pad}" y="${targetY - 8}" text-anchor="end" font-size="12" fill="var(--red)">High threshold</text>
+        </svg>
+      `;
+    }
+
+    function renderBarChart(id, items, options) {
+      const width = 620;
+      const height = 230;
+      const pad = 34;
+      const gap = 12;
+      const barW = Math.max(16, ((width - pad * 2) / Math.max(items.length, 1)) - gap);
+      const max = options.max;
+      const bars = items.map((item, i) => {
+        const x = pad + i * (barW + gap + 2);
+        const h = Math.max(4, (item.value / max) * (height - pad * 2));
+        const y = height - pad - h;
+        return `
+          <rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="8" fill="${item.color}"/>
+          <text x="${x + barW / 2}" y="${y - 8}" text-anchor="middle" font-size="11" font-weight="800" fill="#11212b">${item.value}${options.unit}</text>
+          <text x="${x + barW / 2}" y="${height - 8}" text-anchor="middle" font-size="11" fill="#627482">${escapeHtml(item.label)}</text>
+        `;
+      }).join('');
+      document.getElementById(id).innerHTML = `
+        <svg viewBox="0 0 ${width} ${height}" width="100%" height="100%" preserveAspectRatio="none">
+          ${[0, 1, 2].map(i => `<line x1="${pad}" y1="${pad + i * 54}" x2="${width - pad}" y2="${pad + i * 54}" stroke="#dfe8f1"/>`).join('')}
+          ${bars}
+        </svg>
+      `;
+    }
+
+    function renderDonutChart(id, items) {
+      const total = items.reduce((sum, item) => sum + item.value, 0) || 1;
+      let offset = 25;
+      const segments = items.map(item => {
+        const dash = (item.value / total) * 100;
+        const segment = `<circle cx="120" cy="100" r="64" fill="none" stroke="${item.color}" stroke-width="28" stroke-dasharray="${dash} ${100 - dash}" stroke-dashoffset="${offset}" pathLength="100"/>`;
+        offset -= dash;
+        return segment;
+      }).join('');
+      const legend = items.map((item, index) => `
+        <div class="risk-row">
+          <div><div class="name"><span class="dot" style="background:${item.color}"></span>${escapeHtml(item.label)}</div><div class="meta">${item.value} patients</div></div>
+          <span class="badge ${index === 0 ? 'red' : index === 1 ? 'amber' : 'green'}">${Math.round(item.value / total * 100)}%</span>
+        </div>
+      `).join('');
+      document.getElementById(id).innerHTML = `
+        <div style="display:grid;grid-template-columns:210px 1fr;gap:12px;align-items:center;height:100%;">
+          <svg viewBox="0 0 240 200" width="100%" height="100%">
+            <circle cx="120" cy="100" r="64" fill="none" stroke="#e8eef2" stroke-width="28"/>
+            <g transform="rotate(-90 120 100)">${segments}</g>
+            <text x="120" y="94" text-anchor="middle" font-size="34" font-weight="900" fill="#11212b">${total}</text>
+            <text x="120" y="118" text-anchor="middle" font-size="13" fill="#627482">patients</text>
+          </svg>
+          <div class="risk-list">${legend}</div>
+        </div>
+      `;
+    }
+
+    function renderPriority(rows) {
+      const priority = [...rows].sort((a, b) => priorityScore(b) - priorityScore(a)).slice(0, 5);
+      document.getElementById('priorityList').innerHTML = priority.map(p => `
+        <button class="risk-row" data-id="${p.id}" style="border:1px solid var(--line);text-align:left;cursor:pointer;">
+          <div>
+            <div class="name">${escapeHtml(p.name)}</div>
+            <div class="meta">${p.glucose} mg/dL | HbA1c ${p.hba1c}% | ${p.adherence}% meds</div>
+          </div>
+          ${riskBadge(p)}
+        </button>
+      `).join('');
+      bindSelectable(document.getElementById('priorityList'));
+    }
+
+    function priorityScore(p) {
+      return (p.glucose || 0) + (p.hba1c || 0) * 18 + (100 - (p.adherence || 0)) * 2 + (visitDueSoon(p) ? 60 : 0);
+    }
+
+    function renderVisits(rows) {
+      const visits = rows.filter(visitDueSoon).slice(0, 6);
+      document.getElementById('visitList').innerHTML = visits.length ? visits.map(p => `
+        <button class="visit-row" data-id="${p.id}" style="border:1px solid var(--line);text-align:left;cursor:pointer;">
+          <div>
+            <div class="name">${escapeHtml(p.name)}</div>
+            <div class="meta">${escapeHtml(p.nextVisit)} | ${escapeHtml(p.phone)}</div>
+          </div>
+          <span class="badge purple">Follow-up</span>
+        </button>
+      `).join('') : '<div class="meta">No visits due in the next 7 days.</div>';
+      bindSelectable(document.getElementById('visitList'));
+    }
+
+    function renderTable(rows) {
+      document.getElementById('patientRows').innerHTML = rows.map(p => `
+        <tr data-id="${p.id}" style="cursor:pointer;">
+          <td>
+            <div class="patient-cell">
+              <div class="avatar">${initials(p.name)}</div>
+              <div>
+                <div class="name">${escapeHtml(p.name)}</div>
+                <div class="meta">${p.age} yrs, ${escapeHtml(p.gender)} | Dx ${escapeHtml(p.diagnosisYear)}</div>
+              </div>
+            </div>
+          </td>
+          <td>${escapeHtml(p.phone)}</td>
+          <td>${escapeHtml(p.diabetesType)}<br><span class="meta">${escapeHtml(p.doctorId || DOCTOR_ID)}</span></td>
+          <td><strong>${p.glucose}</strong> mg/dL<br><span class="meta">${escapeHtml(p.glucoseDate)}</span></td>
+          <td><strong>${p.hba1c}%</strong></td>
+          <td>
+            <strong>${p.adherence}%</strong>
+            <div class="progress"><i style="width:${Math.max(0, Math.min(100, p.adherence))}%;background:${p.adherence < 65 ? 'var(--red)' : p.adherence < 85 ? 'var(--amber)' : 'var(--teal)'}"></i></div>
+          </td>
+          <td>${(p.medicines || []).map(escapeHtml).join('<br>')}</td>
+          <td>${escapeHtml(p.nextVisit)}</td>
+          <td>${riskBadge(p)}</td>
+        </tr>
+      `).join('');
+      bindSelectable(document.getElementById('patientRows'));
+    }
+
+    function renderDetail(p) {
+      const panel = document.getElementById('detailPanel');
+      if (!p) {
+        panel.innerHTML = '<div class="meta">No patient selected.</div>';
+        return;
+      }
+      document.getElementById('selectedSub').textContent = `${p.phone} | ${p.diabetesType}`;
+      panel.innerHTML = `
+        <div class="detail-card">
+          <div class="patient-cell">
+            <div class="avatar">${initials(p.name)}</div>
+            <div>
+              <div class="name">${escapeHtml(p.name)}</div>
+              <div class="meta">${p.age} yrs, ${escapeHtml(p.gender)}, ${escapeHtml(p.diabetesType)} | ${escapeHtml(p.doctorId || DOCTOR_ID)}</div>
+            </div>
+          </div>
+        </div>
+        <div class="detail-grid">
+          <div class="reading"><span>Glucose</span><strong>${p.glucose} mg/dL</strong></div>
+          <div class="reading"><span>HbA1c</span><strong>${p.hba1c}%</strong></div>
+          <div class="reading"><span>Adherence</span><strong>${p.adherence}%</strong></div>
+          <div class="reading"><span>BMI</span><strong>${p.vitals?.bmi || '--'}</strong></div>
+          <div class="reading"><span>BP</span><strong>${p.vitals?.bp || '--'}</strong></div>
+          <div class="reading"><span>Pulse</span><strong>${p.vitals?.pulse || '--'} bpm</strong></div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-title">Care action</div>
+          <div class="meta">${escapeHtml(careNote(p))}</div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-title">Medication</div>
+          <div class="meta">${(p.medicines || []).map(escapeHtml).join(', ')}</div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-title">Doctor note</div>
+          <div class="meta">${escapeHtml(p.note || 'No note entered.')}</div>
+        </div>
+      `;
+    }
+
+    function careNote(p) {
+      if (riskLevel(p) === 'high') return 'Contact patient and review medication adherence, recent illness, diet recall, and need for earlier visit.';
+      if (riskLevel(p) === 'review') return 'Review lifestyle plan, post-meal walking, medication timing, and repeat readings.';
+      return 'Continue current plan and routine follow-up.';
+    }
+
+    function bindSelectable(root) {
+      root.querySelectorAll('[data-id]').forEach(el => {
+        el.addEventListener('click', () => {
+          selectedId = el.dataset.id;
+          renderDetail(patients.find(p => p.id === selectedId));
+        });
+      });
+    }
+
+    function parseCsv(text) {
+      const lines = text.trim().split(/\r?\n/).filter(Boolean);
+      const headers = lines.shift().split(',').map(h => h.trim());
+      return lines.map((line, index) => {
+        const cells = line.split(',').map(c => c.trim());
+        const row = Object.fromEntries(headers.map((h, i) => [h, cells[i] || '']));
+        return normalizePatient(row, index);
+      });
+    }
+
+    function normalizePatient(row, index) {
+      return {
+        id: row.id || `GLY-IMP-${Date.now()}-${index}`,
+        name: row.name || row.patient || 'Unnamed patient',
+        phone: row.phone || '',
+        age: Number(row.age || 0),
+        gender: row.gender || '',
+        diabetesType: row.diabetesType || row.type || 'Diabetes',
+        diagnosisYear: Number(row.diagnosisYear || new Date().getFullYear()),
+        doctorName: row.doctorName || 'Dr Hari',
+        doctorId: row.doctorId || DOCTOR_ID,
+        glucose: Number(row.glucose || row.latestGlucose || 0),
+        glucoseDate: row.glucoseDate || row.date || '',
+        hba1c: Number(row.hba1c || row.a1c || 0),
+        adherence: Number(row.adherence || 0),
+        nextVisit: row.nextVisit || '',
+        medicines: Array.isArray(row.medicines) ? row.medicines : String(row.medicines || '').split('|').filter(Boolean),
+        trend: Array.isArray(row.trend) ? row.trend : String(row.trend || '').split('|').map(Number).filter(Boolean),
+        vitals: row.vitals || { pulse: row.pulse || '', bp: row.bp || '', bmi: row.bmi || '' },
+        note: row.note || ''
+      };
+    }
+
+    function importPatients(file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const text = String(reader.result || '');
+          const imported = file.name.toLowerCase().endsWith('.csv') ? parseCsv(text) : JSON.parse(text);
+          const rows = Array.isArray(imported) ? imported : imported.patients || [];
+          patients = rows.map(normalizePatient);
+          selectedId = patients[0]?.id || null;
+          document.getElementById('doctorFilter').dataset.loaded = 'false';
+          render();
+        } catch {
+          alert('Import failed. Use JSON/CSV exported from Glydecare.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function exportPatients() {
+      const blob = new Blob([JSON.stringify({ exportedAt: new Date().toISOString(), patients }, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'glydecare-doctor-registry.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function initials(name) {
+      return String(name || 'P').split(/\s+/).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+    }
+
+    function shortName(name) {
+      return String(name || '').split(/\s+/)[0].slice(0, 8);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[ch]));
+    }
+
+    document.getElementById('searchBox').addEventListener('input', render);
+    document.getElementById('riskFilter').addEventListener('change', render);
+    document.getElementById('doctorFilter').addEventListener('change', render);
+    document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
+    document.getElementById('connectApiBtn').addEventListener('click', connectLiveBackend);
+    document.getElementById('importFile').addEventListener('change', event => {
+      const file = event.target.files?.[0];
+      if (file) importPatients(file);
+    });
+    document.getElementById('exportBtn').addEventListener('click', exportPatients);
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      patients = seedPatients;
+      selectedId = patients[0].id;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
+      document.getElementById('doctorFilter').dataset.loaded = 'false';
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

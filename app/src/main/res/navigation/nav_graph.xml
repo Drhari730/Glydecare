@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_dashboard">
+
+    <fragment
+        android:id="@+id/nav_dashboard"
+        android:name="com.diabeticcare.app.ui.dashboard.DashboardFragment"
+        android:label="Dashboard">
+        <action android:id="@+id/action_dashboard_to_glucose"
+            app:destination="@id/nav_glucose" />
+        <action android:id="@+id/action_dashboard_to_hba1c"
+            app:destination="@id/nav_hba1c" />
+        <action android:id="@+id/action_dashboard_to_medication"
+            app:destination="@id/nav_medication" />
+        <action android:id="@+id/action_dashboard_to_nutrition"
+            app:destination="@id/nav_nutrition" />
+        <action android:id="@+id/action_dashboard_to_vitals"
+            app:destination="@id/nav_vitals" />
+        <action android:id="@+id/action_dashboard_to_visits"
+            app:destination="@id/nav_hospital_visits" />
+        <action android:id="@+id/action_dashboard_to_reports"
+            app:destination="@id/nav_reports" />
+        <action android:id="@+id/action_dashboard_to_about"
+            app:destination="@id/nav_about_me" />
+        <action android:id="@+id/action_dashboard_to_lifestyle"
+            app:destination="@id/nav_lifestyle" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_glucose"
+        android:name="com.diabeticcare.app.ui.glucose.GlucoseFragment"
+        android:label="Glucose" />
+
+    <fragment
+        android:id="@+id/nav_medication"
+        android:name="com.diabeticcare.app.ui.medication.MedicationFragment"
+        android:label="Medication" />
+
+    <fragment
+        android:id="@+id/nav_nutrition"
+        android:name="com.diabeticcare.app.ui.nutrition.NutritionFragment"
+        android:label="Nutrition" />
+
+    <fragment
+        android:id="@+id/nav_vitals"
+        android:name="com.diabeticcare.app.ui.vitals.VitalsFragment"
+        android:label="Vitals" />
+
+    <fragment
+        android:id="@+id/nav_reports"
+        android:name="com.diabeticcare.app.ui.reports.ReportsFragment"
+        android:label="Reports" />
+
+    <fragment
+        android:id="@+id/nav_hba1c"
+        android:name="com.diabeticcare.app.ui.hba1c.HbA1cFragment"
+        android:label="HbA1c" />
+
+    <fragment
+        android:id="@+id/nav_hospital_visits"
+        android:name="com.diabeticcare.app.ui.hospitalvisits.HospitalVisitsFragment"
+        android:label="Hospital Visits" />
+
+    <fragment
+        android:id="@+id/nav_about_me"
+        android:name="com.diabeticcare.app.ui.aboutme.AboutMeFragment"
+        android:label="About Me" />
+
+    <fragment
+        android:id="@+id/nav_lifestyle"
+        android:name="com.diabeticcare.app.ui.lifestyle.LifestyleFragment"
+        android:label="Lifestyle" />
+
+</navigation>

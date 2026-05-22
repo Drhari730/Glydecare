@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_header"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:paddingBottom="28dp">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical">
+                <ImageButton android:id="@+id/btn_back"
+                    android:layout_width="36dp" android:layout_height="36dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:background="@drawable/bg_header_icon_btn"
+                    android:padding="6dp" android:layout_marginEnd="12dp"
+                    android:contentDescription="Back" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="HbA1c Tracker" android:textSize="20sp" android:textStyle="bold"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/hba1c_subtitle"
+                android:textSize="12sp" android:textColor="#B3E5FC" android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Latest value card -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/CardStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginTop="-16dp">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="20dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Latest HbA1c" style="@style/TextSectionHeader"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical">
+
+                    <TextView android:id="@+id/tv_hba1c_value"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="--" android:textSize="52sp" android:textStyle="bold"
+                        android:textColor="@color/tile_hba1c" />
+
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:orientation="vertical"
+                        android:layout_marginStart="12dp">
+
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="%" android:textSize="20sp" android:textColor="@color/text_secondary" />
+
+                        <TextView android:id="@+id/tv_hba1c_status"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="No reading yet" android:textSize="13sp"
+                            android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
+
+                        <TextView android:id="@+id/tv_hba1c_date"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:textSize="11sp" android:textColor="@color/text_hint"
+                            android:layout_marginTop="2dp" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_add_hba1c"
+                        style="@style/ButtonPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+ Add"
+                        app:backgroundTint="@color/tile_hba1c"
+                        app:icon="@drawable/ic_add"
+                        app:iconTint="@color/white"
+                        app:iconSize="16dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- TREND CHART CARD -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_chart"
+            style="@style/CardStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="16dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/hba1c_trend_title" style="@style/TextSectionHeader"
+                    android:layout_marginBottom="12dp" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/hba1c_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- PREDICTION CARD -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_prediction"
+            style="@style/CardStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="#E8F5E9"
+            android:visibility="gone">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="16dp">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                        android:src="@drawable/ic_ai_suggestion"
+                        app:tint="@color/success"
+                        android:layout_marginEnd="8dp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/hba1c_prediction" android:textSize="14sp"
+                        android:textStyle="bold" android:textColor="@color/success" />
+                </LinearLayout>
+
+                <TextView android:id="@+id/tv_prediction"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:textSize="13sp" android:textColor="@color/text_primary"
+                    android:lineSpacingMultiplier="1.4" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Target ranges -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/CardStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#FFF3E0">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="16dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Target Ranges" android:textSize="13sp" android:textStyle="bold"
+                    android:textColor="@color/tile_hba1c" android:layout_marginBottom="8dp" />
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Normal" android:textSize="12sp"
+                        android:textColor="@color/success" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="&lt; 5.7%" android:textSize="12sp" android:textStyle="bold"
+                        android:textColor="@color/success" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_marginTop="4dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Pre-diabetes" android:textSize="12sp"
+                        android:textColor="@color/warning" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="5.7 – 6.4%" android:textSize="12sp" android:textStyle="bold"
+                        android:textColor="@color/warning" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_marginTop="4dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Diabetes (controlled)" android:textSize="12sp"
+                        android:textColor="@color/tile_hba1c" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="6.5 – 7.9%" android:textSize="12sp" android:textStyle="bold"
+                        android:textColor="@color/tile_hba1c" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_marginTop="4dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Uncontrolled" android:textSize="12sp"
+                        android:textColor="@color/error" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="≥ 8.0%" android:textSize="12sp" android:textStyle="bold"
+                        android:textColor="@color/error" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- History -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="History" style="@style/TextSectionHeader"
+            android:layout_marginStart="20dp" android:layout_marginBottom="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_hba1c"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="24dp"
+            android:nestedScrollingEnabled="false" />
+    </LinearLayout>
+</ScrollView>

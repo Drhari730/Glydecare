@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_dashboard"
+        android:icon="@drawable/ic_nav_dashboard"
+        android:title="@string/dashboard" />
+    <item
+        android:id="@+id/nav_glucose"
+        android:icon="@drawable/ic_nav_glucose"
+        android:title="@string/glucose" />
+    <item
+        android:id="@+id/nav_medication"
+        android:icon="@drawable/ic_nav_medication"
+        android:title="@string/medication" />
+    <item
+        android:id="@+id/nav_nutrition"
+        android:icon="@drawable/ic_nav_nutrition"
+        android:title="@string/nutrition" />
+    <item
+        android:id="@+id/nav_vitals"
+        android:icon="@drawable/ic_nav_vitals"
+        android:title="@string/vitals" />
+</menu>

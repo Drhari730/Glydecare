@@ -1,0 +1,39 @@
+# Gradle / Android
+.gradle/
+.kotlin/
+build/
+**/build/
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Local machine config and secrets
+local.properties
+*.jks
+*.keystore
+*.pem
+*.key
+.env
+backend/.env
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node backend
+backend/node_modules/
+backend/package-lock.json
+npm-debug.log*
+
+# Generated QA screenshots / temporary exports
+*_webview_check.png
+doctor_dashboard_preview.png

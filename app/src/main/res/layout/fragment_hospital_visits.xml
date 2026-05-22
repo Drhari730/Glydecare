@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_header"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:paddingBottom="28dp">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical">
+                    <ImageButton android:id="@+id/btn_back"
+                        android:layout_width="36dp" android:layout_height="36dp"
+                        android:src="@drawable/ic_arrow_back"
+                        android:background="@drawable/bg_header_icon_btn"
+                        android:padding="6dp" android:layout_marginEnd="12dp"
+                        android:contentDescription="Back" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Hospital Visits" android:textSize="20sp" android:textStyle="bold"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="ಆಸ್ಪತ್ರೆ ಭೇಟಿಗಳು · Tests &amp; Appointments"
+                    android:textSize="12sp" android:textColor="#B3E5FC" android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Next visit card -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/CardStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginTop="-16dp"
+                app:cardBackgroundColor="#E0F2F1">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:padding="16dp" android:gravity="center_vertical">
+
+                    <ImageView android:layout_width="44dp" android:layout_height="44dp"
+                        android:src="@drawable/ic_hospital" android:background="@drawable/bg_tile_circle_teal"
+                        android:padding="10dp" app:tint="@color/tile_visits" android:layout_marginEnd="12dp" />
+
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="NEXT APPOINTMENT" android:textSize="10sp"
+                            android:textColor="@color/tile_visits" android:textStyle="bold"
+                            android:letterSpacing="0.05" />
+                        <TextView android:id="@+id/tv_next_visit_info"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="No upcoming visits scheduled"
+                            android:textSize="14sp" android:textStyle="bold"
+                            android:textColor="@color/text_primary" android:layout_marginTop="2dp" />
+                        <TextView android:id="@+id/tv_next_visit_date"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:textSize="12sp" android:textColor="@color/text_secondary"
+                            android:layout_marginTop="2dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Visits list -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Scheduled Visits" style="@style/TextSectionHeader"
+                android:layout_marginStart="20dp" android:layout_marginBottom="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_visits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="80dp"
+                android:nestedScrollingEnabled="false" />
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_add_visit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:text="Add Visit"
+        app:icon="@drawable/ic_add"
+        app:backgroundTint="@color/tile_visits"
+        android:textColor="@color/white"
+        app:iconTint="@color/white" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

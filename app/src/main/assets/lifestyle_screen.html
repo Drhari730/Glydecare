@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Lifestyle - Glydecare</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #0D9B7A;
+    --teal-light: #E0F5EF;
+    --teal-mid: #5DCAA5;
+    --blue: #3B9EFF;
+    --blue-light: #EAF4FF;
+    --blue-mid: #90C8FF;
+    --amber: #F0A500;
+    --amber-light: #FFF4DC;
+    --red: #E85D5D;
+    --red-light: #FDEAEA;
+    --purple: #7C6FF7;
+    --purple-light: #EEEDFE;
+    --bg: #F4F6FA;
+    --surface: #FFFFFF;
+    --text: #1A1D23;
+    --text-2: #6B7280;
+    --text-3: #9CA3AF;
+    --border: rgba(0,0,0,0.07);
+    --radius: 20px;
+    --radius-sm: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    max-width: 420px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 54px 20px 12px;
+    background: var(--surface);
+  }
+  .topbar-back {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    border: none;
+  }
+  .topbar-back svg { width: 18px; height: 18px; }
+  .topbar-title { font-size: 18px; font-weight: 600; }
+  .topbar-icon {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    border: none;
+  }
+  .topbar-icon svg { width: 18px; height: 18px; color: var(--teal); }
+
+  /* ── SCROLL BODY ── */
+  .scroll-body {
+    padding: 16px 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* ── SECTION LABEL ── */
+  .sec-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+
+  /* ════════════════════════════════
+     HYDRATION HERO CARD
+  ════════════════════════════════ */
+  .hydration-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+  .hydration-card::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: var(--blue-light);
+    opacity: 0.7;
+  }
+
+  .hyd-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .hyd-label { font-size: 14px; font-weight: 500; color: var(--text-2); }
+  .hyd-date { font-size: 12px; color: var(--text-3); background: var(--bg); padding: 4px 10px; border-radius: 20px; }
+
+  /* Water glass visual */
+  .hyd-main {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* Animated water glass */
+  .water-glass-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .water-glass-svg {
+    width: 80px; height: 110px;
+    filter: drop-shadow(0 4px 12px rgba(59,158,255,0.2));
+  }
+
+  /* Circular ring */
+  .hyd-ring-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .ring-svg-outer {
+    position: relative;
+    width: 110px; height: 110px;
+  }
+  .ring-svg-outer svg {
+    transform: rotate(-90deg);
+  }
+  .ring-center-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .ring-big-num { font-size: 26px; font-weight: 600; color: var(--blue); line-height: 1; }
+  .ring-sub { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+  .ring-target { font-size: 11px; color: var(--text-2); }
+
+  /* +/- controls */
+  .hyd-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .hyd-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 300;
+    transition: transform 0.15s;
+  }
+  .hyd-btn:active { transform: scale(0.92); }
+  .hyd-btn-minus { background: var(--bg); color: var(--text-2); }
+  .hyd-btn-plus { background: var(--blue); color: #fff; font-size: 22px; }
+  .hyd-count-label { flex: 1; text-align: center; font-size: 13px; color: var(--text-2); }
+  .hyd-count-label span { font-weight: 600; color: var(--text); font-size: 15px; }
+
+  /* Quick add pills */
+  .hyd-quick {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .hyd-pill {
+    flex: 1;
+    min-width: 60px;
+    padding: 8px 6px;
+    border-radius: 12px;
+    background: var(--blue-light);
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .hyd-pill:active { background: var(--blue-mid); transform: scale(0.96); }
+  .hyd-pill .pill-ml { display: block; font-size: 14px; font-weight: 600; }
+
+  /* Progress bar under glass */
+  .hyd-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .hyd-bar-wrap { flex: 1; height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; }
+  .hyd-bar-fill { height: 6px; background: var(--blue); border-radius: 3px; transition: width 0.5s ease; }
+  .hyd-bar-pct { font-size: 12px; font-weight: 600; color: var(--blue); min-width: 36px; text-align: right; }
+  .hyd-bar-left { font-size: 12px; color: var(--text-3); min-width: 90px; }
+
+  /* Reminder */
+  .hyd-reminder {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: var(--blue-light);
+    border-radius: 12px;
+  }
+  .hyd-reminder svg { width: 16px; height: 16px; color: var(--blue); flex-shrink: 0; }
+  .hyd-reminder p { font-size: 12px; color: #185FA5; line-height: 1.4; }
+
+  /* ════════════════════════════════
+     ACTIVITY RINGS ROW
+  ════════════════════════════════ */
+  .rings-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+  }
+  .rings-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .rings-card-title { font-size: 15px; font-weight: 600; }
+  .rings-card-badge {
+    font-size: 11px;
+    color: var(--teal);
+    background: var(--teal-light);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .rings-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .ring-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .ring-block-svg { position: relative; width: 82px; height: 82px; }
+  .ring-block-svg svg { transform: rotate(-90deg); }
+  .rb-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 1px;
+  }
+  .rb-num { font-size: 15px; font-weight: 600; color: var(--text); }
+  .rb-unit { font-size: 9px; color: var(--text-3); }
+  .rb-label { font-size: 11px; color: var(--text-2); font-weight: 500; }
+  .rb-sublabel { font-size: 10px; color: var(--text-3); }
+
+  /* Steps gyro button */
+  .steps-start-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #0D9B7A 0%, #3B9EFF 100%);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    margin-top: 14px;
+    transition: opacity 0.2s;
+  }
+  .steps-start-btn:active { opacity: 0.85; }
+  .steps-start-btn svg { width: 18px; height: 18px; }
+  .steps-start-btn .ssb-sub { font-size: 11px; font-weight: 400; opacity: 0.85; margin-left: auto; }
+
+  /* ════════════════════════════════
+     YOGA SECTION
+  ════════════════════════════════ */
+  .yoga-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scroll-snap-type: x mandatory;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .yoga-scroll::-webkit-scrollbar { display: none; }
+
+  .yoga-card {
+    flex-shrink: 0;
+    width: 200px;
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    border: 1px solid var(--border);
+    scroll-snap-align: start;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .yoga-card:active { transform: scale(0.97); }
+
+  .yoga-card-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  .yoga-card-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .yoga-card-dur {
+    font-size: 11px;
+    color: var(--text-3);
+    display: flex; align-items: center; gap: 4px;
+    margin-bottom: 10px;
+  }
+  .yoga-card-dur svg { width: 12px; height: 12px; }
+  .yoga-card-desc { font-size: 11px; color: var(--text-2); line-height: 1.5; margin-bottom: 10px; }
+  .yoga-card-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .yoga-pill {
+    font-size: 10px; font-weight: 500;
+    padding: 2px 8px; border-radius: 8px;
+  }
+  .yoga-yt {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600;
+    color: #C0392B;
+    text-decoration: none;
+    padding: 6px 10px;
+    background: #FEF0F0;
+    border-radius: 9px;
+    border: 1px solid #F5C1C1;
+  }
+  .yoga-yt svg { width: 14px; height: 14px; }
+
+  /* ════════════════════════════════
+     TODAY PLAN CARD
+  ════════════════════════════════ */
+  .plan-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px;
+    border: 1px solid var(--border);
+  }
+  .plan-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .plan-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .plan-row:first-child { padding-top: 0; }
+  .plan-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .plan-text { flex: 1; }
+  .plan-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .plan-sub { font-size: 12px; color: var(--text-2); line-height: 1.45; }
+  .plan-badge {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 20px;
+    flex-shrink: 0; align-self: flex-start; margin-top: 2px;
+  }
+
+  /* Patient education IEC */
+  .iec-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px;
+    border: 1px solid var(--border);
+  }
+  .iec-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .iec-title { font-size: 16px; font-weight: 700; }
+  .iec-subtitle { font-size: 12px; color: var(--text-2); line-height: 1.5; margin-top: 3px; }
+  .iec-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .iec-topic {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    border-radius: 16px;
+    padding: 12px;
+    min-height: 108px;
+    text-align: left;
+    cursor: pointer;
+  }
+  .iec-art {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  .iec-topic-title { font-size: 13px; font-weight: 700; line-height: 1.25; }
+  .iec-topic-text { font-size: 11px; color: var(--text-2); line-height: 1.35; margin-top: 4px; }
+  .iec-modal {
+    position: fixed;
+    inset: 0;
+    max-width: 420px;
+    margin: 0 auto;
+    background: rgba(26,29,35,0.38);
+    display: none;
+    align-items: flex-end;
+    z-index: 200;
+  }
+  .iec-modal.open { display: flex; }
+  .iec-sheet {
+    background: var(--surface);
+    width: 100%;
+    max-height: 86vh;
+    overflow-y: auto;
+    border-radius: 26px 26px 0 0;
+    padding: 18px 18px 28px;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.18);
+  }
+  .iec-sheet-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .iec-sheet h2 { font-size: 20px; line-height: 1.15; }
+  .iec-close {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: var(--bg);
+    font-size: 22px;
+    line-height: 1;
+    color: var(--text);
+  }
+  .iec-detail-img {
+    height: 112px;
+    border-radius: 18px;
+    margin: 10px 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .iec-detail-img svg { width: 128px; height: 86px; }
+  .iec-detail-text {
+    font-size: 14px;
+    color: var(--text-2);
+    line-height: 1.6;
+    white-space: pre-line;
+  }
+  .iec-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .iec-links a {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 13px;
+    text-decoration: none;
+    padding: 10px 12px;
+    background: var(--teal-light);
+    border-radius: 12px;
+  }
+
+  /* ════════════════════════════════
+     SLEEP CARD
+  ════════════════════════════════ */
+  .sleep-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+  }
+  .sleep-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+  }
+  .sleep-title { font-size: 15px; font-weight: 600; }
+  .sleep-quality { font-size: 12px; color: var(--teal); font-weight: 500; background: var(--teal-light); padding: 3px 10px; border-radius: 20px; }
+  .sleep-bars { display: flex; align-items: flex-end; gap: 5px; height: 60px; margin-bottom: 10px; }
+  .sleep-bar-col { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; }
+  .sleep-bar {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    transition: height 0.6s ease;
+  }
+  .sleep-bar-day { font-size: 9px; color: var(--text-3); }
+  .sleep-stats { display: flex; gap: 12px; margin-top: 4px; }
+  .sleep-stat { flex: 1; background: var(--bg); border-radius: 12px; padding: 10px; text-align: center; }
+  .sleep-stat-num { font-size: 18px; font-weight: 600; }
+  .sleep-stat-lbl { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+  .sleep-note{font-size:11px;color:var(--text-2);line-height:1.5;background:var(--purple-light);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+  .sleep-log-row{display:flex;gap:8px;margin-top:12px}
+  .sleep-input,.sleep-select{flex:1;border:1px solid var(--border);border-radius:12px;background:var(--bg);padding:10px;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;color:var(--text)}
+  .sleep-save{border:none;border-radius:12px;background:var(--purple);color:white;padding:10px 14px;font-size:12px;font-weight:600}
+
+  /* ════════════════════════════════
+     BOTTOM NAV
+  ════════════════════════════════ */
+  .bottom-nav {
+    display: none !important;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    font-size: 10px;
+    color: var(--text-3);
+    cursor: pointer;
+    border: none; background: none;
+    padding: 4px 0;
+    transition: color 0.15s;
+  }
+  .nav-item.active { color: var(--teal); }
+  .nav-item svg { width: 22px; height: 22px; }
+  .nav-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--teal); margin-top: -1px; }
+
+  /* ── Animations ── */
+  @keyframes fillRing {
+    from { stroke-dashoffset: 999; }
+    to { stroke-dashoffset: var(--target-offset); }
+  }
+  @keyframes waterRise {
+    from { transform: translateY(60px); }
+    to { transform: translateY(var(--water-level)); }
+  }
+  @keyframes wave {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section-wrap { animation: fadeUp 0.4s ease forwards; }
+  .section-wrap:nth-child(1) { animation-delay: 0.05s; }
+  .section-wrap:nth-child(2) { animation-delay: 0.1s; }
+  .section-wrap:nth-child(3) { animation-delay: 0.15s; }
+  .section-wrap:nth-child(4) { animation-delay: 0.2s; }
+  .section-wrap:nth-child(5) { animation-delay: 0.25s; }
+
+  /* Water glass wave animation */
+  .wave-group { overflow: hidden; }
+  .wave-rect { animation: wave 2s linear infinite; }
+
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <button class="topbar-back" aria-label="Back" onclick="Android.goBack()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M19 12H5M12 5l-7 7 7 7"/>
+    </svg>
+  </button>
+  <span class="topbar-title">Lifestyle</span>
+  <button class="topbar-icon" aria-label="Settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/>
+    </svg>
+  </button>
+</div>
+
+<!-- SCROLL BODY -->
+<div class="scroll-body">
+
+  <!-- 1. HYDRATION HERO -->
+  <div class="section-wrap">
+    <div class="sec-label">Hydration tracker</div>
+    <div class="hydration-card">
+      <div class="hyd-header">
+        <span class="hyd-label">Water intake today</span>
+        <span class="hyd-date" id="todayDate"></span>
+      </div>
+
+      <div class="hyd-main">
+        <!-- Animated water glass -->
+        <div class="water-glass-wrap">
+          <svg class="water-glass-svg" viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="glassClip">
+                <path d="M12 8 L8 98 Q8 104 14 104 L66 104 Q72 104 72 98 L68 8 Z"/>
+              </clipPath>
+            </defs>
+            <!-- Glass body -->
+            <path d="M12 8 L8 98 Q8 104 14 104 L66 104 Q72 104 72 98 L68 8 Z"
+              fill="rgba(59,158,255,0.06)" stroke="rgba(59,158,255,0.3)" stroke-width="1.5"/>
+            <!-- Water fill group clipped to glass -->
+            <g clip-path="url(#glassClip)">
+              <!-- Water body -->
+              <rect id="waterFill" x="8" y="104" width="64" height="0" fill="rgba(59,158,255,0.25)" rx="0">
+              </rect>
+              <!-- Wave on top -->
+              <g class="wave-group" id="waveGroup" style="display:none">
+                <rect class="wave-rect" id="wavePath" x="0" y="0" width="160" height="12"
+                  fill="rgba(59,158,255,0.3)" rx="6"/>
+              </g>
+              <!-- Water solid -->
+              <rect id="waterSolid" x="8" y="104" width="64" height="0" fill="rgba(59,158,255,0.18)"/>
+            </g>
+            <!-- Glass highlight -->
+            <path d="M18 12 L15 90" stroke="rgba(255,255,255,0.6)" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Measurement lines -->
+            <line x1="68" y1="30" x2="72" y2="30" stroke="rgba(59,158,255,0.3)" stroke-width="1"/>
+            <line x1="68" y1="50" x2="72" y2="50" stroke="rgba(59,158,255,0.3)" stroke-width="1"/>
+            <line x1="68" y1="70" x2="72" y2="70" stroke="rgba(59,158,255,0.3)" stroke-width="1"/>
+            <line x1="68" y1="88" x2="72" y2="88" stroke="rgba(59,158,255,0.3)" stroke-width="1"/>
+            <!-- Drop icon top -->
+            <text x="40" y="20" text-anchor="middle" font-size="14" font-family="sans-serif">💧</text>
+          </svg>
+        </div>
+
+        <!-- Ring -->
+        <div class="hyd-ring-wrap">
+          <div class="ring-svg-outer">
+            <svg width="110" height="110" viewBox="0 0 110 110">
+              <circle cx="55" cy="55" r="46" fill="none" stroke="#EAF4FF" stroke-width="10"/>
+              <circle id="hydRingCircle" cx="55" cy="55" r="46" fill="none"
+                stroke="var(--blue)" stroke-width="10" stroke-linecap="round"
+                stroke-dasharray="289" stroke-dashoffset="289"
+                style="transition: stroke-dashoffset 0.6s ease;"/>
+            </svg>
+            <div class="ring-center-text">
+              <span class="ring-big-num" id="hydBigNum">0</span>
+              <span class="ring-sub">glasses</span>
+            </div>
+          </div>
+          <span class="ring-target">Target: <strong id="hydTarget">8</strong> glasses</span>
+          <span style="font-size:11px;color:var(--blue);font-weight:600;" id="hydPct">0%</span>
+        </div>
+      </div>
+
+      <!-- +/- controls -->
+      <div class="hyd-controls">
+        <button class="hyd-btn hyd-btn-minus" onclick="addWater(-1)" aria-label="Remove glass">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="hyd-count-label">
+          <span id="hydCount">0</span> / 8 glasses
+        </div>
+        <button class="hyd-btn hyd-btn-plus" onclick="addWater(1)" aria-label="Add glass">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+
+      <!-- Quick add buttons -->
+      <div class="hyd-quick">
+        <button class="hyd-pill" onclick="addMl(150)">
+          <span class="pill-ml">150ml</span>small cup
+        </button>
+        <button class="hyd-pill" onclick="addMl(250)">
+          <span class="pill-ml">250ml</span>1 glass
+        </button>
+        <button class="hyd-pill" onclick="addMl(500)">
+          <span class="pill-ml">500ml</span>bottle
+        </button>
+        <button class="hyd-pill" onclick="addMl(750)">
+          <span class="pill-ml">750ml</span>large
+        </button>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="hyd-bar-row">
+        <span class="hyd-bar-left" id="hydBarLeft">8 glasses remaining</span>
+        <div class="hyd-bar-wrap">
+          <div class="hyd-bar-fill" id="hydBarFill" style="width:0%"></div>
+        </div>
+        <span class="hyd-bar-pct" id="hydBarPct">0%</span>
+      </div>
+
+      <!-- Reminder -->
+      <div class="hyd-reminder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>
+        </svg>
+        <p>Next reminder in 45 min. Diabetics need 2–2.5 L/day to support kidney function and glucose regulation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ACTIVITY RINGS -->
+  <div class="section-wrap">
+    <div class="sec-label">Activity rings</div>
+    <div class="rings-card">
+      <div class="rings-card-header">
+        <span class="rings-card-title">Today's activity</span>
+        <span class="rings-card-badge" id="stepsStatusBadge">Not started</span>
+      </div>
+      <div class="rings-row">
+
+        <!-- Steps ring -->
+        <div class="ring-block">
+          <div class="ring-block-svg">
+            <svg width="82" height="82" viewBox="0 0 82 82">
+              <circle cx="41" cy="41" r="34" fill="none" stroke="#E1F5EE" stroke-width="8"/>
+              <circle id="stepsRing" cx="41" cy="41" r="34" fill="none" stroke="var(--teal)" stroke-width="8"
+                stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6"
+                style="transition: stroke-dashoffset 0.5s ease;"/>
+            </svg>
+            <div class="rb-center">
+              <span class="rb-num" id="stepsNum" style="color:var(--teal);">0</span>
+              <span class="rb-unit">/ 6k</span>
+            </div>
+          </div>
+          <span class="rb-label">Steps</span>
+          <span class="rb-sublabel" id="stepsDist">0.0 km</span>
+        </div>
+
+        <!-- Calories ring -->
+        <div class="ring-block">
+          <div class="ring-block-svg">
+            <svg width="82" height="82" viewBox="0 0 82 82">
+              <circle cx="41" cy="41" r="34" fill="none" stroke="#FFF4DC" stroke-width="8"/>
+              <circle id="calRing" cx="41" cy="41" r="34" fill="none" stroke="var(--amber)" stroke-width="8"
+                stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6"
+                style="transition: stroke-dashoffset 0.5s ease;"/>
+            </svg>
+            <div class="rb-center">
+              <span class="rb-num" id="calNum" style="color:var(--amber);">0</span>
+              <span class="rb-unit">kcal</span>
+            </div>
+          </div>
+          <span class="rb-label">Calories</span>
+          <span class="rb-sublabel">/ 300</span>
+        </div>
+
+        <!-- Active mins ring -->
+        <div class="ring-block">
+          <div class="ring-block-svg">
+            <svg width="82" height="82" viewBox="0 0 82 82">
+              <circle cx="41" cy="41" r="34" fill="none" stroke="#EEEDFE" stroke-width="8"/>
+              <circle id="minsRing" cx="41" cy="41" r="34" fill="none" stroke="var(--purple)" stroke-width="8"
+                stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6"
+                style="transition: stroke-dashoffset 0.5s ease;"/>
+            </svg>
+            <div class="rb-center">
+              <span class="rb-num" id="minsNum" style="color:var(--purple);">0</span>
+              <span class="rb-unit">min</span>
+            </div>
+          </div>
+          <span class="rb-label">Active</span>
+          <span class="rb-sublabel">/ 30 min</span>
+        </div>
+
+      </div>
+
+      <!-- Gyroscope step button -->
+      <button class="steps-start-btn" id="stepsBtn" onclick="toggleSteps()">
+        <svg id="stepsBtnIcon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+        <span id="stepsBtnLabel">Start step tracking (gyroscope)</span>
+        <span class="ssb-sub" id="stepsBtnSub">via accelerometer</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. YOGA FOR DIABETES -->
+  <div class="section-wrap">
+    <div class="sec-label">Yoga for diabetes</div>
+    <div class="yoga-scroll">
+
+      <div class="yoga-card">
+        <div class="yoga-card-icon" style="background:#FFF4DC;">🌅</div>
+        <div class="yoga-card-name">Surya Namaskar</div>
+        <div class="yoga-card-dur">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          15 min · Moderate
+        </div>
+        <div class="yoga-card-desc">Activates all muscle groups. Boosts glucose uptake and metabolism when done 6 days/week.</div>
+        <div class="yoga-card-pills">
+          <span class="yoga-pill" style="background:#E1F5EE;color:#0F6E56;">Blood sugar↓</span>
+          <span class="yoga-pill" style="background:#FFF4DC;color:#854F0B;">Weight</span>
+        </div>
+        <a href="https://youtu.be/cv93zmm-jqY?si=4EG2dSPUgmTkDt1F" class="yoga-yt" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="#C0392B"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.7a8.18 8.18 0 004.78 1.52V6.78a4.85 4.85 0 01-1.01-.09z"/></svg>
+          Watch from doctor list
+        </a>
+      </div>
+
+      <div class="yoga-card">
+        <div class="yoga-card-icon" style="background:#EAF4FF;">🌬️</div>
+        <div class="yoga-card-name">Pranayama</div>
+        <div class="yoga-card-dur">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          20 min · Beginner
+        </div>
+        <div class="yoga-card-desc">Anulom Vilom reduces cortisol 28%. High cortisol directly raises blood glucose levels.</div>
+        <div class="yoga-card-pills">
+          <span class="yoga-pill" style="background:#EAF4FF;color:#0C447C;">Cortisol↓</span>
+          <span class="yoga-pill" style="background:#E1F5EE;color:#0F6E56;">HbA1c↓</span>
+        </div>
+        <a href="https://www.youtube.com/live/cVSG1jfWO7I?si=fQGEWI-xCaUvLvHo" class="yoga-yt" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="#C0392B"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.7a8.18 8.18 0 004.78 1.52V6.78a4.85 4.85 0 01-1.01-.09z"/></svg>
+          Watch breathing session
+        </a>
+      </div>
+
+      <div class="yoga-card">
+        <div class="yoga-card-icon" style="background:#EEEDFE;">🔄</div>
+        <div class="yoga-card-name">Ardha Matsyendrasana</div>
+        <div class="yoga-card-dur">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          10 min · Intermediate
+        </div>
+        <div class="yoga-card-desc">Spinal twist massages pancreas, stimulates insulin secretion and improves gut motility.</div>
+        <div class="yoga-card-pills">
+          <span class="yoga-pill" style="background:#EEEDFE;color:#3C3489;">Pancreas</span>
+          <span class="yoga-pill" style="background:#E1F5EE;color:#0F6E56;">Insulin↑</span>
+        </div>
+        <a href="https://www.youtube.com/watch?v=TSnxM9DbppY" class="yoga-yt" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="#C0392B"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.7a8.18 8.18 0 004.78 1.52V6.78a4.85 4.85 0 01-1.01-.09z"/></svg>
+          Watch asana guide
+        </a>
+      </div>
+
+      <div class="yoga-card">
+        <div class="yoga-card-icon" style="background:#E1F5EE;">🧘</div>
+        <div class="yoga-card-name">Yoga Nidra</div>
+        <div class="yoga-card-dur">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          30 min · Beginner
+        </div>
+        <div class="yoga-card-desc">Parasympathetic activation. Clinical trials: 20% reduction in fasting glucose after 8 weeks.</div>
+        <div class="yoga-card-pills">
+          <span class="yoga-pill" style="background:#E1F5EE;color:#0F6E56;">Fasting↓</span>
+          <span class="yoga-pill" style="background:#FDEAEA;color:#A32D2D;">Stress↓</span>
+        </div>
+        <a href="https://youtu.be/cv93zmm-jqY?si=4EG2dSPUgmTkDt1F" class="yoga-yt" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="#C0392B"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.7a8.18 8.18 0 004.78 1.52V6.78a4.85 4.85 0 01-1.01-.09z"/></svg>
+          Watch relaxation routine
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4. TODAY PLAN -->
+  <div class="section-wrap">
+    <div class="sec-label">Today's lifestyle plan</div>
+    <div class="plan-card">
+      <div class="plan-row">
+        <div class="plan-icon" style="background:#EAF4FF;">🚶</div>
+        <div class="plan-text">
+          <div class="plan-name">Post-meal walking</div>
+          <div class="plan-sub">10–15 min after each meal reduces post-prandial glucose by up to 22%</div>
+        </div>
+        <span class="plan-badge" style="background:#EAF4FF;color:#185FA5;">3× today</span>
+      </div>
+      <div class="plan-row">
+        <div class="plan-icon" style="background:#E1F5EE;">💧</div>
+        <div class="plan-text">
+          <div class="plan-name">Hydration goal</div>
+          <div class="plan-sub">Target 8 glasses unless your clinician restricted fluids. Spread across the day.</div>
+        </div>
+        <span class="plan-badge" style="background:#E1F5EE;color:#0F6E56;" id="planHydBadge">0 / 8</span>
+      </div>
+      <div class="plan-row">
+        <div class="plan-icon" style="background:#FFF4DC;">🌅</div>
+        <div class="plan-text">
+          <div class="plan-name">Morning yoga</div>
+          <div class="plan-sub">Vajrasana after meals, Surya Namaskar, Pranayama. Avoid during hypoglycaemia.</div>
+        </div>
+        <span class="plan-badge" style="background:#FFF4DC;color:#854F0B;">Pending</span>
+      </div>
+      <div class="plan-row">
+        <div class="plan-icon" style="background:#EEEDFE;">🌙</div>
+        <div class="plan-text">
+          <div class="plan-name">Sleep target</div>
+          <div class="plan-sub">7–8 hours. Poor sleep raises cortisol and worsens insulin resistance.</div>
+        </div>
+        <span class="plan-badge" style="background:#EEEDFE;color:#3C3489;">Tonight</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. PATIENT EDUCATION IEC -->
+  <div class="section-wrap">
+    <div class="sec-label">Patient education IEC</div>
+    <div class="iec-card">
+      <div class="iec-header-row">
+        <div>
+          <div class="iec-title">Diabetes self-care library</div>
+          <div class="iec-subtitle">Tap a topic to see a simple explanation, action steps, and trusted links.</div>
+        </div>
+      </div>
+      <div class="iec-grid">
+        <button class="iec-topic" onclick="openIec('foot')">
+          <span class="iec-art" style="background:#E1F5EE;color:#0F6E56;">FOOT</span>
+          <div class="iec-topic-title">Foot care</div>
+          <div class="iec-topic-text">Daily inspection, footwear, wound warning signs.</div>
+        </button>
+        <button class="iec-topic" onclick="openIec('hypo')">
+          <span class="iec-art" style="background:#FDEAEA;color:#A32D2D;">LOW</span>
+          <div class="iec-topic-title">Low sugar care</div>
+          <div class="iec-topic-text">Symptoms, 15-15 rule, emergency advice.</div>
+        </button>
+        <button class="iec-topic" onclick="openIec('hba1c')">
+          <span class="iec-art" style="background:#FFF4DC;color:#854F0B;">A1C</span>
+          <div class="iec-topic-title">HbA1c meaning</div>
+          <div class="iec-topic-text">Why it matters and how to improve control.</div>
+        </button>
+        <button class="iec-topic" onclick="openIec('plate')">
+          <span class="iec-art" style="background:#EAF4FF;color:#185FA5;">PLATE</span>
+          <div class="iec-topic-title">Diet plate method</div>
+          <div class="iec-topic-text">Half vegetables, protein, controlled grains.</div>
+        </button>
+        <button class="iec-topic" onclick="openIec('visit')">
+          <span class="iec-art" style="background:#EEEDFE;color:#3C3489;">VISIT</span>
+          <div class="iec-topic-title">Hospital visits</div>
+          <div class="iec-topic-text">What to carry and when to seek help.</div>
+        </button>
+        <button class="iec-topic" onclick="openIec('yoga')">
+          <span class="iec-art" style="background:#E0F5EF;color:#0D9B7A;">YOGA</span>
+          <div class="iec-topic-title">Safe lifestyle routine</div>
+          <div class="iec-topic-text">Walking, yoga, sleep, hydration basics.</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. SLEEP CARD -->
+  <div class="section-wrap">
+    <div class="sec-label">Sleep this week</div>
+    <div class="sleep-card">
+      <div class="sleep-header">
+        <span class="sleep-title">Sleep quality</span>
+        <span class="sleep-quality" id="sleepQualityBadge">Manual entry</span>
+      </div>
+      <div class="sleep-note">Sleep quality is manual for now. Enter last night's sleep duration and quality here. Automatic sleep detection needs wearable or Health Connect integration later.</div>
+      <div class="sleep-bars" id="sleepBars"></div>
+      <div class="sleep-stats">
+        <div class="sleep-stat">
+          <div class="sleep-stat-num" id="sleepAvg" style="color:var(--teal);">6.8h</div>
+          <div class="sleep-stat-lbl">Avg duration</div>
+        </div>
+        <div class="sleep-stat">
+          <div class="sleep-stat-num" id="sleepLast" style="color:var(--blue);">--</div>
+          <div class="sleep-stat-lbl">Last night</div>
+        </div>
+        <div class="sleep-stat">
+          <div class="sleep-stat-num" id="sleepTarget" style="color:var(--amber);">5x</div>
+          <div class="sleep-stat-lbl">Target met</div>
+        </div>
+      </div>
+      <div class="sleep-log-row">
+        <input class="sleep-input" id="sleepHoursInput" type="number" min="0" max="14" step="0.5" placeholder="Hours" />
+        <select class="sleep-select" id="sleepQualityInput">
+          <option value="Good">Good</option>
+          <option value="Average">Average</option>
+          <option value="Poor">Poor</option>
+        </select>
+        <button class="sleep-save" onclick="saveSleep()">Save</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end scroll-body -->
+
+<div class="iec-modal" id="iecModal" onclick="closeIec(event)">
+  <div class="iec-sheet" id="iecModalInner" onclick="event.stopPropagation()"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" aria-label="Main navigation">
+  <button class="nav-item" aria-label="Home" onclick="Android.navigate('dashboard')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </button>
+  <button class="nav-item" aria-label="Glucose" onclick="Android.navigate('glucose')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
+    Glucose
+  </button>
+  <button class="nav-item active" aria-label="Lifestyle" onclick="Android.navigate('lifestyle')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    Lifestyle
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" aria-label="Diet" onclick="Android.navigate('nutrition')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 2l1.5 18.5a2 2 0 002 1.5h11a2 2 0 002-1.5L21 2"/><path d="M8 2v6a4 4 0 008 0V2"/></svg>
+    Diet
+  </button>
+  <button class="nav-item" aria-label="Learn" onclick="Android.navigate('about')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    Learn
+  </button>
+</nav>
+
+<script>
+let APP_LANG = 'en';
+
+const LIFESTYLE_KN_TEXT = {
+  'Lifestyle': 'ಜೀವನಶೈಲಿ',
+  'Today': 'ಇಂದು',
+  'Hydration': 'ನೀರಿನ ಸೇವನೆ',
+  'Activity rings': 'ಚಟುವಟಿಕೆ ವಲಯಗಳು',
+  'Start step counter': 'ಹೆಜ್ಜೆ ಎಣಿಕೆ ಆರಂಭಿಸಿ',
+  'Yoga for diabetes': 'ಮಧುಮೇಹಕ್ಕೆ ಯೋಗ',
+  "Today's lifestyle plan": 'ಇಂದಿನ ಜೀವನಶೈಲಿ ಯೋಜನೆ',
+  'Post-meal walking': 'ಊಟದ ನಂತರ ನಡೆಯುವುದು',
+  'Hydration goal': 'ನೀರಿನ ಗುರಿ',
+  'Morning yoga': 'ಬೆಳಗಿನ ಯೋಗ',
+  'Sleep target': 'ನಿದ್ರೆ ಗುರಿ',
+  'Patient education IEC': 'ರೋಗಿ ಶಿಕ್ಷಣ IEC',
+  'Diabetes self-care library': 'ಮಧುಮೇಹ ಸ್ವಯಂ-ಆರೈಕೆ ಗ್ರಂಥಾಲಯ',
+  'Tap a topic to see a simple explanation, action steps, and trusted links.': 'ಸರಳ ವಿವರಣೆ, ಕ್ರಮಗಳು ಮತ್ತು ವಿಶ್ವಾಸಾರ್ಹ ಲಿಂಕ್‌ಗಳಿಗಾಗಿ ವಿಷಯವನ್ನು ತಟ್ಟಿರಿ.',
+  'Foot care': 'ಪಾದ ಆರೈಕೆ',
+  'Daily inspection, footwear, wound warning signs.': 'ದಿನನಿತ್ಯ ಪಾದ ಪರಿಶೀಲನೆ, ಸರಿಯಾದ ಪಾದರಕ್ಷೆ, ಗಾಯದ ಎಚ್ಚರಿಕೆ ಚಿಹ್ನೆಗಳು.',
+  'Low sugar care': 'ಕಡಿಮೆ ಸಕ್ಕರೆ ಆರೈಕೆ',
+  'Symptoms, 15-15 rule, emergency advice.': 'ಲಕ್ಷಣಗಳು, 15-15 ನಿಯಮ, ತುರ್ತು ಸಲಹೆ.',
+  'HbA1c meaning': 'HbA1c ಅರ್ಥ',
+  'Why it matters and how to improve control.': 'ಇದು ಏಕೆ ಮುಖ್ಯ ಮತ್ತು ನಿಯಂತ್ರಣವನ್ನು ಹೇಗೆ ಸುಧಾರಿಸಬೇಕು.',
+  'Diet plate method': 'ಆಹಾರ ತಟ್ಟೆ ವಿಧಾನ',
+  'Half vegetables, protein, controlled grains.': 'ಅರ್ಧ ತರಕಾರಿ, ಪ್ರೋಟೀನ್, ನಿಯಂತ್ರಿತ ಧಾನ್ಯಗಳು.',
+  'Hospital visits': 'ಆಸ್ಪತ್ರೆ ಭೇಟಿ',
+  'What to carry and when to seek help.': 'ಏನು ತೆಗೆದುಕೊಂಡು ಹೋಗಬೇಕು ಮತ್ತು ಯಾವಾಗ ಸಹಾಯ ಪಡೆಯಬೇಕು.',
+  'Safe lifestyle routine': 'ಸುರಕ್ಷಿತ ಜೀವನಶೈಲಿ ಕ್ರಮ',
+  'Walking, yoga, sleep, hydration basics.': 'ನಡೆದಾಟ, ಯೋಗ, ನಿದ್ರೆ, ನೀರಿನ ಸೇವನೆಯ ಮೂಲಗಳು.',
+  'Sleep this week': 'ಈ ವಾರದ ನಿದ್ರೆ',
+  'Sleep quality': 'ನಿದ್ರೆ ಗುಣಮಟ್ಟ',
+  'Manual entry': 'ಕೈಯಾರೆ ದಾಖಲಿಸಿ',
+  "Sleep quality is manual for now. Enter last night's sleep duration and quality here. Automatic sleep detection needs wearable or Health Connect integration later.": 'ಈಗ ನಿದ್ರೆ ಗುಣಮಟ್ಟವನ್ನು ಕೈಯಾರೆ ದಾಖಲಿಸಬೇಕು. ನಿನ್ನೆ ರಾತ್ರಿ ಎಷ್ಟು ಗಂಟೆ ನಿದ್ರೆ ಆಗಿದೆ ಮತ್ತು ಗುಣಮಟ್ಟವನ್ನು ಇಲ್ಲಿ ನಮೂದಿಸಿ. ಸ್ವಯಂ ನಿದ್ರೆ ಗುರುತಿಸಲು ಮುಂದೆ wearable ಅಥವಾ Health Connect ಸಂಪರ್ಕ ಬೇಕಾಗುತ್ತದೆ.',
+  'Avg duration': 'ಸರಾಸರಿ ಅವಧಿ',
+  'Last night': 'ನಿನ್ನೆ ರಾತ್ರಿ',
+  'Target met': 'ಗುರಿ ತಲುಪಿದೆ',
+  'Save': 'ಉಳಿಸಿ',
+  'Hours': 'ಗಂಟೆಗಳು',
+  'Good': 'ಚೆನ್ನಾಗಿದೆ',
+  'Average': 'ಸರಾಸರಿ',
+  'Poor': 'ಕಡಿಮೆ'
+};
+
+const IEC_ITEMS = {
+  foot: {
+    title: 'Diabetic foot care',
+    tone: '#E1F5EE',
+    stroke: '#0D9B7A',
+    text: 'Check both feet every day, including soles and between toes.\n\nWash with lukewarm water and dry well, especially between toes. Use moisturiser on dry skin, but not between toes.\n\nNever walk barefoot, even at home. Wear soft, well-fitting footwear and clean cotton socks.\n\nSeek care urgently for cuts, blisters, swelling, redness, pus, black skin, numbness, burning pain, or wounds that do not heal.',
+    links: [
+      ['WHO diabetes overview', 'https://www.who.int/health-topics/diabetes'],
+      ['ICMR Type 2 diabetes guideline PDF', 'https://www.icmr.gov.in/icmrobject/custom_data/pdf/resource-guidelines/ICMR_GuidelinesType2diabetes2018_0.pdf']
+    ]
+  },
+  hypo: {
+    title: 'Low sugar care',
+    tone: '#FDEAEA',
+    stroke: '#E85D5D',
+    text: 'Warning signs: sweating, shaking, hunger, fast heartbeat, dizziness, headache, confusion, weakness, or blurred vision.\n\nIf glucose is below 70 mg/dL and the patient can swallow, use the 15-15 rule: take 15 g fast carbohydrate, recheck after 15 minutes, and repeat if still low.\n\nExamples: glucose tablets, 1/2 cup fruit juice, or 3 teaspoons sugar dissolved in water.\n\nIf unconscious, seizure, severe confusion, or unable to swallow, do not give food by mouth. Seek emergency care.',
+    links: [
+      ['WHO diabetes fact sheet', 'https://www.who.int/news-room/fact-sheets/detail/diabetes'],
+      ['ICMR Type 2 diabetes guideline PDF', 'https://www.icmr.gov.in/icmrobject/custom_data/pdf/resource-guidelines/ICMR_GuidelinesType2diabetes2018_0.pdf']
+    ]
+  },
+  hba1c: {
+    title: 'Understanding HbA1c',
+    tone: '#FFF4DC',
+    stroke: '#F0A500',
+    text: 'HbA1c estimates average blood glucose over about 3 months. It helps doctors judge long-term control, not just one day of readings.\n\nMany adults aim around 7%, but targets must be personalised by the clinician depending on age, pregnancy, kidney disease, low-sugar risk, and other illnesses.\n\nTo improve HbA1c: take medicines on time, log fasting and 2-hour post-meal readings, use low-GI meals, walk 10-15 minutes after meals if safe, sleep 7-8 hours, and attend follow-ups.',
+    links: [
+      ['WHO diabetes fact sheet', 'https://www.who.int/news-room/fact-sheets/detail/diabetes'],
+      ['ICMR Type 2 diabetes guideline PDF', 'https://www.icmr.gov.in/icmrobject/custom_data/pdf/resource-guidelines/ICMR_GuidelinesType2diabetes2018_0.pdf']
+    ]
+  },
+  plate: {
+    title: 'Diabetes plate method',
+    tone: '#EAF4FF',
+    stroke: '#3B9EFF',
+    text: 'Build meals like this:\n\nHalf plate: non-starchy vegetables such as beans, greens, cabbage, cucumber, gourds, capsicum.\n\nOne quarter: protein such as dal, chana, sprouts, curd, egg, fish, chicken, paneer, tofu.\n\nOne quarter: controlled grains such as phulka, millet, brown rice, ragi, oats, or small portion of rice.\n\nAvoid sugary drinks and fruit juices. Eat protein and vegetables before grains when possible.',
+    links: [
+      ['WHO healthy diet guidance', 'https://www.who.int/en/news-room/fact-sheets/detail/healthy-diet'],
+      ['ICMR Type 2 diabetes guideline PDF', 'https://www.icmr.gov.in/icmrobject/custom_data/pdf/resource-guidelines/ICMR_GuidelinesType2diabetes2018_0.pdf']
+    ]
+  },
+  visit: {
+    title: 'Hospital visit preparation',
+    tone: '#EEEDFE',
+    stroke: '#7C6FF7',
+    text: 'Carry these for every visit:\n\n- Glucose log with date, time, fasting/post-meal label, symptoms, medicines, meals, illness, and exercise.\n- Current medicine list with dose and timing.\n- Any low-sugar episodes and what triggered them.\n- HbA1c, lipid, kidney, eye, and foot exam records if available.\n\nSeek earlier care for repeated low sugar, very high readings, chest pain, breathlessness, drowsiness, vomiting, dehydration, foot wounds, or infection signs.',
+    links: [
+      ['WHO diabetes overview', 'https://www.who.int/health-topics/diabetes'],
+      ['ICMR Type 1 diabetes guideline PDF', 'https://www.icmr.gov.in/icmrobject/custom_data/pdf/resource-guidelines/ICMR_Guidelines_for_Management_of_Type_1_Diabetes.pdf']
+    ]
+  },
+  yoga: {
+    title: 'Safe lifestyle routine',
+    tone: '#E0F5EF',
+    stroke: '#0D9B7A',
+    text: 'Daily routine for most stable diabetes patients:\n\n- Walk 10-15 minutes after lunch and dinner if safe.\n- Hydrate across the day unless your doctor restricted fluids.\n- Sleep 7-8 hours and keep a regular sleep schedule.\n- Gentle yoga can support flexibility, stress control, and routine building.\n\nAvoid intense exercise during hypoglycaemia, acute illness, chest pain, severe breathlessness, dizziness, or uncontrolled very high glucose unless your clinician has advised a plan.',
+    links: [
+      ['Yoga asana video 1', 'https://youtu.be/cv93zmm-jqY?si=4EG2dSPUgmTkDt1F'],
+      ['Yoga asana live session', 'https://www.youtube.com/live/cVSG1jfWO7I?si=fQGEWI-xCaUvLvHo'],
+      ['Yoga asana video 2', 'https://www.youtube.com/watch?v=TSnxM9DbppY']
+    ]
+  }
+};
+
+const IEC_ITEMS_KN = {
+  foot: {
+    title: 'ಮಧುಮೇಹ ಪಾದ ಆರೈಕೆ',
+    tone: '#E1F5EE',
+    stroke: '#0D9B7A',
+    text: 'ಪ್ರತಿ ದಿನ ಎರಡೂ ಪಾದಗಳನ್ನು ಪರಿಶೀಲಿಸಿ, ಪಾದದ ಕೆಳಭಾಗ ಮತ್ತು ಬೆರಳಿನ ಮಧ್ಯ ಭಾಗವನ್ನೂ ನೋಡಿ.\n\nಬೆಚ್ಚಗಿನ ನೀರಿನಲ್ಲಿ ತೊಳೆಯಿರಿ ಮತ್ತು ಬೆರಳಿನ ಮಧ್ಯ ಭಾಗವನ್ನು ಚೆನ್ನಾಗಿ ಒಣಗಿಸಿ. ಚರ್ಮ ಒಣಗಿದ್ದರೆ ಮೈಸ್ಚರೈಸರ್ ಬಳಸಿ, ಆದರೆ ಬೆರಳಿನ ನಡುವೆ ಬೇಡ.\n\nಮನೆಯಲ್ಲಿ ಸಹ ಬೆತ್ತಲೆ ಕಾಲಿನಿಂದ ನಡೆಯಬೇಡಿ. ಮೃದುವಾದ, ಸರಿಯಾಗಿ ಹೊಂದುವ ಪಾದರಕ್ಷೆ ಮತ್ತು ಸ್ವಚ್ಛ ಹತ್ತಿ ಸಾಕ್ಸ್ ಬಳಸಿ.\n\nಕಟ್, ಬ್ಲಿಸ್ಟರ್, ಊತ, ಕೆಂಪು, ಪುಸ್, ಕಪ್ಪು ಚರ್ಮ, ಸುಣ್ಣಗಾಗುವುದು, ಸುಡುವ ನೋವು ಅಥವಾ ಗುಣವಾಗದ ಗಾಯ ಕಂಡರೆ ತಕ್ಷಣ ವೈದ್ಯರನ್ನು ಸಂಪರ್ಕಿಸಿ.',
+    links: [
+      ['WHO ಮಧುಮೇಹ ಮಾಹಿತಿ', 'https://www.who.int/news-room/fact-sheets/detail/diabetes'],
+      ['ICMR Type 2 diabetes guideline PDF', 'https://www.icmr.gov.in/icmrobject/custom_data/pdf/resource-guidelines/ICMR_GuidelinesType2diabetes2018_0.pdf']
+    ]
+  },
+  hypo: {
+    title: 'ಕಡಿಮೆ ರಕ್ತ ಸಕ್ಕರೆ ಆರೈಕೆ',
+    tone: '#FDEAEA',
+    stroke: '#E85D5D',
+    text: 'ಲಕ್ಷಣಗಳು: ಬೆವರು, ನಡುಕ, ಹಸಿವು, ಹೃದಯ ಬಡಿತ ಹೆಚ್ಚಾಗುವುದು, ತಲೆ ಸುತ್ತು, ಗೊಂದಲ, ದುರ್ಬಲತೆ ಅಥವಾ ದೃಷ್ಟಿ ಮಸುಕಾಗುವುದು.\n\nಗ್ಲೂಕೋಸ್ 70 mg/dL ಕ್ಕಿಂತ ಕಡಿಮೆ ಇದ್ದರೆ ಮತ್ತು ರೋಗಿ ನುಂಗಬಲ್ಲರೆ 15-15 ನಿಯಮ ಬಳಸಿ: 15 ಗ್ರಾಂ ತ್ವರಿತ ಕಾರ್ಬೋಹೈಡ್ರೇಟ್ ತೆಗೆದುಕೊಳ್ಳಿ, 15 ನಿಮಿಷದ ನಂತರ ಮತ್ತೆ ಪರೀಕ್ಷಿಸಿ. ಇನ್ನೂ ಕಡಿಮೆ ಇದ್ದರೆ ಪುನರಾವರ್ತಿಸಿ.\n\nಉದಾಹರಣೆ: ಗ್ಲೂಕೋಸ್ ಟ್ಯಾಬ್ಲೆಟ್, ಅರ್ಧ ಕಪ್ ಹಣ್ಣಿನ ರಸ, ಅಥವಾ 3 ಟೀ ಸ್ಪೂನ್ ಸಕ್ಕರೆ ನೀರಿನಲ್ಲಿ.\n\nಬುದ್ಧಿಹೀನತೆ, fits, ತೀವ್ರ ಗೊಂದಲ ಅಥವಾ ನುಂಗಲು ಆಗದಿದ್ದರೆ ಬಾಯಿಯಿಂದ ಆಹಾರ ಕೊಡಬೇಡಿ. ತುರ್ತು ಚಿಕಿತ್ಸೆ ಪಡೆಯಿರಿ.',
+    links: [
+      ['WHO ಮಧುಮೇಹ fact sheet', 'https://www.who.int/news-room/fact-sheets/detail/diabetes'],
+      ['ICMR guideline PDF', 'https://www.icmr.gov.in/icmrobject/custom_data/pdf/resource-guidelines/ICMR_GuidelinesType2diabetes2018_0.pdf']
+    ]
+  },
+  hba1c: {
+    title: 'HbA1c ಅರ್ಥ',
+    tone: '#FFF4DC',
+    stroke: '#F0A500',
+    text: 'HbA1c ಸುಮಾರು 3 ತಿಂಗಳ ಸರಾಸರಿ ರಕ್ತ ಗ್ಲೂಕೋಸ್ ಅನ್ನು ಸೂಚಿಸುತ್ತದೆ. ಇದು ಒಂದೇ ದಿನದ ರೀಡಿಂಗ್ ಅಲ್ಲ, ದೀರ್ಘಕಾಲದ ನಿಯಂತ್ರಣವನ್ನು ತೋರಿಸುತ್ತದೆ.\n\nಬಹುತೇಕ ವಯಸ್ಕರಿಗೆ ಸುಮಾರು 7% ಗುರಿ ಇರಬಹುದು, ಆದರೆ ವಯಸ್ಸು, ಗರ್ಭಧಾರಣೆ, ಕಿಡ್ನಿ ಸಮಸ್ಯೆ, ಕಡಿಮೆ ಸಕ್ಕರೆ ಅಪಾಯ ಮತ್ತು ಇತರ ಕಾಯಿಲೆಗಳ ಆಧಾರದ ಮೇಲೆ ವೈದ್ಯರು ಗುರಿಯನ್ನು ಬದಲಾಯಿಸಬಹುದು.\n\nಸುಧಾರಣೆಗೆ: ಔಷಧಿಗಳನ್ನು ಸಮಯಕ್ಕೆ ತೆಗೆದುಕೊಳ್ಳಿ, fasting ಮತ್ತು 2 ಗಂಟೆ post-meal ರೀಡಿಂಗ್ ದಾಖಲಿಸಿ, low-GI ಆಹಾರ, ಊಟದ ನಂತರ 10-15 ನಿಮಿಷ ನಡೆ, 7-8 ಗಂಟೆ ನಿದ್ರೆ ಮತ್ತು ನಿಯಮಿತ follow-up.',
+    links: [
+      ['WHO diabetes fact sheet', 'https://www.who.int/news-room/fact-sheets/detail/diabetes'],
+      ['ICMR Type 2 guideline PDF', 'https://www.icmr.gov.in/icmrobject/custom_data/pdf/resource-guidelines/ICMR_GuidelinesType2diabetes2018_0.pdf']
+    ]
+  },
+  plate: {
+    title: 'ಮಧುಮೇಹ ಆಹಾರ ತಟ್ಟೆ ವಿಧಾನ',
+    tone: '#EAF4FF',
+    stroke: '#3B9EFF',
+    text: 'ಆಹಾರ ತಟ್ಟೆಯನ್ನು ಹೀಗೆ ಕಟ್ಟಿಕೊಳ್ಳಿ:\n\nಅರ್ಧ ತಟ್ಟೆ: beans, ಸೊಪ್ಪು, cabbage, cucumber, gourds, capsicum ಮುಂತಾದ non-starchy ತರಕಾರಿಗಳು.\n\nಒಂದು ಕಾಲು: dal, chana, sprouts, curd, egg, fish, chicken, paneer, tofu ಮುಂತಾದ protein.\n\nಒಂದು ಕಾಲು: phulka, millet, brown rice, ragi, oats ಅಥವಾ ಸಣ್ಣ ಪ್ರಮಾಣದ rice.\n\nಸಕ್ಕರೆ ಪಾನೀಯ ಮತ್ತು fruit juice ತಪ್ಪಿಸಿ. ಸಾಧ್ಯವಾದರೆ ಮೊದಲು ತರಕಾರಿ/protein, ನಂತರ grains ತಿನ್ನಿ.',
+    links: [
+      ['WHO healthy diet', 'https://www.who.int/news-room/fact-sheets/detail/healthy-diet'],
+      ['ICMR guideline PDF', 'https://www.icmr.gov.in/icmrobject/custom_data/pdf/resource-guidelines/ICMR_GuidelinesType2diabetes2018_0.pdf']
+    ]
+  },
+  visit: {
+    title: 'ಆಸ್ಪತ್ರೆ ಭೇಟಿಗೆ ಸಿದ್ಧತೆ',
+    tone: '#EEEDFE',
+    stroke: '#7C6FF7',
+    text: 'ಪ್ರತಿ ಭೇಟಿಗೆ ಇವುಗಳನ್ನು ತೆಗೆದುಕೊಂಡು ಹೋಗಿ:\n\n- ದಿನಾಂಕ, ಸಮಯ, fasting/post-meal label, ಲಕ್ಷಣಗಳು, medicines, meals, illness, exercise ಇರುವ glucose log.\n- ಈಗ ತೆಗೆದುಕೊಳ್ಳುವ ಔಷಧಿ ಪಟ್ಟಿ dose ಮತ್ತು timing ಜೊತೆಗೆ.\n- ಕಡಿಮೆ ಸಕ್ಕರೆ episodes ಮತ್ತು trigger.\n- HbA1c, lipid, kidney, eye, foot exam records ಇದ್ದರೆ.\n\nRepeated lows, ತುಂಬಾ high readings, chest pain, breathlessness, vomiting, dehydration, foot wound ಅಥವಾ infection signs ಇದ್ದರೆ ಬೇಗ ವೈದ್ಯರನ್ನು ಭೇಟಿ ಮಾಡಿ.',
+    links: [
+      ['WHO diabetes overview', 'https://www.who.int/health-topics/diabetes'],
+      ['ICMR Type 2 guideline PDF', 'https://www.icmr.gov.in/icmrobject/custom_data/pdf/resource-guidelines/ICMR_GuidelinesType2diabetes2018_0.pdf']
+    ]
+  },
+  yoga: {
+    title: 'ಸುರಕ್ಷಿತ ಜೀವನಶೈಲಿ ಕ್ರಮ',
+    tone: '#E0F5EF',
+    stroke: '#0D9B7A',
+    text: 'ಸ್ಥಿರ ಮಧುಮೇಹ ರೋಗಿಗಳಿಗೆ ಸಾಮಾನ್ಯ ದಿನಚರಿ:\n\n- ಊಟದ ನಂತರ 10-15 ನಿಮಿಷ ನಡೆಯಿರಿ, ಸುರಕ್ಷಿತವಾಗಿದ್ದರೆ.\n- ವೈದ್ಯರು fluids ನಿರ್ಬಂಧಿಸಿಲ್ಲದಿದ್ದರೆ ದಿನವಿಡೀ ನೀರು ಕುಡಿಯಿರಿ.\n- 7-8 ಗಂಟೆ ನಿದ್ರೆ ಮತ್ತು ನಿಯಮಿತ sleep schedule ಇಡಿ.\n- ಸೌಮ್ಯ ಯೋಗ flexibility, stress control ಮತ್ತು routine building ಗೆ ಸಹಾಯಕ.\n\nHypoglycaemia, acute illness, chest pain, severe breathlessness, dizziness ಅಥವಾ uncontrolled high glucose ವೇಳೆ ತೀವ್ರ ವ್ಯಾಯಾಮ ಬೇಡ, ವೈದ್ಯರ specific plan ಇದ್ದರೆ ಮಾತ್ರ ಮಾಡಿ.',
+    links: [
+      ['Yoga asana video 1', 'https://youtu.be/cv93zmm-jqY?si=4EG2dSPUgmTkDt1F'],
+      ['Yoga asana live session', 'https://www.youtube.com/live/cVSG1jfWO7I?si=fQGEWI-xCaUvLvHo'],
+      ['Yoga asana video 2', 'https://www.youtube.com/watch?v=TSnxM9DbppY']
+    ]
+  }
+};
+
+function tLifestyle(text) {
+  return APP_LANG === 'kn' ? (LIFESTYLE_KN_TEXT[text.trim()] || text) : text;
+}
+
+function translateLifestyleDom() {
+  if (APP_LANG !== 'kn') return;
+  document.querySelectorAll('.topbar-title,.sec-label,.rings-card-title,.rings-card-badge,.steps-start-btn span:first-child,.hyd-label,.plan-name,.plan-sub,.plan-badge,.iec-title,.iec-subtitle,.iec-topic-title,.iec-topic-text,.sleep-title,.sleep-quality,.sleep-note,.sleep-stat-lbl,.sleep-save').forEach(el => {
+    const original = el.getAttribute('data-en') || el.textContent.trim();
+    el.setAttribute('data-en', original);
+    el.textContent = tLifestyle(original);
+  });
+  document.querySelectorAll('#sleepHoursInput').forEach(el => el.placeholder = 'ಗಂಟೆಗಳು');
+  document.querySelectorAll('#sleepQualityInput option').forEach(el => {
+    const original = el.getAttribute('data-en') || el.textContent.trim();
+    el.setAttribute('data-en', original);
+    el.textContent = tLifestyle(original);
+  });
+}
+
+function setAppLanguage(lang) {
+  APP_LANG = lang === 'kn' ? 'kn' : 'en';
+  translateLifestyleDom();
+  setDate();
+}
+
+function iecSvg(item) {
+  return '<svg viewBox="0 0 160 110" role="img" aria-hidden="true">' +
+    '<rect x="8" y="8" width="144" height="94" rx="26" fill="white" opacity="0.78"/>' +
+    '<circle cx="50" cy="55" r="27" fill="' + item.stroke + '" opacity="0.16"/>' +
+    '<path d="M45 62c12 12 33 8 45-10 9-13 19-18 32-13" fill="none" stroke="' + item.stroke + '" stroke-width="8" stroke-linecap="round"/>' +
+    '<circle cx="52" cy="54" r="12" fill="' + item.stroke + '"/>' +
+    '<rect x="88" y="42" width="42" height="10" rx="5" fill="' + item.stroke + '" opacity="0.72"/>' +
+    '<rect x="88" y="60" width="31" height="10" rx="5" fill="' + item.stroke + '" opacity="0.38"/>' +
+    '</svg>';
+}
+
+function openIec(id) {
+  const item = (APP_LANG === 'kn' ? IEC_ITEMS_KN[id] : IEC_ITEMS[id]);
+  if (!item) return;
+  const links = item.links.map(link => '<a href="' + link[1] + '" target="_blank" rel="noopener">' + link[0] + '</a>').join('');
+  document.getElementById('iecModalInner').innerHTML =
+    '<div class="iec-sheet-top"><h2>' + item.title + '</h2><button class="iec-close" onclick="closeIec()" aria-label="Close">&times;</button></div>' +
+    '<div class="iec-detail-img" style="background:' + item.tone + '">' + iecSvg(item) + '</div>' +
+    '<div class="iec-detail-text">' + item.text + '</div>' +
+    '<div class="iec-links">' + links + '</div>';
+  document.getElementById('iecModal').classList.add('open');
+}
+
+function closeIec(event) {
+  if (event && event.target && event.target.id !== 'iecModal') return;
+  document.getElementById('iecModal').classList.remove('open');
+}
+/* ────────────────────────────
+   HYDRATION LOGIC
+──────────────────────────── */
+let glasses = 0;
+let totalMl = 0;
+const TARGET = 8;
+const TARGET_ML = 2000;
+
+function setDate() {
+  const d = new Date();
+  document.getElementById('todayDate').textContent =
+    d.toLocaleDateString(APP_LANG === 'kn' ? 'kn-IN' : 'en-IN', { day:'numeric', month:'short' });
+}
+
+function addWater(delta) {
+  glasses = Math.max(0, Math.min(TARGET, glasses + delta));
+  updateHydUI();
+}
+
+function addMl(ml) {
+  totalMl = Math.min(TARGET_ML, totalMl + ml);
+  glasses = Math.round((totalMl / TARGET_ML) * TARGET * 10) / 10;
+  glasses = Math.min(TARGET, glasses);
+  updateHydUI();
+}
+
+function updateHydUI() {
+  const pct = Math.round((glasses / TARGET) * 100);
+  const displayGlasses = Math.round(glasses);
+
+  // Big number
+  document.getElementById('hydBigNum').textContent = displayGlasses;
+  document.getElementById('hydCount').textContent = displayGlasses;
+  document.getElementById('hydPct').textContent = pct + '%';
+
+  // Ring
+  const circ = 289;
+  const offset = circ - (circ * pct / 100);
+  document.getElementById('hydRingCircle').style.strokeDashoffset = offset;
+
+  // Bar
+  document.getElementById('hydBarFill').style.width = pct + '%';
+  document.getElementById('hydBarPct').textContent = pct + '%';
+  const remaining = Math.max(0, TARGET - displayGlasses);
+  document.getElementById('hydBarLeft').textContent =
+    remaining > 0 ? remaining + ' glasses remaining' : 'Goal reached! 🎉';
+
+  // Plan badge
+  document.getElementById('planHydBadge').textContent = displayGlasses + ' / 8';
+
+  // Water glass visual
+  const fillHeight = Math.round((pct / 100) * 76); // max fill 76px inside glass
+  const waterY = 104 - fillHeight;
+  document.getElementById('waterFill').setAttribute('y', waterY);
+  document.getElementById('waterFill').setAttribute('height', fillHeight);
+  document.getElementById('waterSolid').setAttribute('y', waterY);
+  document.getElementById('waterSolid').setAttribute('height', fillHeight);
+
+  // Show wave if any water
+  const wg = document.getElementById('waveGroup');
+  if (fillHeight > 4) {
+    wg.style.display = '';
+    document.getElementById('wavePath').setAttribute('y', waterY - 4);
+  } else {
+    wg.style.display = 'none';
+  }
+}
+
+/* ────────────────────────────
+   SLEEP BARS
+──────────────────────────── */
+function buildSleepBars() {
+  const days = ['Mo','Tu','We','Th','Fr','Sa','Su'];
+  const saved = localStorage.getItem('glydecareSleepHours');
+  const hrs = saved ? JSON.parse(saved) : [6.5, 7.2, 5.8, 8.1, 6.9, 7.5, 6.8];
+  const target = 7.5;
+  const wrap = document.getElementById('sleepBars');
+  wrap.innerHTML = '';
+  days.forEach((d, i) => {
+    const h = hrs[i];
+    const heightPx = Math.round((h / 9) * 52);
+    const color = h >= target ? '#1D9E75' : h >= 6 ? '#F0A500' : '#E85D5D';
+    const col = document.createElement('div');
+    col.className = 'sleep-bar-col';
+    col.innerHTML = `
+      <div class="sleep-bar" style="height:${heightPx}px;background:${color};width:100%;border-radius:4px 4px 0 0;"></div>
+      <span class="sleep-bar-day">${d}</span>
+    `;
+    wrap.appendChild(col);
+  });
+  const avg = hrs.reduce((a,b)=>a+b,0) / hrs.length;
+  const met = hrs.filter(h => h >= 7 && h <= 9).length;
+  document.getElementById('sleepAvg').textContent = avg.toFixed(1) + 'h';
+  document.getElementById('sleepLast').textContent = hrs[hrs.length - 1].toFixed(1) + 'h';
+  document.getElementById('sleepTarget').textContent = met + 'x';
+  document.getElementById('sleepQualityBadge').textContent = localStorage.getItem('glydecareSleepQuality') || 'Manual entry';
+}
+
+function saveSleep() {
+  const hours = Number(document.getElementById('sleepHoursInput').value);
+  const quality = document.getElementById('sleepQualityInput').value;
+  if (!hours || hours < 0 || hours > 14) return;
+  const saved = localStorage.getItem('glydecareSleepHours');
+  const hrs = saved ? JSON.parse(saved) : [6.5, 7.2, 5.8, 8.1, 6.9, 7.5, 6.8];
+  hrs.push(hours);
+  while (hrs.length > 7) hrs.shift();
+  localStorage.setItem('glydecareSleepHours', JSON.stringify(hrs));
+  localStorage.setItem('glydecareSleepQuality', quality);
+  document.getElementById('sleepHoursInput').value = '';
+  buildSleepBars();
+}
+
+/* ────────────────────────────
+   STEP / GYROSCOPE LOGIC
+──────────────────────────── */
+let tracking = false;
+let stepCount = 0;
+let lastMag = null;
+let lastStepTime = 0;
+let activeMins = 0;
+let activeMinTimer = null;
+
+function toggleSteps() {
+  if (tracking) {
+    stopSteps();
+  } else {
+    startSteps();
+  }
+}
+
+function startSteps() {
+  if (!window.DeviceMotionEvent) {
+    document.getElementById('stepsStatusBadge').textContent = 'Sensor unavailable';
+    return;
+  }
+  tracking = true;
+  document.getElementById('stepsBtnLabel').textContent = 'Pause step tracking';
+  document.getElementById('stepsBtnIcon').innerHTML =
+    '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+  document.getElementById('stepsStatusBadge').textContent = 'Tracking…';
+  document.getElementById('stepsStatusBadge').style.background = '#E1F5EE';
+  document.getElementById('stepsStatusBadge').style.color = '#0F6E56';
+
+  window.addEventListener('devicemotion', onMotion);
+
+  // Count active minutes while tracking
+  activeMinTimer = setInterval(() => {
+    activeMins = Math.min(30, activeMins + 1);
+    updateRingsUI();
+  }, 60000);
+}
+
+function stopSteps() {
+  tracking = false;
+  window.removeEventListener('devicemotion', onMotion);
+  if (activeMinTimer) clearInterval(activeMinTimer);
+  document.getElementById('stepsBtnLabel').textContent = 'Resume step tracking';
+  document.getElementById('stepsBtnIcon').innerHTML =
+    '<polygon points="5 3 19 12 5 21 5 3"/>';
+  document.getElementById('stepsStatusBadge').textContent = stepCount + ' steps';
+}
+
+function onMotion(e) {
+  const a = e.accelerationIncludingGravity;
+  if (!a) return;
+  const mag = Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+  if (lastMag === null) { lastMag = mag; return; }
+  const delta = Math.abs(mag - lastMag);
+  lastMag = mag;
+  const now = Date.now();
+  if (delta > 1.1 && (now - lastStepTime) > 320) {
+    stepCount++;
+    lastStepTime = now;
+    updateRingsUI();
+  }
+}
+
+function updateRingsUI() {
+  const maxSteps = 6000;
+  const maxCal = 300;
+  const maxMins = 30;
+  const cal = Math.round(stepCount * 0.05);
+  const dist = (stepCount * 0.00076).toFixed(2);
+
+  document.getElementById('stepsNum').textContent =
+    stepCount >= 1000 ? (stepCount / 1000).toFixed(1) + 'k' : stepCount;
+  document.getElementById('stepsDist').textContent = dist + ' km';
+  document.getElementById('calNum').textContent = cal;
+  document.getElementById('minsNum').textContent = activeMins;
+
+  // Rings
+  const stepOff = 213.6 - (213.6 * Math.min(stepCount, maxSteps) / maxSteps);
+  const calOff  = 213.6 - (213.6 * Math.min(cal, maxCal) / maxCal);
+  const minsOff = 213.6 - (213.6 * Math.min(activeMins, maxMins) / maxMins);
+  document.getElementById('stepsRing').style.strokeDashoffset = stepOff.toFixed(1);
+  document.getElementById('calRing').style.strokeDashoffset = calOff.toFixed(1);
+  document.getElementById('minsRing').style.strokeDashoffset = minsOff.toFixed(1);
+}
+
+/* ────────────────────────────
+   INIT
+──────────────────────────── */
+setDate();
+buildSleepBars();
+
+// Animate rings on load
+setTimeout(() => {
+  // Small initial animation to show rings are alive
+  document.getElementById('hydRingCircle').style.strokeDashoffset = '289';
+}, 100);
+</script>
+</body>
+</html>

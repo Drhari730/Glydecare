@@ -1,0 +1,9 @@
+Ojas rPPG reference
+Source: https://github.com/namdpran8/Ojas
+License: MIT
+
+GlucoSense adapts the documented Ojas signal-processing approach for this app's
+camera pulse monitor: centered signal buffer, Hamming window, 45-200 BPM
+frequency-domain search, SNR validation, previous-heart-rate lock, and
+exponential smoothing. The full upstream Ojas app also uses MediaPipe,
+native C++/Neon, KissFFT, and TensorFlow Lite assets.

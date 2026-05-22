@@ -1,0 +1,734 @@
+{
+  "project": {
+    "name": "GlucoSense",
+    "package": "com.diabeticcare.app",
+    "version": "1.0.0",
+    "versionCode": 1,
+    "description": "Smart diabetes management Android app for Indian Type 2 Diabetes Mellitus patients. Features AI-powered nutrition chat, glucose tracking, medication reminders, HbA1c trend prediction, hospital visit scheduling, vitals monitoring, and health report export.",
+    "owner": {
+      "name": "Dr G Hari Prakash",
+      "designation": "Assistant Professor",
+      "division": "Division of Public Health",
+      "department": "Department of Allied Health Sciences",
+      "institution": "Ramaiah University of Applied Sciences",
+      "location": "Bengaluru, India"
+    },
+    "targetAudience": "Indian Type 2 Diabetes Mellitus patients",
+    "languages": ["English (en)", "Kannada (kn)"],
+    "platform": "Android",
+    "minSdk": 24,
+    "targetSdk": 35,
+    "compileSdk": 35
+  },
+
+  "build": {
+    "buildSystem": "Gradle",
+    "gradleVersion": "8.11.1",
+    "androidGradlePlugin": "8.7.3",
+    "kotlinVersion": "2.0.21",
+    "jvmTarget": "17",
+    "javaCompatibility": "JavaVersion.VERSION_17",
+    "kspVersion": "2.0.21-1.0.28",
+    "buildFeatures": {
+      "viewBinding": true,
+      "buildConfig": true
+    },
+    "signingNote": "Debug APK at app/build/outputs/apk/debug/app-debug.apk",
+    "requiredJava": "Android Studio bundled JBR (OpenJDK 21) at C:\\Program Files\\Android\\Android Studio\\jbr",
+    "buildCommand": "set JAVA_HOME=C:\\Program Files\\Android\\Android Studio\\jbr && gradlew.bat assembleDebug"
+  },
+
+  "architecture": {
+    "pattern": "MVVM (Model-View-ViewModel)",
+    "layers": {
+      "ui": "Fragment + ViewBinding + LiveData observers",
+      "viewmodel": "ViewModel + viewModelScope coroutines",
+      "repository": "Repository pattern wrapping Room DAOs",
+      "database": "Room (SQLite) with reactive LiveData queries",
+      "network": "Retrofit2 + Gson for Claude AI API calls"
+    },
+    "navigation": "Jetpack Navigation Component (single-activity, NavHostFragment)",
+    "concurrency": "Kotlin Coroutines (viewModelScope, Dispatchers.IO)",
+    "lifecycle": "AndroidX Lifecycle (ViewModel, LiveData, viewLifecycleOwner)",
+    "di": "Manual constructor injection via ViewModelFactory classes"
+  },
+
+  "dependencies": {
+    "core": [
+      "androidx.core:core-ktx:1.12.0",
+      "androidx.appcompat:appcompat:1.6.1",
+      "com.google.android.material:material:1.11.0",
+      "androidx.constraintlayout:constraintlayout:2.1.4"
+    ],
+    "navigation": [
+      "androidx.navigation:navigation-fragment-ktx:2.7.6",
+      "androidx.navigation:navigation-ui-ktx:2.7.6"
+    ],
+    "lifecycle": [
+      "androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0",
+      "androidx.lifecycle:lifecycle-livedata-ktx:2.7.0"
+    ],
+    "database": [
+      "androidx.room:room-runtime:2.6.1",
+      "androidx.room:room-ktx:2.6.1",
+      "ksp: androidx.room:room-compiler:2.6.1"
+    ],
+    "coroutines": [
+      "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
+    ],
+    "charts": [
+      "com.github.PhilJay:MPAndroidChart:v3.1.0"
+    ],
+    "network": [
+      "com.squareup.retrofit2:retrofit:2.9.0",
+      "com.squareup.retrofit2:converter-gson:2.9.0",
+      "com.squareup.okhttp3:logging-interceptor:4.12.0"
+    ],
+    "security": [
+      "androidx.security:security-crypto:1.1.0-alpha06"
+    ],
+    "background": [
+      "androidx.work:work-runtime-ktx:2.9.0"
+    ],
+    "pdf": [
+      "com.itextpdf:itextg:5.5.10"
+    ],
+    "animation": [
+      "com.airbnb.android:lottie:6.3.0"
+    ],
+    "fileSharing": [
+      "androidx.core.content.FileProvider (built-in AndroidX)"
+    ]
+  },
+
+  "apiKeys": {
+    "claudeApi": {
+      "provider": "Anthropic",
+      "keyName": "CLAUDE_API_KEY",
+      "configLocation": "local.properties file (root of project)",
+      "configLine": "CLAUDE_API_KEY=sk-ant-api03-YOUR_KEY_HERE",
+      "usedIn": "Nutrition AI chat screen",
+      "model": "claude-haiku-4-5",
+      "maxTokens": 200,
+      "endpoint": "https://api.anthropic.com/v1/messages",
+      "fallback": "Rule-based South Indian diet advice (works without API key)"
+    }
+  },
+
+  "database": {
+    "name": "diabeticcare_db",
+    "version": 2,
+    "migrationStrategy": "fallbackToDestructiveMigration",
+    "tables": {
+      "glucose_readings": {
+        "entity": "GlucoseReading",
+        "columns": {
+          "id": "Int, primary key, autoGenerate",
+          "value": "Int (mg/dL, valid range 20-600)",
+          "readingType": "String: FASTING | POST_MEAL | BEDTIME | RANDOM",
+          "notes": "String (optional)",
+          "timestamp": "Long (epoch ms, user-selected via DatePickerDialog)"
+        },
+        "computedProperty": "status → GlucoseStatus enum: LOW (<70), NORMAL (70-140), HIGH (141-200), VERY_HIGH (>200)"
+      },
+      "medications": {
+        "entity": "Medication",
+        "columns": {
+          "id": "Int, primary key, autoGenerate",
+          "name": "String (medication name e.g. Metformin)",
+          "dose": "String (e.g. '500mg · Before Meal')",
+          "frequency": "String: ONCE_DAILY | TWICE_DAILY | THREE_TIMES | FOUR_TIMES",
+          "reminderTimes": "String (comma-separated HH:mm e.g. '08:00,14:00,20:00')",
+          "isActive": "Boolean (default true)",
+          "createdAt": "Long (epoch ms)"
+        }
+      },
+      "medication_logs": {
+        "entity": "MedicationLog",
+        "columns": {
+          "id": "Int, primary key, autoGenerate",
+          "medicationId": "Int (FK to medications.id)",
+          "medicationName": "String",
+          "status": "String: TAKEN | MISSED",
+          "scheduledTime": "String (HH:mm)",
+          "timestamp": "Long (epoch ms)"
+        }
+      },
+      "meal_logs": {
+        "entity": "MealLog",
+        "columns": {
+          "id": "Int, primary key, autoGenerate",
+          "mealType": "String: BREAKFAST | LUNCH | DINNER | SNACK",
+          "portionSize": "String: SMALL | MEDIUM | LARGE",
+          "foodCategory": "String: RICE_BASED | WHEAT_BASED | FRIED | FRUITS | VEGETABLES | PULSES | DAIRY | MIXED",
+          "notes": "String (optional free text)",
+          "aiSuggestion": "String (cached AI response)",
+          "timestamp": "Long (epoch ms)"
+        }
+      },
+      "hba1c_records": {
+        "entity": "HbA1cRecord",
+        "columns": {
+          "id": "Int, primary key, autoGenerate",
+          "value": "Float (e.g. 7.2, valid range 3.0-20.0)",
+          "notes": "String (optional)",
+          "timestamp": "Long (epoch ms)"
+        },
+        "computedProperty": "status → HbA1cStatus: NORMAL (<5.7), PREDIABETES (5.7-6.4), CONTROLLED (6.5-7.9), UNCONTROLLED (≥8.0)"
+      },
+      "hospital_visits": {
+        "entity": "HospitalVisit",
+        "columns": {
+          "id": "Int, primary key, autoGenerate",
+          "visitType": "String: CLINIC | LAB_TEST | EYE_CHECK | FOOT_CHECK | OTHER",
+          "doctorName": "String (optional)",
+          "hospitalName": "String (optional)",
+          "scheduledDate": "Long (epoch ms, future date)",
+          "notes": "String (optional)",
+          "reminderEnabled": "Boolean (default true)",
+          "completed": "Boolean (default false)",
+          "createdAt": "Long (epoch ms)"
+        }
+      },
+      "vitals_records": {
+        "entity": "VitalsRecord",
+        "columns": {
+          "id": "Int, primary key, autoGenerate",
+          "systolic": "Int? (mmHg, nullable)",
+          "diastolic": "Int? (mmHg, nullable)",
+          "heartRate": "Int? (bpm, nullable)",
+          "spo2": "Float? (%, nullable)",
+          "respiratoryRate": "Int? (breaths/min, nullable)",
+          "source": "String: MANUAL | FACE_SCAN (default MANUAL)",
+          "timestamp": "Long (epoch ms)"
+        },
+        "computedProperty": "bpStatus → BPStatus: NORMAL (<120/80), ELEVATED (120-129/<80), HIGH_STAGE1 (130-139/80-89), HIGH_STAGE2 (≥140/≥90)"
+      }
+    }
+  },
+
+  "sharedPreferences": {
+    "fileName": "diabeticcare_prefs",
+    "keys": {
+      "logged_in": "Boolean — whether user has completed login",
+      "profile_complete": "Boolean — whether profile setup is done",
+      "phone": "String — user's 10-digit phone number",
+      "password": "String — simple 4-digit PIN (not secure, for demo only)",
+      "name": "String — patient's full name",
+      "language": "String — 'en' or 'kn' (controls entire app locale)",
+      "low_threshold": "Int — glucose low alert threshold (default 70 mg/dL)",
+      "high_threshold": "Int — glucose high alert threshold (default 180 mg/dL)",
+      "reminders_set": "Boolean — whether WorkManager reminders have been scheduled"
+    }
+  },
+
+  "screens": {
+    "LoginActivity": {
+      "file": "ui/auth/LoginActivity.kt",
+      "layout": "activity_login.xml",
+      "purpose": "Entry point — phone number input",
+      "flow": "Enter 10-digit phone → go to OtpActivity"
+    },
+    "OtpActivity": {
+      "file": "ui/auth/OtpActivity.kt",
+      "layout": "activity_otp.xml",
+      "purpose": "OTP verification (simulated, 60-second countdown)",
+      "flow": "Enter 6-digit OTP → if profile incomplete go to ProfileSetupActivity, else go to MainActivity"
+    },
+    "ProfileSetupActivity": {
+      "file": "ui/auth/ProfileSetupActivity.kt",
+      "layout": "activity_profile_setup.xml",
+      "purpose": "First-run profile setup",
+      "fields": ["Full name", "Age", "Gender", "Diabetes type", "Year of diagnosis", "Doctor name (optional)"],
+      "flow": "Save → go to MainActivity"
+    },
+    "MainActivity": {
+      "file": "MainActivity.kt",
+      "layout": "activity_main.xml",
+      "purpose": "Single-activity container with bottom navigation",
+      "bottomNavTabs": ["Dashboard", "Glucose", "Medication", "Nutrition"],
+      "attachBaseContext": "Applies locale (en/kn) from SharedPreferences on every Activity recreate"
+    },
+    "DashboardFragment": {
+      "file": "ui/dashboard/DashboardFragment.kt",
+      "layout": "fragment_dashboard.xml",
+      "viewModel": "DashboardViewModel",
+      "purpose": "Home screen — live summary of all key health metrics",
+      "dataDisplayed": {
+        "header": "Greeting (Good Morning/Afternoon/Evening) + Patient name",
+        "glucoseCard": "Latest glucose value (mg/dL), status badge (Low/Normal/High/Very High), timestamp, HbA1c value, Log button",
+        "statsRow": "Meds taken today (X/Y), Medication adherence % (7-day), Next hospital visit date",
+        "aiSuggestion": "Rule-based 1-line advice based on latest glucose status",
+        "featureTiles": "8 tiles: Blood Glucose, HbA1c, Medication, Nutrition, Vitals, Hospital Visits, Reports, About Me"
+      },
+      "reactivity": "All values update automatically via Room LiveData. onResume() triggers adherence refresh.",
+      "tileNavigation": {
+        "Blood Glucose": "action_dashboard_to_glucose",
+        "HbA1c": "action_dashboard_to_hba1c",
+        "Medication": "action_dashboard_to_medication",
+        "Nutrition": "action_dashboard_to_nutrition",
+        "Vitals": "action_dashboard_to_vitals",
+        "Hospital Visits": "action_dashboard_to_visits",
+        "Reports": "action_dashboard_to_reports",
+        "About Me": "action_dashboard_to_about"
+      }
+    },
+    "GlucoseFragment": {
+      "file": "ui/glucose/GlucoseFragment.kt",
+      "layout": "fragment_glucose.xml",
+      "dialog": "dialog_add_glucose.xml",
+      "viewModel": "GlucoseViewModel",
+      "purpose": "Log and view blood glucose readings with trend chart",
+      "features": {
+        "chart": "MPAndroidChart LineChart with fill area, Low (70) and High (180) limit lines, cubic bezier curve",
+        "tabs": "7 Days / 30 Days toggle for chart and stats",
+        "stats": "Readings count, Average glucose, Out-of-range count",
+        "addDialog": {
+          "readingType": "Chip selection: Fasting / Post Meal / Bedtime / Random",
+          "glucoseValue": "Numeric input (20-600 mg/dL)",
+          "dateTimePicker": "MaterialButton → DatePickerDialog → TimePickerDialog chain. Default is current time. Max date = today.",
+          "notes": "Optional multi-line text"
+        },
+        "list": "RecyclerView of all readings ordered by timestamp DESC"
+      }
+    },
+    "MedicationFragment": {
+      "file": "ui/medication/MedicationFragment.kt",
+      "layout": "fragment_medication.xml",
+      "dialog": "dialog_add_medication.xml",
+      "viewModel": "MedicationViewModel",
+      "purpose": "Manage medications and log daily dose compliance",
+      "addMedicationDialog": {
+        "name": "TextInputEditText — medication name (required)",
+        "dose": "TextInputEditText — dose amount e.g. 500mg",
+        "frequency": "ChipGroup (single select): OD (×1) | BD (×2) | TID (×3) | QID (×4)",
+        "mealTiming": "ChipGroup (single select): Before Meal | After Meal | With Meal",
+        "reminderTimes": {
+          "OD": "08:00 (1 time row shown)",
+          "BD": "08:00, 20:00 (2 time rows shown)",
+          "TID": "08:00, 14:00, 20:00 (3 time rows shown)",
+          "QID": "07:00, 12:00, 17:00, 21:00 (4 time rows shown)",
+          "customization": "Each time row has MaterialButton that opens TimePickerDialog"
+        },
+        "saving": "dose field stored as '500mg · Before Meal', reminderTimes as '08:00,14:00,20:00'"
+      },
+      "list": "RecyclerView with MedicationAdapter — each item has Mark Taken / Mark Missed toggle buttons",
+      "adherence": "Calculated as (taken_logs / total_expected) * 100 over past 7 days"
+    },
+    "NutritionFragment": {
+      "file": "ui/nutrition/NutritionFragment.kt",
+      "layout": "fragment_nutrition.xml",
+      "viewModel": "NutritionViewModel",
+      "purpose": "AI-powered nutrition chat assistant for South Indian T2DM diet guidance",
+      "design": "Full-screen chat interface (like WhatsApp/messaging app)",
+      "components": {
+        "header": "Blue gradient header with 'GlucoSense AI' title and subtitle",
+        "quickChips": "Horizontal scrollable chips: 🌅 Breakfast ideas | 🍚 Is rice okay? | 🥨 Healthy snacks | 🍬 Glucose spike foods | 📋 Log today's meal",
+        "chatRecyclerView": "stackFromEnd=true, shows conversation bubbles",
+        "typingIndicator": "ProgressBar + 'GlucoSense AI is thinking…' (shown during API call)",
+        "inputBar": "Rounded TextInputLayout + circular Send button"
+      },
+      "chatBubbles": {
+        "user": "Blue bubble (#1565C0), aligned right, top-left corner is sharp",
+        "ai": "Light grey bubble (#F5F5F5) with border, aligned left with avatar icon, top-right corner is sharp"
+      },
+      "aiIntegration": {
+        "primaryPath": "Calls Claude claude-haiku-4-5 via Retrofit. System prompt specializes it for Indian T2DM + South Indian foods. max_tokens=200.",
+        "fallbackPath": "if CLAUDE_API_KEY is blank OR network fails → rule-based responses for 9 categories",
+        "fallbackCategories": ["breakfast", "rice", "snack", "spike/avoid", "dinner", "lunch", "medication", "exercise", "fasting"]
+      },
+      "welcomeMessage": "Auto-shown on screen open listing capabilities",
+      "quickChipActions": {
+        "Breakfast ideas": "Sends preset question about T2DM breakfast",
+        "Is rice okay?": "Sends preset question about rice for diabetics",
+        "Healthy snacks": "Sends preset question about low-GI snacks",
+        "Glucose spike foods": "Sends preset question about high-GI foods to avoid",
+        "Log today's meal": "AI explains how to describe meals in chat for assessment"
+      }
+    },
+    "HbA1cFragment": {
+      "file": "ui/hba1c/HbA1cFragment.kt",
+      "layout": "fragment_hba1c.xml",
+      "dialog": "dialog_add_hba1c.xml",
+      "viewModel": "HbA1cViewModel",
+      "purpose": "Track HbA1c (glycated haemoglobin) with trend chart and 3-month AI projection",
+      "features": {
+        "latestCard": "Shows latest HbA1c value, status text, date. Color-coded by status.",
+        "trendChart": {
+          "type": "MPAndroidChart LineChart",
+          "visible": "Only when ≥2 readings exist",
+          "actualData": "Solid orange line with filled area",
+          "projectedData": "Dashed grey line extending one point beyond last reading",
+          "limitLines": "Green dashed at 7.0% (target), Red dashed at 8.0% (uncontrolled threshold)",
+          "xAxisLabels": "Month abbreviation (e.g. May 26)"
+        },
+        "predictionCard": {
+          "visible": "Only when ≥2 readings exist",
+          "algorithm": "Simple linear regression on last 3 readings",
+          "output": "Projected 3-month HbA1c value, status category, trend direction (↑/↓/stable), clinical advice text"
+        },
+        "targetRangesCard": "Always visible reference: Normal <5.7%, Pre-diabetes 5.7-6.4%, Controlled 6.5-7.9%, Uncontrolled ≥8.0%",
+        "history": "RecyclerView with HbA1cAdapter (delete supported)"
+      }
+    },
+    "HospitalVisitsFragment": {
+      "file": "ui/hospitalvisits/HospitalVisitsFragment.kt",
+      "layout": "fragment_hospital_visits.xml",
+      "dialog": "dialog_add_visit.xml",
+      "viewModel": "HospitalVisitsViewModel",
+      "purpose": "Schedule and track upcoming hospital/clinic appointments",
+      "features": {
+        "nextVisitBanner": "Shows nearest upcoming (not completed) visit at top",
+        "addDialog": {
+          "visitType": "Dropdown: Clinic | Lab Test | Eye Check | Foot Check | Other",
+          "doctorName": "Optional text input",
+          "hospitalName": "Optional text input",
+          "scheduledDate": "DatePickerDialog (future dates only)",
+          "notes": "Optional multi-line text"
+        },
+        "list": "RecyclerView with HospitalVisitsAdapter. Completed visits shown with strikethrough.",
+        "actions": "Mark Complete (checkmark) | Delete (trash icon) per item"
+      }
+    },
+    "VitalsFragment": {
+      "file": "ui/vitals/VitalsFragment.kt",
+      "layout": "fragment_vitals.xml",
+      "viewModel": "VitalsViewModel",
+      "purpose": "Log and view vitals: blood pressure, heart rate, SpO2, respiratory rate",
+      "inputFields": ["Systolic BP (mmHg)", "Diastolic BP (mmHg)", "Heart Rate (bpm)", "SpO2 (%)", "Respiratory Rate (breaths/min)"],
+      "bpClassification": "NORMAL / ELEVATED / HIGH_STAGE1 / HIGH_STAGE2 auto-computed"
+    },
+    "ReportsFragment": {
+      "file": "ui/reports/ReportsFragment.kt",
+      "layout": "fragment_reports.xml",
+      "viewModel": "ReportsViewModel",
+      "purpose": "Generate and share health summary reports",
+      "features": {
+        "period": "ChipGroup: Last 7 Days / Last 30 Days",
+        "adherenceDisplay": "Shows 7-day and 30-day medication adherence %",
+        "generateReport": "Button → generates .txt file with glucose summary, medication logs, meal logs, HbA1c records",
+        "exportCsv": "Button → generates .csv file with glucose readings and medication compliance",
+        "shareDoctor": "Button → re-shares last generated file",
+        "sharing": "Intent.ACTION_SEND with FileProvider URI — opens system share sheet",
+        "mimeType": "text/plain for report, text/csv for CSV"
+      },
+      "fileProvider": {
+        "authority": "${applicationId}.fileprovider",
+        "config": "res/xml/file_paths.xml",
+        "paths": ["external-files-path", "files-path", "cache-path"]
+      }
+    },
+    "AboutMeFragment": {
+      "file": "ui/aboutme/AboutMeFragment.kt",
+      "layout": "fragment_about_me.xml",
+      "purpose": "User profile, language selection, reminder settings, developer info",
+      "sections": {
+        "profileHeader": "Blue gradient header with avatar circle and patient name",
+        "personalInfo": "Name (required), Age, Year of diagnosis, Doctor name, Diabetes type (chips: Type1/Type2/Gestational/Pre-diabetes)",
+        "saveProfile": "Saves name to SharedPreferences. If language changed, calls requireActivity().recreate() to apply new locale.",
+        "reminders": "Toggle for Glucose Check Reminders, Toggle for Medication Reminders, Test Reminder Now button",
+        "language": "ChipGroup: English | ಕನ್ನಡ (Kannada). Selecting and saving triggers full Activity recreate.",
+        "signOut": "Clears all SharedPreferences and finishes MainActivity",
+        "developerCard": {
+          "backgroundColor": "#F3E5F5 (light purple)",
+          "appName": "GlucoSense (from @string/app_name — localizable)",
+          "version": "Version 1.0 · Research Build",
+          "developer": "Dr G Hari Prakash",
+          "designation": "Assistant Professor, Division of Public Health, Department of Allied Health Sciences, Ramaiah University of Applied Sciences, Bengaluru, India"
+        }
+      }
+    }
+  },
+
+  "localization": {
+    "supportedLanguages": {
+      "en": "English (default)",
+      "kn": "Kannada"
+    },
+    "stringFiles": {
+      "english": "app/src/main/res/values/strings.xml",
+      "kannada": "app/src/main/res/values-kn/strings.xml"
+    },
+    "implementation": {
+      "applicationLevel": "DiabeticCareApp.attachBaseContext() reads 'language' from SharedPreferences and calls applyLocale()",
+      "activityLevel": "MainActivity.attachBaseContext() does the same — ensures correct locale after Activity recreate()",
+      "applyLocaleMethod": "Uses LocaleList (API 24+) or deprecated config.locale (API < 24). Calls context.createConfigurationContext(config).",
+      "switching": "User selects language in AboutMeFragment → saved to prefs → requireActivity().recreate() → app reloads in new language",
+      "notifications": "NotificationHelper.localizedContext() reads language pref and wraps applicationContext before calling getString() — ensures notifications appear in user's selected language"
+    },
+    "localizableStrings": "54 strings localized in Kannada including all navigation labels, meal types, medication terms, glucose status, greeting messages, AI labels, developer info, and notification text"
+  },
+
+  "notifications": {
+    "channels": {
+      "channel_reminders": {
+        "importance": "DEFAULT",
+        "purpose": "Medication dose reminders + glucose check reminders"
+      },
+      "channel_alerts": {
+        "importance": "HIGH",
+        "purpose": "Glucose high/low alerts"
+      }
+    },
+    "types": {
+      "glucoseReminder": "Shown at scheduled times via WorkManager: 'Time to check your blood glucose!'",
+      "medicationReminder": "Shown at each dose time: 'Time to take [MedName]'",
+      "glucoseAlert": "Shown when glucose reading is entered at LOW or VERY_HIGH level"
+    },
+    "scheduling": {
+      "class": "ReminderScheduler",
+      "worker": "ReminderWorker (WorkManager periodic task)",
+      "bootRestart": "BootReceiver re-schedules reminders after device reboot",
+      "alarmReceiver": "AlarmReceiver handles alarm intents for precise timing"
+    },
+    "permission": "POST_NOTIFICATIONS permission requested on Android 13+ (API 33+)"
+  },
+
+  "network": {
+    "claudeApi": {
+      "baseUrl": "https://api.anthropic.com/",
+      "endpoint": "POST /v1/messages",
+      "headers": {
+        "x-api-key": "BuildConfig.CLAUDE_API_KEY (from local.properties)",
+        "anthropic-version": "2023-06-01",
+        "Content-Type": "application/json"
+      },
+      "requestModel": {
+        "class": "ClaudeRequest",
+        "fields": {
+          "model": "claude-haiku-4-5",
+          "max_tokens": 200,
+          "messages": "List<ClaudeMessage> [{role: 'user', content: '<systemPrompt>\\n\\nPatient question: <userText>'}]"
+        }
+      },
+      "responseModel": {
+        "class": "ClaudeResponse",
+        "parsing": "response.content[0].text"
+      },
+      "systemPrompt": "You are GlucoSense AI, a diabetes care assistant specializing in Indian T2DM patients. Give concise, practical advice about South Indian diet, glucose management, and diabetes care. Keep responses under 3 sentences. Use specific South Indian food names. Always be encouraging and medically responsible.",
+      "fallback": "getRuleBasedResponse() in NutritionFragment — covers 9 query categories with South-Indian-specific advice"
+    },
+    "retrofit": {
+      "client": "ClaudeClient (object singleton)",
+      "service": "ClaudeApiService (interface)",
+      "converter": "GsonConverterFactory"
+    }
+  },
+
+  "fileStructure": {
+    "app/src/main/java/com/diabeticcare/app/": {
+      "DiabeticCareApp.kt": "Application class — locale setup, notification channels",
+      "MainActivity.kt": "Single activity — NavHostFragment, bottom nav, locale, permissions",
+      "data/model/": {
+        "GlucoseReading.kt": "Room entity + GlucoseStatus enum",
+        "Medication.kt": "Room entity (medications + medication_logs)",
+        "MealLog.kt": "Room entity + enums",
+        "HbA1cRecord.kt": "Room entity + HbA1cStatus enum",
+        "HospitalVisit.kt": "Room entity",
+        "VitalsRecord.kt": "Room entity + BPStatus enum",
+        "ChatMessage.kt": "Non-Room data class for nutrition AI chat UI state"
+      },
+      "data/database/": {
+        "AppDatabase.kt": "Room database singleton (version 2, fallbackToDestructiveMigration)",
+        "dao/GlucoseDao.kt": "getAllReadings (LiveData), getLatestReading (suspend), getLatestReadingLive (LiveData), getReadingsSince, getAverageValueSince, getOutOfRangeCountSince, getReadingsSinceSnapshot",
+        "dao/MedicationDao.kt": "getActiveMedications (LiveData), getActiveMedicationsSnapshot (suspend), logDose, getTakenCountSince, getAdherenceScore",
+        "dao/MealDao.kt": "getAllMeals (LiveData), getLatestMeal (suspend), getMealCountSince, getMealsSince",
+        "dao/HbA1cDao.kt": "getAllRecords (LiveData DESC), getLatestLive (LiveData), insert, delete",
+        "dao/HospitalVisitDao.kt": "getAllVisits (LiveData), getNextUpcomingLive (LiveData — first incomplete visit by scheduledDate ASC), insert, delete, markComplete",
+        "dao/VitalsDao.kt": "getAllVitals (LiveData), insert, delete"
+      },
+      "data/repository/": {
+        "GlucoseRepository.kt": "allReadings, latestLive, readingsSince(), insert(), delete(), getLatest(), averageLast(), outOfRangeCountLast(), snapshotLast()",
+        "MedicationRepository.kt": "medications, getActiveMedicationsSnapshot(), takenCountToday(), logDose(), adherenceScoreLast()",
+        "MealRepository.kt": "allMeals, insert(), delete(), getLatest(), mealCountLast(), snapshotLast()",
+        "VitalsRepository.kt": "allVitals, insert(), delete()"
+      },
+      "ui/auth/": "LoginActivity, OtpActivity, ProfileSetupActivity",
+      "ui/dashboard/": "DashboardFragment + DashboardViewModel + DashboardViewModelFactory",
+      "ui/glucose/": "GlucoseFragment + GlucoseViewModel + GlucoseViewModelFactory",
+      "ui/medication/": "MedicationFragment + MedicationAdapter + MedicationViewModel + MedicationViewModelFactory",
+      "ui/nutrition/": "NutritionFragment + NutritionViewModel + NutritionViewModelFactory + ChatAdapter + MealAdapter",
+      "ui/hba1c/": "HbA1cFragment + HbA1cAdapter + HbA1cViewModel",
+      "ui/hospitalvisits/": "HospitalVisitsFragment + HospitalVisitsAdapter + HospitalVisitsViewModel",
+      "ui/vitals/": "VitalsFragment + VitalsViewModel + VitalsViewModelFactory",
+      "ui/reports/": "ReportsFragment + ReportsViewModel + ReportsViewModelFactory",
+      "ui/aboutme/": "AboutMeFragment",
+      "network/": {
+        "ClaudeApiService.kt": "Retrofit interface — POST /v1/messages",
+        "ClaudeClient.kt": "Retrofit singleton",
+        "ClaudeModels.kt": "ClaudeRequest, ClaudeMessage, ClaudeResponse, ClaudeContent data classes"
+      },
+      "utils/": {
+        "PreferenceManager.kt": "SharedPreferences wrapper — isLoggedIn, name, language, thresholds, reminders",
+        "NotificationHelper.kt": "Creates channels, shows glucose/medication reminders, applies locale before getString()",
+        "ReminderScheduler.kt": "Schedules WorkManager periodic tasks for reminders",
+        "ReminderWorker.kt": "WorkManager Worker — triggers notification at reminder time",
+        "AlarmReceiver.kt": "BroadcastReceiver for AlarmManager-based reminders",
+        "BootReceiver.kt": "BroadcastReceiver on BOOT_COMPLETED — re-schedules reminders"
+      }
+    },
+    "app/src/main/res/": {
+      "layout/": {
+        "activity_login.xml": "Phone input screen",
+        "activity_otp.xml": "OTP input screen",
+        "activity_profile_setup.xml": "Profile setup form",
+        "activity_main.xml": "Host activity with NavHostFragment + BottomNavigationView",
+        "fragment_dashboard.xml": "Home screen with header + glucose card + stats row + 8 feature tiles",
+        "fragment_glucose.xml": "Glucose history with LineChart + stats + RecyclerView + FAB",
+        "fragment_medication.xml": "Medication list with RecyclerView + FAB",
+        "fragment_nutrition.xml": "AI chat interface with header + chips + RecyclerView + input bar",
+        "fragment_hba1c.xml": "HbA1c with latest card + LineChart + prediction card + target ranges + history",
+        "fragment_hospital_visits.xml": "Visit list with next visit banner + RecyclerView + FAB",
+        "fragment_vitals.xml": "Vitals entry + history",
+        "fragment_reports.xml": "Report period selector + adherence stats + export buttons",
+        "fragment_about_me.xml": "Profile + reminders + language + developer card",
+        "dialog_add_glucose.xml": "Reading type chips + value input + date/time picker button + notes",
+        "dialog_add_medication.xml": "Name + dose + frequency chips + meal timing chips + 1-4 time rows",
+        "dialog_add_hba1c.xml": "Value input + notes",
+        "dialog_add_visit.xml": "Visit type + doctor + hospital + date picker + notes",
+        "item_medication.xml": "Medication list row with name, dose, time, Taken/Missed buttons",
+        "item_meal.xml": "Meal history row with emoji + type + portion + category + timestamp + delete",
+        "item_hba1c.xml": "HbA1c history row with value badge + status + date + delete",
+        "item_hospital_visit.xml": "Visit row with icon + type + doctor + date + complete/delete buttons",
+        "item_chat_user.xml": "Blue right-aligned chat bubble for user messages",
+        "item_chat_ai.xml": "Grey left-aligned chat bubble with AI avatar icon"
+      },
+      "drawable/": {
+        "bg_header.xml": "Blue-to-dark-blue gradient rectangle (used for all screen headers)",
+        "bg_avatar_circle.xml": "Semi-transparent oval for avatar",
+        "bg_status_badge.xml": "Rounded rectangle for glucose status badge",
+        "bg_header_icon_btn.xml": "Circle background for icon buttons in header",
+        "bg_chat_user.xml": "Blue pill shape — sharp top-right corner for user chat bubble",
+        "bg_chat_ai.xml": "Light grey pill shape — sharp top-left corner for AI chat bubble",
+        "ic_launcher_foreground.xml": "Blood drop shape with ECG waveform inside",
+        "ic_launcher_background.xml": "Blue-to-teal gradient for launcher icon background",
+        "ic_add.xml": "Plus sign vector",
+        "ic_arrow_back.xml": "Back arrow vector",
+        "ic_calendar.xml": "Calendar icon vector",
+        "ic_check.xml": "Checkmark vector",
+        "ic_clock.xml": "Clock icon vector",
+        "ic_delete.xml": "Trash bin vector",
+        "ic_doctor.xml": "Doctor/stethoscope vector",
+        "ic_glucose.xml": "Blood drop vector",
+        "ic_medication.xml": "Pill/capsule vector",
+        "ic_notification.xml": "Bell vector",
+        "ic_person.xml": "Person silhouette vector",
+        "ic_reminder.xml": "Alarm clock vector",
+        "ic_reports.xml": "Document/chart vector",
+        "ic_send.xml": "Send/paper plane vector",
+        "ic_ai_suggestion.xml": "Lightning bolt vector for AI features",
+        "ic_nav_glucose.xml": "Bottom nav glucose icon",
+        "ic_nav_medication.xml": "Bottom nav medication icon",
+        "ic_nav_nutrition.xml": "Bottom nav nutrition icon"
+      },
+      "mipmap-anydpi-v26/": {
+        "ic_launcher.xml": "Adaptive icon referencing ic_launcher_foreground + ic_launcher_background",
+        "ic_launcher_round.xml": "Same adaptive icon for round launcher"
+      },
+      "navigation/nav_graph.xml": "Single nav graph — DashboardFragment as start destination, 8 child destinations, 8 actions from dashboard",
+      "values/strings.xml": "131 English strings covering all UI text, labels, notifications",
+      "values-kn/strings.xml": "56 Kannada strings for all key UI elements",
+      "values/colors.xml": "Color palette definitions",
+      "values/themes.xml": "Material 3 theme + custom card/button/text styles",
+      "values/dimens.xml": "screen_padding=16dp, card_padding=16dp",
+      "xml/file_paths.xml": "FileProvider path config for report sharing"
+    }
+  },
+
+  "appIcon": {
+    "design": "Blood drop shape containing an ECG/heartbeat waveline",
+    "background": "Blue (#1565C0) to Teal (#00897B) gradient",
+    "foreground": "White blood drop + white ECG line",
+    "format": "Adaptive icon (API 26+) — ic_launcher.xml + ic_launcher_round.xml in mipmap-anydpi-v26",
+    "note": "No fallback PNG mipmap resources — works on API 26+ devices. For API 24-25 support, add PNG mipmaps."
+  },
+
+  "permissions": {
+    "INTERNET": "Required for Claude AI API calls",
+    "CAMERA": "For future face-scan vitals feature (not fully implemented)",
+    "POST_NOTIFICATIONS": "For medication and glucose reminders (Android 13+, requested at runtime)",
+    "RECEIVE_BOOT_COMPLETED": "To reschedule reminders after device reboot",
+    "VIBRATE": "For notification vibration",
+    "WRITE_EXTERNAL_STORAGE": "maxSdkVersion=28 (Android 8 and below only)",
+    "READ_EXTERNAL_STORAGE": "maxSdkVersion=32 (Android 12 and below only)"
+  },
+
+  "manifest": {
+    "application": {
+      "name": ".DiabeticCareApp",
+      "icon": "@mipmap/ic_launcher",
+      "roundIcon": "@mipmap/ic_launcher_round",
+      "label": "@string/app_name (GlucoSense)",
+      "theme": "@style/Theme.DiabeticCare",
+      "usesCleartextTraffic": false
+    },
+    "activities": {
+      "LoginActivity": "exported=true, MAIN/LAUNCHER intent-filter, windowSoftInputMode=adjustResize",
+      "OtpActivity": "exported=false, adjustResize",
+      "ProfileSetupActivity": "exported=false, adjustResize",
+      "MainActivity": "exported=false"
+    },
+    "receivers": {
+      "AlarmReceiver": "exported=false",
+      "BootReceiver": "exported=true, BOOT_COMPLETED intent-filter"
+    },
+    "providers": {
+      "WorkManagerInitializer": "androidx.startup InitializationProvider",
+      "FileProvider": "authority=${applicationId}.fileprovider, exported=false, grantUriPermissions=true, paths from res/xml/file_paths.xml"
+    }
+  },
+
+  "knownLimitations": {
+    "faceScanVitals": "Camera permission declared but face-scan feature is not implemented. Button exists in VitalsFragment but is non-functional.",
+    "otpVerification": "Simulated — any 6-digit code is accepted. No real SMS gateway integrated.",
+    "pdfGeneration": "iTextPDF dependency included but reports are saved as .txt and .csv (not true PDF). The 'Generate PDF' button produces a text report.",
+    "apiKeyRequired": "Claude AI only works if CLAUDE_API_KEY is added to local.properties. Without it, rule-based fallback is used.",
+    "noPngMipmaps": "Adaptive icon only works on API 26+. API 24-25 devices will show default Android icon.",
+    "medicationReminders": "ReminderScheduler and WorkManager wiring exists but exact per-medication time scheduling from reminderTimes string is not fully verified end-to-end.",
+    "dataBackup": "No cloud sync. All data is local SQLite only. Uninstall destroys all data.",
+    "securityNote": "EncryptedSharedPreferences dependency included but PreferenceManager uses plain SharedPreferences — no actual encryption applied."
+  },
+
+  "setupInstructions": {
+    "step1": "Clone/copy project to local machine",
+    "step2": "Open in Android Studio (latest stable recommended)",
+    "step3": "Sync Gradle — it will download all dependencies automatically",
+    "step4_optional": "Add Claude API key to local.properties: CLAUDE_API_KEY=sk-ant-api03-YOUR_KEY",
+    "step5": "Run on device or emulator (API 24+)",
+    "step6_cli": "If building via CLI: set JAVA_HOME to Android Studio's JBR at C:\\Program Files\\Android\\Android Studio\\jbr, then run gradlew.bat assembleDebug",
+    "debugApkLocation": "app/build/outputs/apk/debug/app-debug.apk"
+  },
+
+  "colorPalette": {
+    "primary": "#1565C0 (deep blue)",
+    "primaryLight": "#E3F2FD (light blue background)",
+    "secondary": "#00897B (teal)",
+    "background": "#F5F7FA (near-white grey)",
+    "white": "#FFFFFF",
+    "textPrimary": "#1A1A2E",
+    "textSecondary": "#666666",
+    "textHint": "#AAAAAA",
+    "divider": "#E8E8E8",
+    "success": "#4CAF50 (green)",
+    "warning": "#FF9800 (orange)",
+    "error": "#F44336 (red)",
+    "tileGlucose": "#E53935 (red)",
+    "tileHba1c": "#FB8C00 (orange)",
+    "tileMedication": "#1565C0 (blue)",
+    "tileNutrition": "#2E7D32 (dark green)",
+    "tileVitals": "#6A1B9A (purple)",
+    "tileVisits": "#00838F (teal)",
+    "glucoseLow": "#2196F3 (blue)",
+    "glucoseNormal": "#4CAF50 (green)",
+    "glucoseHigh": "#FF9800 (orange)",
+    "glucoseVeryHigh": "#F44336 (red)",
+    "chartLine": "#1565C0"
+  },
+
+  "generatedBy": "Claude (Anthropic) — built iteratively via Claude Code agent system",
+  "generationDate": "2026-05-15",
+  "totalKotlinFiles": 53,
+  "totalLayoutFiles": 21,
+  "totalDrawableFiles": 22,
+  "apkSizeMb": 10.45
+}

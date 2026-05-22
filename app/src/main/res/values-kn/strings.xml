@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Glydecare</string>
+    <string name="app_tagline">ಸ್ಮಾರ್ಟ್ ಮಧುಮೇಹ ನಿರ್ವಹಣೆ</string>
+
+    <string name="dashboard">ಡ್ಯಾಶ್‌ಬೋರ್ಡ್</string>
+    <string name="good_morning">ಶುಭ ಬೆಳಗ್ಗೆ,</string>
+    <string name="good_afternoon">ಶುಭ ಮಧ್ಯಾಹ್ನ,</string>
+    <string name="good_evening">ಶುಭ ಸಂಜೆ,</string>
+    <string name="todays_summary">ಇಂದಿನ ಸಾರಾಂಶ</string>
+    <string name="latest_glucose">ಇತ್ತೀಚಿನ ಗ್ಲೂಕೋಸ್</string>
+    <string name="mg_dl">mg/dL</string>
+    <string name="log_glucose">ಗ್ಲೂಕೋಸ್ ದಾಖಲಿಸಿ</string>
+    <string name="ai_suggestion">AI ಸಲಹೆ</string>
+    <string name="no_suggestion">ವೈಯಕ್ತಿಕ ಸಲಹೆಗಾಗಿ ಗ್ಲೂಕೋಸ್ ದಾಖಲಿಸಿ</string>
+    <string name="current_progress">ಪ್ರಸ್ತುತ ಪ್ರಗತಿ</string>
+    <string name="taken_today">ಇಂದು ತೆಗೆದುಕೊಂಡದ್ದು</string>
+    <string name="adherence">ಪಾಲನೆ</string>
+    <string name="next_visit_dash">ಮುಂದಿನ ಭೇಟಿ --</string>
+    <string name="next_visit_date">ಮುಂದಿನ ಭೇಟಿ %1$s</string>
+    <string name="smart_care_prediction">ಸ್ಮಾರ್ಟ್ ಆರೈಕೆ ಊಹೆ</string>
+    <string name="health_tools">ಆರೋಗ್ಯ ಸಾಧನಗಳು</string>
+    <string name="profile">ಪ್ರೊಫೈಲ್</string>
+    <string name="status_low">ಕಡಿಮೆ</string>
+    <string name="status_normal">ಸಾಮಾನ್ಯ</string>
+    <string name="status_high">ಹೆಚ್ಚು</string>
+    <string name="status_very_high">ತುಂಬಾ ಹೆಚ್ಚು</string>
+    <string name="lifestyle">ಜೀವನಶೈಲಿ</string>
+
+    <string name="glucose">ಗ್ಲೂಕೋಸ್</string>
+    <string name="add_reading">ರೀಡಿಂಗ್ ಸೇರಿಸಿ</string>
+    <string name="fasting">ಉಪವಾಸ</string>
+    <string name="post_meal">ಊಟದ ನಂತರ</string>
+    <string name="bedtime">ನಿದ್ರೆಗೆ ಮೊದಲು</string>
+    <string name="random">ಯಾವುದೇ ಸಮಯ</string>
+    <string name="glucose_value">ಗ್ಲೂಕೋಸ್ ಮೌಲ್ಯ (mg/dL)</string>
+    <string name="notes">ಟಿಪ್ಪಣಿ (ಐಚ್ಛಿಕ)</string>
+    <string name="save">ಉಳಿಸಿ</string>
+    <string name="seven_days">7 ದಿನಗಳು</string>
+    <string name="thirty_days">30 ದಿನಗಳು</string>
+
+    <string name="medication">ಔಷಧಿಗಳು</string>
+    <string name="add_medication">ಔಷಧಿ ಸೇರಿಸಿ</string>
+    <string name="med_name">ಔಷಧಿ ಹೆಸರು</string>
+    <string name="dose">ಡೋಸ್</string>
+    <string name="frequency">ಆವರ್ತನೆ</string>
+    <string name="reminder_time">ಜ್ಞಾಪನೆ ಸಮಯ</string>
+    <string name="mark_taken">ತೆಗೆದುಕೊಂಡಂತೆ ಗುರುತುಮಾಡಿ</string>
+    <string name="missed">ಮಿಸ್ ಆಯಿತು</string>
+    <string name="taken">ತೆಗೆದುಕೊಂಡಿದೆ</string>
+
+    <string name="nutrition">ಪೋಷಣಾ ಆರೈಕೆ</string>
+    <string name="log_meal">ಊಟ ದಾಖಲಿಸಿ</string>
+    <string name="meal_type">ಊಟದ ಪ್ರಕಾರ</string>
+    <string name="breakfast">ಉಪಹಾರ</string>
+    <string name="lunch">ಮಧ್ಯಾಹ್ನದ ಊಟ</string>
+    <string name="dinner">ರಾತ್ರಿ ಊಟ</string>
+    <string name="snack">ತಿಂಡಿ</string>
+
+    <string name="vitals">ಆರೋಗ್ಯ ಸೂಚಕಗಳು</string>
+    <string name="scan_face">ಮುಖ ಸ್ಕ್ಯಾನ್</string>
+    <string name="manual_entry">ಕೈಯಾರೆ ದಾಖಲಿಸಿ</string>
+    <string name="blood_pressure">ರಕ್ತದ ಒತ್ತಡ</string>
+    <string name="systolic">ಸಿಸ್ಟಾಲಿಕ್ (mmHg)</string>
+    <string name="diastolic">ಡಯಾಸ್ಟಾಲಿಕ್ (mmHg)</string>
+    <string name="heart_rate">ಹೃದಯ ಬಡಿತ (bpm)</string>
+    <string name="spo2">SpO₂ (%)</string>
+    <string name="respiratory_rate">ಉಸಿರಾಟ ದರ (breaths/min)</string>
+    <string name="log_vitals">ವೈಟಲ್ಸ್ ದಾಖಲಿಸಿ</string>
+
+    <string name="reports">ವರದಿಗಳು</string>
+    <string name="hospital_visits">ಆಸ್ಪತ್ರೆ ಭೇಟಿಗಳು</string>
+    <string name="generate_pdf">PDF ವರದಿ ರಚಿಸಿ</string>
+    <string name="export_csv">CSV ರಫ್ತು ಮಾಡಿ</string>
+    <string name="last_7_days">ಕಳೆದ 7 ದಿನಗಳು</string>
+    <string name="last_30_days">ಕಳೆದ 30 ದಿನಗಳು</string>
+    <string name="adherence_score">ಪಾಲನೆ ಅಂಕ</string>
+    <string name="share_report">ವೈದ್ಯರೊಂದಿಗೆ ಹಂಚಿ</string>
+
+    <string name="notif_channel_reminders">ಜ್ಞಾಪನೆಗಳು</string>
+    <string name="notif_channel_alerts">ಗ್ಲೂಕೋಸ್ ಎಚ್ಚರಿಕೆಗಳು</string>
+    <string name="notif_glucose_reminder">ವೈದ್ಯರು ಹೇಳಿದಂತೆ ಗ್ಲೂಕೋಸ್ ಪರೀಕ್ಷಿಸಿ.</string>
+    <string name="notif_med_reminder">%1$s ತೆಗೆದುಕೊಳ್ಳುವ ಸಮಯ</string>
+    <string name="lifestyle_reminder">ಜೀವನಶೈಲಿ ಜ್ಞಾಪನೆ</string>
+
+    <string name="cancel">ರದ್ದು</string>
+    <string name="ok">ಸರಿ</string>
+    <string name="loading">ಲೋಡ್ ಆಗುತ್ತಿದೆ…</string>
+    <string name="error_generic">ಏನೋ ತಪ್ಪಾಗಿದೆ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+    <string name="no_data">ಇನ್ನೂ ಡೇಟಾ ಇಲ್ಲ</string>
+
+    <string name="before_meal">ಊಟದ ಮೊದಲು</string>
+    <string name="after_meal">ಊಟದ ನಂತರ</string>
+    <string name="with_meal">ಊಟದ ಜೊತೆ</string>
+    <string name="developed_by">ಅಭಿವೃದ್ಧಿಪಡಿಸಿದವರು</string>
+    <string name="developer_name">ಡಾ. ಜಿ ಹರಿ ಪ್ರಕಾಶ್</string>
+    <string name="developer_designation">ಸಹಾಯಕ ಪ್ರಾಧ್ಯಾಪಕ\nಸಾರ್ವಜನಿಕ ಆರೋಗ್ಯ ವಿಭಾಗ, Allied Health Sciences ಇಲಾಖೆ\nRamaiah University of Applied Sciences, Bengaluru, India</string>
+    <string name="app_version">ಆವೃತ್ತಿ 1.0</string>
+    <string name="hba1c_subtitle">ಗ್ಲೈಕೇಟೆಡ್ ಹೀಮೋಗ್ಲೋಬಿನ್ · 3 ತಿಂಗಳ ರಕ್ತ ಸಕ್ಕರೆ ಸರಾಸರಿ</string>
+    <string name="hba1c_trend_title">HbA1c ಟ್ರೆಂಡ್</string>
+    <string name="hba1c_prediction">3 ತಿಂಗಳ ಊಹೆ</string>
+    <string name="glucose_date_label">ಪರೀಕ್ಷೆ ದಿನಾಂಕ ಮತ್ತು ಸಮಯ</string>
+</resources>
