@@ -4,6 +4,18 @@ plugins {
     id 'com.google.devtools.ksp'
 }
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { stream ->
+        localProperties.load(stream)
+    }
+}
+
+def localOrProjectProperty = { name ->
+    localProperties.getProperty(name) ?: project.findProperty(name) ?: ''
+}
+
 android {
     namespace 'com.diabeticcare.app'
     compileSdk 35
@@ -17,9 +29,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // Gemini API key — set in local.properties as GEMINI_API_KEY=your_key
-        buildConfigField "String", "GEMINI_API_KEY", "\"${project.findProperty('GEMINI_API_KEY') ?: ''}\""
-        buildConfigField "String", "CLAUDE_API_KEY", "\"${project.findProperty('CLAUDE_API_KEY') ?: ''}\""
-        buildConfigField "String", "GLYDECARE_API_BASE_URL", "\"${project.findProperty('GLYDECARE_API_BASE_URL') ?: ''}\""
+        buildConfigField "String", "GEMINI_API_KEY", "\"${localOrProjectProperty('GEMINI_API_KEY')}\""
+        buildConfigField "String", "CLAUDE_API_KEY", "\"${localOrProjectProperty('CLAUDE_API_KEY')}\""
+        buildConfigField "String", "GLYDECARE_API_BASE_URL", "\"${localOrProjectProperty('GLYDECARE_API_BASE_URL')}\""
     }
 
     buildFeatures {
