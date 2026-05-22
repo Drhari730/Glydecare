@@ -27,6 +27,14 @@ app.use(cors({
   }
 }));
 
+app.get("/", (_req, res) => {
+  res.json({
+    ok: true,
+    service: "glydecare-backend",
+    message: "Glydecare API is running. Use /health or /api/doctor/dashboard?doctorId=MCH%20GM%20001."
+  });
+});
+
 app.get("/health", async (_req, res) => {
   try {
     await query("SELECT 1");
