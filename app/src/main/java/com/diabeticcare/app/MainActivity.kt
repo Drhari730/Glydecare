@@ -8,12 +8,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.diabeticcare.app.data.database.AppDatabase
+import com.diabeticcare.app.data.remote.SyncRepository
 import com.diabeticcare.app.databinding.ActivityMainBinding
 import com.diabeticcare.app.utils.NotificationHelper
 import com.diabeticcare.app.utils.PreferenceManager
 import com.diabeticcare.app.utils.ReminderScheduler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,5 +56,19 @@ class MainActivity : AppCompatActivity() {
         val prefs = PreferenceManager(this)
         ReminderScheduler.scheduleAll(this)
         prefs.setRemindersScheduled(true)
+        syncCurrentPatient()
+    }
+
+    private fun syncCurrentPatient() {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val db = AppDatabase.getInstance(this@MainActivity)
+                val profile = db.userProfileDao().getProfileSnapshot() ?: return@withContext
+                SyncRepository.syncPatient(profile)
+                db.glucoseDao().getLatestReading()?.let { reading ->
+                    SyncRepository.syncGlucose(profile, reading)
+                }
+            }
+        }
     }
 }

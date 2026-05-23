@@ -845,7 +845,7 @@
 
     let patients = loadPatients();
     let selectedId = patients[0]?.id || null;
-    let apiBaseUrl = localStorage.getItem(API_URL_KEY) || DEFAULT_API_BASE_URL;
+    let apiBaseUrl = DEFAULT_API_BASE_URL;
     let liveRefreshTimer = null;
 
     function loadPatients() {
@@ -923,6 +923,9 @@
         const data = await response.json();
         patients = (data.patients || []).map(normalizePatient);
         selectedId = patients[0]?.id || null;
+        document.getElementById('searchBox').value = '';
+        document.getElementById('riskFilter').value = 'all';
+        document.getElementById('doctorFilter').value = 'all';
         document.getElementById('doctorFilter').dataset.loaded = 'false';
         document.getElementById('apiStatus').textContent = `Live: ${patients.length} patients from Railway. Auto-refresh 30 sec`;
         render();

@@ -27,12 +27,8 @@ app.use(cors({
   }
 }));
 
-app.get("/", (_req, res) => {
-  res.json({
-    ok: true,
-    service: "glydecare-backend",
-    message: "Glydecare API is running. Use /health or /api/doctor/dashboard?doctorId=MCH%20GM%20001."
-  });
+app.get(["/", "/admin"], (_req, res) => {
+  res.type("html").send(adminPage(defaultDoctorId));
 });
 
 app.get("/health", async (_req, res) => {
@@ -279,6 +275,142 @@ app.use((error, _req, res, _next) => {
 app.listen(port, () => {
   console.log(`Glydecare backend listening on ${port}`);
 });
+
+function adminPage(doctorId) {
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glydecare Doctor Dashboard</title>
+  <style>
+    :root { --bg:#f4f7fb; --card:#fff; --ink:#10202b; --muted:#647887; --line:#dfe7ee; --teal:#006c6b; --blue:#1f74d2; --red:#d92d20; --amber:#f79009; --green:#12b76a; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter, Arial, sans-serif; color:var(--ink); background:var(--bg); }
+    header { padding:24px; background:linear-gradient(135deg,#005f60,#0b82d8); color:white; }
+    .top { max-width:1180px; margin:auto; display:flex; justify-content:space-between; gap:16px; align-items:center; }
+    h1 { margin:0; font-size:30px; }
+    .sub { opacity:.86; margin-top:6px; }
+    main { max-width:1180px; margin:0 auto; padding:20px; }
+    .grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:18px; box-shadow:0 8px 24px rgba(16,32,43,.06); padding:18px; }
+    .kpi b { display:block; font-size:32px; margin-top:8px; }
+    .kpi span, .muted { color:var(--muted); }
+    .toolbar { margin:18px 0; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    input { flex:1; min-width:240px; border:1px solid var(--line); border-radius:12px; padding:12px 14px; font-size:15px; }
+    button { border:0; border-radius:12px; padding:12px 16px; background:var(--teal); color:white; font-weight:800; cursor:pointer; }
+    table { width:100%; border-collapse:collapse; overflow:hidden; }
+    th, td { padding:13px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
+    .patient { font-weight:900; }
+    .badge { display:inline-block; padding:5px 9px; border-radius:999px; font-size:12px; font-weight:900; }
+    .high { background:#fee4e2; color:var(--red); }
+    .review { background:#fef0c7; color:#b54708; }
+    .stable { background:#dcfae6; color:#067647; }
+    .status { font-weight:800; color:var(--teal); }
+    .empty { padding:30px; text-align:center; color:var(--muted); }
+    @media (max-width:800px) { .grid { grid-template-columns:repeat(2,1fr); } table { font-size:13px; } th:nth-child(6),td:nth-child(6),th:nth-child(7),td:nth-child(7){display:none;} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top">
+      <div>
+        <h1>Glydecare Doctor Dashboard</h1>
+        <div class="sub">Live clinic panel for Doctor ID ${doctorId}</div>
+      </div>
+      <div class="status" id="status">Connecting...</div>
+    </div>
+  </header>
+  <main>
+    <section class="grid">
+      <div class="card kpi"><span>Total patients</span><b id="kTotal">0</b></div>
+      <div class="card kpi"><span>High risk</span><b id="kHigh">0</b></div>
+      <div class="card kpi"><span>Average glucose</span><b id="kGlucose">0</b></div>
+      <div class="card kpi"><span>Average HbA1c</span><b id="kA1c">0%</b></div>
+    </section>
+    <section class="toolbar">
+      <input id="search" placeholder="Search patient name, phone, type, medicine">
+      <button id="refresh">Refresh now</button>
+    </section>
+    <section class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Patient</th><th>Phone</th><th>Diabetes</th><th>Glucose</th><th>HbA1c</th><th>Medicines</th><th>Next visit</th><th>Risk</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" hidden>No patients found for this doctor ID yet.</div>
+    </section>
+  </main>
+  <script>
+    var DOCTOR_ID = ${JSON.stringify(doctorId)};
+    var patients = [];
+    function esc(value) {
+      return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch) {
+        return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' })[ch];
+      });
+    }
+    function avg(values) {
+      var nums = values.map(Number).filter(Number.isFinite);
+      if (!nums.length) return 0;
+      return nums.reduce(function(sum, n) { return sum + n; }, 0) / nums.length;
+    }
+    function risk(p) {
+      if ((p.glucose || 0) >= 200 || (p.hba1c || 0) >= 9 || (p.adherence || 0) < 65) return 'high';
+      if ((p.glucose || 0) >= 140 || (p.hba1c || 0) >= 7 || (p.adherence || 0) < 85) return 'review';
+      return 'stable';
+    }
+    function riskText(p) {
+      var r = risk(p);
+      return r === 'high' ? 'High risk' : r === 'review' ? 'Needs review' : 'Stable';
+    }
+    function render() {
+      var q = document.getElementById('search').value.trim().toLowerCase();
+      var rows = patients.filter(function(p) {
+        return [p.name, p.phone, p.diabetesType, p.doctorName].concat(p.medicines || []).join(' ').toLowerCase().indexOf(q) >= 0;
+      });
+      document.getElementById('kTotal').textContent = patients.length;
+      document.getElementById('kHigh').textContent = patients.filter(function(p) { return risk(p) === 'high'; }).length;
+      document.getElementById('kGlucose').textContent = Math.round(avg(patients.map(function(p) { return p.glucose; })));
+      document.getElementById('kA1c').textContent = avg(patients.map(function(p) { return p.hba1c; })).toFixed(1) + '%';
+      document.getElementById('empty').hidden = rows.length > 0;
+      document.getElementById('rows').innerHTML = rows.map(function(p) {
+        return '<tr>' +
+          '<td><div class="patient">' + esc(p.name) + '</div><div class="muted">' + esc(p.age) + ' yrs, ' + esc(p.gender) + ' | ' + esc(p.doctorId) + '</div></td>' +
+          '<td>' + esc(p.phone) + '</td>' +
+          '<td>' + esc(p.diabetesType) + '</td>' +
+          '<td><b>' + esc(p.glucose || '--') + '</b> mg/dL<div class="muted">' + esc(p.glucoseDate || 'No reading') + '</div></td>' +
+          '<td><b>' + esc(p.hba1c || '--') + '</b></td>' +
+          '<td>' + esc((p.medicines || []).join(', ') || '--') + '</td>' +
+          '<td>' + esc(p.nextVisit || '--') + '</td>' +
+          '<td><span class="badge ' + risk(p) + '">' + riskText(p) + '</span></td>' +
+        '</tr>';
+      }).join('');
+    }
+    async function load() {
+      document.getElementById('status').textContent = 'Loading live data...';
+      try {
+        var response = await fetch('/api/doctor/dashboard?doctorId=' + encodeURIComponent(DOCTOR_ID), { headers: { Accept: 'application/json' } });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        var data = await response.json();
+        patients = data.patients || [];
+        document.getElementById('status').textContent = 'Live: ' + patients.length + ' patient(s). Auto-refresh 30 sec';
+        render();
+      } catch (error) {
+        document.getElementById('status').textContent = 'Backend not reachable: ' + error.message;
+      }
+    }
+    document.getElementById('search').addEventListener('input', render);
+    document.getElementById('refresh').addEventListener('click', load);
+    load();
+    setInterval(load, 30000);
+  </script>
+</body>
+</html>`;
+}
 
 function normalizePatient(body) {
   const phone = String(body.phone || "").trim();
