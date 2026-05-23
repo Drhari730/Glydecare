@@ -14,7 +14,10 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS || "*")
   .map((origin) => origin.trim())
   .filter(Boolean);
 
-app.use(helmet({ crossOriginResourcePolicy: false }));
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+  contentSecurityPolicy: false
+}));
 app.use(express.json({ limit: "1mb" }));
 app.use(morgan("tiny"));
 app.use(cors({
